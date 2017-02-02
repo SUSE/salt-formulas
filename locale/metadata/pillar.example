@@ -1,0 +1,7 @@
+timezone:
+  hardware_clock_set_to_utc: True
+  name: CET
+
+keyboard_and_language:
+  keyboard_layout: English (US)
+  language: English (US)
