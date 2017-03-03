@@ -22,16 +22,16 @@
 {% from "locale/map.jinja" import confmap with context %}
 {% from "locale/map.jinja" import map with context %}
 
-timezone_setting:
+mgr_timezone_setting:
   timezone.system:
     - name: {{ timezone }}
     - utc: {{ utc }}
 
-timezone_packages:
+mgr_timezone_packages:
   pkg.installed:
     - name: {{ confmap.pkgname }}
 
-timezone_symlink:
+mgr_timezone_symlink:
   file.symlink:
     - name: {{ confmap.path_localtime }}
     - target: {{ confmap.path_zoneinfo }}{{ timezone }}
@@ -39,11 +39,11 @@ timezone_symlink:
     - require:
       - pkg: {{ confmap.pkgname }}
 
-kb_settings:
+mgr_kb_settings:
   keyboard.system:
     - name: {{ map.kb_map.get(kb_layout) }}
 
-locale_package:  
+mgr_locale_package:
   pkg.installed:
     - name: {{ confmap.loc_pkg }}
 
@@ -54,8 +54,8 @@ locale_package:
     - repl: ROOT_USES_LANG="yes"
 {% endif %}
 
-language_settings:
+mgr_language_settings:
   locale.system:
     - name: {{ map.lang_map.get(language) }}
     - require:
-      - pkg: locale_package
+      - pkg: mgr_locale_package
