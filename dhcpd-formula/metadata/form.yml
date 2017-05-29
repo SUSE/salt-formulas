@@ -1,0 +1,34 @@
+dhcpd:
+  $type: hidden-group
+  domain_name:
+    $placeholder: example.org
+  domain_name_servers:
+    $placeholder: example.org
+  listen_interfaces:
+    $help: Comma separated list of interfaces to listen on
+    $default: em2
+  max_lease_time:
+    $default: 20001
+    $type: number
+  default_lease_time:
+    $default: 20000
+    $type: number
+  subnets:
+    $type: hidden-group
+    network1:
+      $type: group
+      $name: Network configuration
+      network:
+        $type: text
+        $default: 192.168.128.0
+      netmask:
+        $default: 255.255.128.0
+      range:
+        $default:
+        - 192.168.242.51
+        - 192.168.243.151
+      broadcast_address:
+        $default: 192.168.255.255
+      routers:
+        $default:
+        - example.org

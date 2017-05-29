@@ -1,0 +1,3 @@
+# SaltStack-generated demon configuration file for ISC dhcpd
+
+dhcpd_ifaces="{{ ' '.join(salt['pillar.get']('dhcpd:listen_interfaces', [])) }}"
