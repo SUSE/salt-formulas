@@ -1,0 +1,57 @@
+{%- if 'comment' in config %}
+  {%- for line in config.comment.splitlines() %}
+# {{ line }}
+  {%- endfor %}
+{%- endif %}
+host {{ host }} {
+  {%- if 'allow' in config %}
+    {%- if config.allow is iterable and config.allow is not string %}
+      {%- for item in config.allow %}
+  allow {{ item }};
+      {%- endfor %}
+    {%- else %}
+  allow {{ config.allow }};
+    {%- endif %}
+  {%- endif %}
+  {%- if 'deny' in config %}
+    {%- if config.deny is iterable and config.deny is not string %}
+      {%- for item in config.deny %}
+  deny {{ item }};
+      {%- endfor %}
+    {%- else %}
+  deny {{ config.deny }};
+    {%- endif %}
+  {%- endif %}
+  {%- if 'hardware' in config %}
+  hardware {{ config.hardware }};
+  {%- endif %}
+  {%- if 'fixed_address' in config %}
+  fixed-address {{ config.fixed_address }};
+  {%- endif %}
+  {%- if 'filename_efi' in config %}
+  if option arch = 00:07 {
+    filename "{{ config.filename_efi }}";
+    {%- if 'filename' in config %}
+  } else {
+    filename "{{ config.filename }}";
+    {%- endif %}
+  }
+  {%- elif 'filename' in config %}
+  filename "{{ config.filename }}";
+  {%- endif %}
+  {%- if 'next_server' in config %}
+  next-server {{ config.next_server }};
+  {%- endif %}
+  {%- if 'server_name' in config %}
+  server-name "{{ config.server_name }}";
+  {%- endif %}
+  {%- if 'host_name' in config %}
+  option host-name "{{ config.host_name }}";
+  {%- endif %}
+  {%- for option in customized.keys() %}
+    {%- if option in config %}
+     {%- if customized[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
+  option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
+    {%- endif %}
+  {%- endfor %}
+}

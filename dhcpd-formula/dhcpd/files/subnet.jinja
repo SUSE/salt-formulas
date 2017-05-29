@@ -1,0 +1,104 @@
+{%- if 'comment' in config %}
+  {%- for line in config['comment'].splitlines() %}
+# {{ line }}
+  {%- endfor %}
+{%- endif %}
+subnet {{ subnet }} netmask {{ config.netmask }} {
+{%- if 'use_host_decl_names' in config %}
+  use-host-decl-names {{ config.use_host_decl_names }};
+{%- endif %}
+{%- if 'range' in config %}
+  {%- if 'dynamic_bootp' in config and config.dynamic_bootp %}
+  range dynamic-bootp {{ config.range[0] }} {{ config.range[1] }};
+  {%- else %}
+  range {{ config.range[0] }} {{ config.range[1] }};
+  {%- endif %}
+{%- endif %}
+{%- if 'broadcast_address' in config %}
+  option broadcast-address {{ config['broadcast_address'] }};
+{%- endif %}
+{%- if 'domain_name_servers' in config %}
+  option domain-name-servers {{ config['domain_name_servers']|join(',') }};
+{%- endif %}
+{%- if 'netbios_name_servers' in config %}
+  option netbios-name-servers {{ config['netbios_name_servers']|join(',') }};
+{%- endif %}
+{%- if 'ntp_servers' in config %}
+  option ntp-servers {{ config['ntp_servers']|join(',') }};
+{%- endif %}
+{%- if 'lpr_servers' in config %}
+  option lpr-servers {{ config['lpr_servers']|join(',') }};
+{%- endif %}
+{%- if 'irc_server' in config %}
+  option irc-server {{ config['irc_server']|join(',') }};
+{%- endif %}
+{%- if 'tftp_server_name' in config %}
+  option tftp-server-name "{{ config['tftp_server_name'] }}";
+{%- endif %}
+{%- if 'smtp_server' in config %}
+  option smtp-server {{ config['smtp_server'] }};
+{%- endif %}
+{%- if 'domain_name' in config %}
+  option domain-name "{{ config['domain_name'] }}";
+{%- endif %}
+{%- if 'domain_search' in config %}
+  option domain-search "{{ config['domain_search']|join('","') }}";
+{%- endif %}
+{%- if 'filename_efi' in config %}
+  if option arch = 00:07 {
+    filename "{{ config.filename_efi }}";
+  {%- if 'filename' in config %}
+  } else {
+    filename "{{ config.filename }}";
+  {%- endif %}
+  }
+{%- elif 'filename' in config %}
+  filename "{{ config.filename }}";
+{%- endif %}
+{%- if 'next_server' in config %}
+  next-server {{ config['next_server'] }};
+{%- endif %}
+{%- if 'default_lease_time' in config %}
+  default-lease-time {{ config['default_lease_time'] }};
+{%- endif %}
+{%- if 'max_lease_time' in config %}
+  max-lease-time {{ config['max_lease_time'] }};
+{%- endif %}
+{%- if 'routers' in config and config.routers is string %}
+  option routers {{ config.routers }};
+{%- elif 'routers' in config and config.routers is sequence %}
+  option routers
+  {%- for router in config.routers %} {{ router }}
+    {%- if not loop.last %},{% else %};{% endif %}
+  {%- endfor %}
+{%- endif %}
+{%- for option in customized.keys() %}
+  {%- if option in config %}
+    {%- if customized[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
+  option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
+  {%- endif %}
+{%- endfor %}
+{%- for pool in salt['pillar.get']('dhcpd:subnets:{0}:pools'.format(subnet), []) %}
+  pool {
+    {%- if 'failover_peer' in pool %}
+    failover peer "{{ pool['failover_peer'] }}";
+    {%- endif %}
+    {%- if 'max_lease_time' in pool %}
+    max-lease-time {{ pool.max_lease_time }};
+    {%- endif %}
+    {%- if 'range' in pool %}
+    range {{ pool.range[0] }} {{ pool.range[1] }};
+    {%- endif %}
+    {%- if 'allow' in pool %}
+    allow {{ pool.allow }};
+    {%- elif 'deny' in pool %}
+    deny {{ pool.deny }};
+    {%- endif %}
+  }
+{%- endfor %}
+{%- for host, config in salt['pillar.get']('dhcpd:subnets:{0}:hosts'.format(subnet), {}).items() %}
+  {%- filter indent(width=2) %}
+{% include 'dhcpd/files/host.jinja' with context %}
+  {%- endfilter %}
+{%- endfor %}
+}
