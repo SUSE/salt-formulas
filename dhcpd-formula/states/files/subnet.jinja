@@ -1,0 +1,96 @@
+{%- if config.has_key('comment') %}
+  {%- for line in config['comment'].splitlines() %}
+# {{ line }}
+  {%- endfor %}
+{%- endif %}
+{%- if config.has_key('network') %}
+{{ intendation }}subnet {{ config.network }} netmask {{ config.netmask }} {
+{%- else %}
+{{ intendation }}subnet {{ subnet }} netmask {{ config.netmask }} {
+{%- endif %}
+{%- if config.has_key('allow') %}
+{{ intendation }}  allow {{ config.allow }};
+{%- elif config.has_key('deny') %}
+{{ intendation }}  deny {{ config.deny }};
+{%- endif %}
+{%- if 'use_host_decl_names' in config %}
+{{ intendation }}  use-host-decl-names {{ config.use_host_decl_names }};
+{%- endif %}
+{%- if config.has_key('range') %}
+  {%- if config.has_key('dynamic_bootp') and config.dynamic_bootp %}
+{{ intendation }}  range dynamic-bootp {{ config.range[0] }} {{ config.range[1] }};
+  {%- else %}
+{{ intendation }}  range {{ config.range[0] }} {{ config.range[1] }};
+  {%- endif %}
+{%- endif %}
+{%- if config.has_key('broadcast_address') %}
+{{ intendation }}  option broadcast-address {{ config['broadcast_address'] }};
+{%- endif %}
+{%- if config.has_key('domain_name_servers') %}
+{%- if isinstance(config['domain_name_servers'], str) %}
+{{ intendation }}  option domain-name-servers {{ config['domain_name_servers'] }};
+{%- else %}
+{{ intendation }}  option domain-name-servers {{ config['domain_name_servers']|join(',') }};
+{%- endif %}
+{%- endif %}
+{%- if config.has_key('netbios_name_servers') %}
+{{ intendation }}  option netbios-name-servers {{ config['netbios_name_servers']|join(',') }};
+{%- endif %}
+{%- if config.has_key('ntp_servers') %}
+{{ intendation }}  option ntp-servers {{ config['ntp_servers']|join(',') }};
+{%- endif %}
+{%- if config.has_key('lpr_servers') %}
+{{ intendation }}  option lpr-servers {{ config['lpr_servers']|join(',') }};
+{%- endif %}
+{%- if config.has_key('irc_server') %}
+{{ intendation }}  option irc-server {{ config['irc_server']|join(',') }};
+{%- endif %}
+{%- if config.has_key('tftp_server_name') %}
+{{ intendation }}  option tftp-server-name "{{ config['tftp_server_name'] }}";
+{%- endif %}
+{%- if config.has_key('smtp_server') %}
+{{ intendation }}  option smtp-server {{ config['smtp_server'] }};
+{%- endif %}
+{%- if config.has_key('domain_name') %}
+{{ intendation }}  option domain-name "{{ config['domain_name'] }}";
+{%- endif %}
+{%- if config.has_key('domain_search') %}
+{{ intendation }}  option domain-search "{{ config['domain_search']|join('","') }}";
+{%- endif %}
+{%- if config.has_key('filename') %}
+{{ intendation }}  filename "{{ config['filename'] }}";
+{%- endif %}
+{%- if config.has_key('next_server') %}
+{{ intendation }}  next-server {{ config['next_server'] }};
+{%- endif %}
+{%- if config.has_key('default_lease_time') %}
+{{ intendation }}  default-lease-time {{ config['default_lease_time'] }};
+{%- endif %}
+{%- if config.has_key('max_lease_time') %}
+{{ intendation }}  max-lease-time {{ config['max_lease_time'] }};
+{%- endif %}
+{%- if config.has_key('routers') and config.routers is string %}
+{{ intendation }}  option routers {{ config.routers }};
+{%- elif config.has_key('routers') and config.routers is sequence %}
+{{ intendation }}  option routers
+  {%- for router in config.routers %} {{ router }}
+    {%- if not loop.last %},{% else %};{% endif %}
+  {%- endfor %}
+{%- endif %}
+{%- for option in customized.keys() %}
+  {%- if option in config %}
+    {%- if customized[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
+{{ intendation }}  option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
+  {%- endif %}
+{%- endfor %}
+{%- for pool in salt['pillar.get']('dhcpd:subnets:{0}:pools'.format(subnet), []) %}
+{{ intendation }}  pool {
+    {%- if pool.has_key('failover_peer') %}
+{{ intendation }}    failover peer "{{ pool['failover_peer'] }}";
+    {%- endif %}
+    {%- if pool.has_key('range') %}
+{{ intendation }}    range {{ pool.range[0] }} {{ pool.range[1] }};
+    {%- endif %}
+{{ intendation }}  }
+{%- endfor %}
+{{ intendation }}}
