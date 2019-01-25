@@ -1,0 +1,7 @@
+monitoring:
+  $type: group
+
+  node_exporter_enabled:
+    $type: boolean
+    $default: True
+

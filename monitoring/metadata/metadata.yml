@@ -1,0 +1,6 @@
+description:
+  Easily enable and configure monitoring for managed systems
+group: general_system_configuration
+after:
+  - users
+
