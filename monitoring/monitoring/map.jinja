@@ -1,0 +1,10 @@
+{% set monitoring = salt['grains.filter_by']({
+    'RedHat': {
+        'node_exporter_package': 'golang-github-prometheus-node_exporter',
+        'node_exporter_service': 'prometheus-node_exporter',
+    },
+    'Suse': {
+        'node_exporter_package': 'golang-github-prometheus-node_exporter',
+        'node_exporter_service': 'prometheus-node_exporter',
+    },
+}, merge=salt['pillar.get']('monitoring:lookup')) %}

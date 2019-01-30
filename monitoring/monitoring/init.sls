@@ -1,8 +1,10 @@
+{% from "monitoring/map.jinja" import monitoring with context %}
+
 node_exporter:
   pkg.installed:
-    - name: golang-github-prometheus-node_exporter
+    - name: {{ monitoring.node_exporter_package }}
   service.running:
-    - name: prometheus-node_exporter
+    - name: {{ monitoring.node_exporter_service }}
     - enable: True
     - require:
       - pkg: node_exporter
