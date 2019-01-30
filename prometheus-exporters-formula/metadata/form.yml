@@ -1,4 +1,4 @@
-prometheus_exporters:
+node_exporter:
   $type: group
 
   node_exporter_enabled:
