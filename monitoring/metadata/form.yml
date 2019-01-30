@@ -1,4 +1,4 @@
-monitoring:
+prometheus_exporters:
   $type: group
 
   node_exporter_enabled:

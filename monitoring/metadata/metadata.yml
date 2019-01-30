@@ -1,6 +1,4 @@
 description:
-  Easily enable and configure monitoring for managed systems
-group: general_system_configuration
-after:
-  - users
+  Enable and configure Prometheus exporters for managed systems.
+group: monitoring
 
