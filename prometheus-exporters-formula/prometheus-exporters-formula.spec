@@ -24,7 +24,7 @@ Summary:        Salt formula for installing and configuring Prometheus exporters
 License:        Apache-2.0
 Group:          System/Packages
 Url:            https://github.com/SUSE/salt-formulas
-Source:         prometheus-exporters-formula-%{version}.tar.xz
+Source:         prometheus-exporters-formula-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
