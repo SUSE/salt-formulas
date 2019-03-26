@@ -1,11 +1,11 @@
 {% set exporters = salt['grains.filter_by']({
-    'RedHat': {
-        'node_exporter_package': 'golang-github-prometheus-node_exporter',
-        'node_exporter_service': 'prometheus-node_exporter',
-    },
     'Suse': {
         'node_exporter_package': 'golang-github-prometheus-node_exporter',
         'node_exporter_service': 'prometheus-node_exporter',
+    },
+    'Ubuntu': {
+        'node_exporter_package': 'prometheus-node-exporter',
+        'node_exporter_service': 'prometheus-node-exporter',
     },
 }, merge=salt['pillar.get']('exporters:lookup')) %}
 
