@@ -2,10 +2,16 @@
     'Suse': {
         'node_exporter_package': 'golang-github-prometheus-node_exporter',
         'node_exporter_service': 'prometheus-node_exporter',
+        'postgres_exporter_package': 'golang-github-wrouesnel-postgres_exporter',
+        'postgres_exporter_service': 'postgres-exporter',
+        'postgres_exporter_service_config': '/etc/sysconfig/postgres-exporter',
     },
     'Ubuntu': {
         'node_exporter_package': 'prometheus-node-exporter',
         'node_exporter_service': 'prometheus-node-exporter',
+        'postgres_exporter_package': 'prometheus-postgres-exporter',
+        'postgres_exporter_service': 'prometheus-postgres-exporter',
+        'postgres_exporter_service_config': '/etc/default/prometheus-postgres-exporter',
     },
 }, merge=salt['pillar.get']('exporters:lookup')) %}
 
