@@ -1,7 +1,17 @@
 node_exporter:
   $type: group
 
-  node_exporter_enabled:
+  enabled:
     $type: boolean
     $default: True
 
+postgres_exporter:
+  $type: group
+
+  enabled:
+    $type: boolean
+    $default: False
+
+  data_source_name:
+    $type: text
+    $default: postgresql://user:passwd@localhost:5432/database?sslmode=disable
