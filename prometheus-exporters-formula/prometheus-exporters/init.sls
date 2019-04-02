@@ -4,9 +4,9 @@ include:
   - prometheus-exporters.config
 
 node_exporter:
+{% if salt['pillar.get']('node_exporter:enabled', True) %}
   pkg.installed:
     - name: {{ exporters.node_exporter_package }}
-{% if salt['pillar.get']('node_exporter:enabled', True) %}
   service.running:
     - name: {{ exporters.node_exporter_service }}
     - enable: True
@@ -19,9 +19,9 @@ node_exporter:
 {% endif %}
 
 postgres_exporter:
+{% if salt['pillar.get']('postgres_exporter:enabled', False) %}
   pkg.installed:
     - name: {{ exporters.postgres_exporter_package }}
-{% if salt['pillar.get']('postgres_exporter:enabled', False) %}
   service.running:
     - name: {{ exporters.postgres_exporter_service }}
     - enable: True
