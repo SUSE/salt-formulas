@@ -1,6 +1,6 @@
 
 LOCALE_VERSION=0.2
-PROMETHEUS_EXPORTERS_VERSION=0.2
+PROMETHEUS_EXPORTERS_VERSION=0.3
 
 locale:: clean
 	git archive --format=tar.gz --prefix=locale-formula-${LOCALE_VERSION}/ HEAD:locale/ >locale-formula-${LOCALE_VERSION}.tar.gz
