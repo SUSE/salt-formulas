@@ -11,6 +11,6 @@ postgres_exporter_config:
     - group: root
     - mode: 644
     - watch_in:
-      - service: postgres-exporter
+      - service: {{ exporters.postgres_exporter_service }}
 {% endif %}
 
