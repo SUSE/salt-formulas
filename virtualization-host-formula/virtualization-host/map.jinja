@@ -1,0 +1,9 @@
+{% if grains['os_family'] == 'Suse' %}
+    {% if '15' in grains['osrelease'] %}
+      {% set packages = ['patterns-server-kvm_server'] %}
+    {% elif grains['osfullname'] == 'Leap' %}
+      {% set packages = ['patterns-openSUSE-kvm_server'] %}
+    {% else %}
+      {% set packages = ['patterns-sles-kvm_server'] %}
+    {% endif %}
+{% endif %}
