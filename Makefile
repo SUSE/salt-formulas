@@ -7,7 +7,7 @@ VIRTUALIZATION_HOST_VERSION=0.1
 locale:: clean
 	git archive --format=tar.gz --prefix=locale-formula-${LOCALE_VERSION}/ HEAD:locale/ >locale-formula-${LOCALE_VERSION}.tar.gz
 
-cpu:: clean
+cpu-mitigations:: clean
 	git archive --format=tar.gz --prefix=cpu-mitigations-formula-${CPU_MITIGATIONS_VERSION}/ HEAD:cpu-mitigations-formula/ >cpu-mitigations-formula-${CPU_MITIGATIONS_VERSION}.tar.gz
 
 prometheus-exporters:: clean
