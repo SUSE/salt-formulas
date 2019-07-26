@@ -1,0 +1,15 @@
+gpgkeys:
+  all:
+    keys:
+      - file: ptf-gpg-pubkey-b37b98a9.key
+        name: gpg-pubkey-b37b98a9
+  CentOS Linux 7.5.1804:
+    keys:
+      - file: sle12-gpg-pubkey-39db7c82.key
+        name: gpg-pubkey-39db7c82
+  SLES 12.3:
+    keys:
+      - file: sle12-reserve-gpg-pubkey-50a3dd1c.key
+        name: gpg-pubkey-50a3dd1c
+      - file: sle12-gpg-pubkey-39db7c82.key
+        name: gpg-pubkey-39db7c82

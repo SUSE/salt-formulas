@@ -1,0 +1,22 @@
+gpgkeys:
+  $name: "Operating System Groups"
+  $type: "edit-group"
+  $itemName: "Keys for Operating System ${i}"
+  $prototype:
+    $type: "group"
+    $key:
+      $type: text
+      $name: OS definition
+      $help: "E.g. 'all' or grains 'osfullname osrelease' combination"
+      $placeholder: "Enter 'all' or grains 'osfullname osrelease' combination"
+    keys:
+      $type: "edit-group"
+      $itemName: "Key ${i}" 
+      $prototype:
+        $type: group
+        name:
+          $placeholder: "gpg-pubkey-abcdefg"
+          $help: "The name of the gpg key as it appear in the system"
+        file:
+          $placeholder: "gpg-pubkey-abcdefg.key"
+          $help: "The filename of the key (must be available on the Server via https://server.domain.top/pub/)"
