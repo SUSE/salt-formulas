@@ -2,35 +2,30 @@
 {% from "cpu-mitigations/map.jinja" import map with context %}
 {%- set selected = salt['pillar.get']('mitigations:name', 'Auto') %}
 
-# check for support os version
-{%- set os_ver = grains['osrelease'] %}
-{% if '12' in os_ver and '12.2' <= os_ver %}
-{%- set grub_line_start = map.grub_line.get('12') %}
-{% elif '42.3' == os_ver %}
-{%- set grub_line_start = map.grub_line.get('12') %}
-{% elif '15' in os_ver %}
-{%- set grub_line_start = map.grub_line.get('15') %}
-{% else %}
-{%- set grub_line_start = map.grub_line.get('default') %}
-{% endif %} #os_ver
+# check for supported os version
+{%- set supported_vers = ['42.3', '12.3', '12.4', '12.5', '15.0', '15.1', '15.2'] %}
 
-{% if grub_line_start and grains['os_family'] == 'Suse' %}
+{% if grains['os_family'] == 'Suse' and grains['osrelease'] in supported_vers %}
+{%- set supported = True %}
+{% endif %} #check if supported
+
+{% if supported %}
 remove_mitigations:
   file.replace:
     - name: /etc/default/grub
-    - pattern: ^{{ grub_line_start }}="(.*?)(?:\s*)mitigations=(?:auto,nosmt|off|auto)(.*?)"
-    - repl: {{ grub_line_start }}="\1\2"
+    - pattern: ^GRUB_CMDLINE_LINUX_DEFAULT="(.*?)(?:\s*)mitigations=(?:auto,nosmt|off|auto)(.*?)"
+    - repl: GRUB_CMDLINE_LINUX_DEFAULT="\1\2"
     - onlyif:
       - 'grep mitigations= /etc/default/grub'
 
 add_mitigation_option:
   file.replace:
     - name: /etc/default/grub
-    - pattern: ^{{ grub_line_start }}="(.*)"
+    - pattern: ^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"
 {% if selected == 'Manual' %}
-    - repl: {{ grub_line_start }}="\1"
+    - repl: GRUB_CMDLINE_LINUX_DEFAULT="\1"
 {% else %}
-    - repl: {{ grub_line_start }}="\1 {{ map.cpu_opt.get(selected) }}"
+    - repl: GRUB_CMDLINE_LINUX_DEFAULT="\1 {{ map.cpu_opt.get(selected) }}"
 {% endif %} #manual
 
 rebuild_grub_conf:
@@ -39,4 +34,4 @@ rebuild_grub_conf:
     - onchanges:
       - file: remove_mitigations
       - file: add_mitigation_option
-{% endif %} #os_family
+{% endif %} #supported
