@@ -1,5 +1,6 @@
 node_exporter:
   enabled: True
+  listen_port: 9100
 
 postgres_exporter:
   enabled: False
