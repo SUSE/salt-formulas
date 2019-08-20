@@ -4,4 +4,5 @@ node_exporter:
 
 postgres_exporter:
   enabled: False
+  listen_port: 9187
   data_source_name: postgresql://user:passwd@localhost:5432/database?sslmode=disable
