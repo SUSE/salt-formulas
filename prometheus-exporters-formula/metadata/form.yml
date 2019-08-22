@@ -5,12 +5,22 @@ node_exporter:
     $type: boolean
     $default: True
 
+  listen_port:
+    $name: "Listen Port"
+    $type: number
+    $default: 9100
+
 postgres_exporter:
   $type: group
 
   enabled:
     $type: boolean
     $default: False
+
+  listen_port:
+    $name: "Listen Port"
+    $type: number
+    $default: 9187
 
   data_source_name:
     $type: text

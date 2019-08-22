@@ -1,0 +1,9 @@
+## Path:           Applications/NodeExporter
+## Description:    Prometheus exporter for machine metrics
+## Type:           string()
+## Default:        ""
+## ServiceRestart: prometheus-node_exporter
+#
+# Arguments for running prometheus-node_exporter
+#
+ARGS="--web.listen-address ':{{ salt['pillar.get']('node_exporter:listen_port', 9100) }}'"
