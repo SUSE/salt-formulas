@@ -18,7 +18,7 @@
 %define fname prometheus-exporters
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           prometheus-exporters-formula
-Version:        0.3
+Version:        0.4
 Release:        0
 Summary:        Salt formula for installing and configuring Prometheus exporters
 License:        Apache-2.0
