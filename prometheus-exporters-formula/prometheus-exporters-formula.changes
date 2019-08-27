@@ -1,0 +1,25 @@
+-------------------------------------------------------------------
+Mon Aug 26 09:25:37 UTC 2019 - Johannes Renner <jrenner@suse.com>
+
+- Allow to configure listen ports of exporters
+- Install the LICENSE together with the package
+
+-------------------------------------------------------------------
+Wed Apr 17 13:48:14 UTC 2019 - Johannes Renner <jrenner@suse.com>
+
+- Update service and config file name for postgres exporter
+
+-------------------------------------------------------------------
+Tue Apr  2 23:04:53 UTC 2019 - Johannes Renner <jrenner@suse.com>
+
+- Install package only if exporter is enabled
+
+-------------------------------------------------------------------
+Fri Mar 29 10:11:12 UTC 2019 - Johannes Renner <jrenner@suse.com>
+
+- Add support for postgres-exporter in prometheus-exporters
+
+-------------------------------------------------------------------
+Fri Feb  8 15:41:21 UTC 2019 - jrenner@suse.com
+
+- Initial version of prometheus-exporters-formula
