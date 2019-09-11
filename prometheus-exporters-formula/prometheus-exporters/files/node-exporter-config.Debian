@@ -2,7 +2,7 @@
 # Due to shell scaping, to pass backslashes for regexes, you need to double
 # them (\\d for \d). If running under systemd, you need to double them again
 # (\\\\d to mean \d), and escape newlines too.
-ARGS="--web.listen-address=':{{ salt['pillar.get']('node_exporter:listen_port', 9100) }}'"
+ARGS="{{ salt['pillar.get']('node_exporter:args', '') }}"
 
 # Prometheus-node-exporter supports the following options:
 #

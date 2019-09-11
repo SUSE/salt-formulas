@@ -5,10 +5,11 @@ node_exporter:
     $type: boolean
     $default: True
 
-  listen_port:
-    $name: "Listen Port"
-    $type: number
-    $default: 9100
+  args:
+    $name: "Arguments"
+    $type: text
+    $default: --web.listen-address=":9100"
+    $help: Please refer to the documentation for available options.
 
 postgres_exporter:
   $type: group
@@ -17,11 +18,12 @@ postgres_exporter:
     $type: boolean
     $default: False
 
-  listen_port:
-    $name: "Listen Port"
-    $type: number
-    $default: 9187
-
   data_source_name:
     $type: text
     $default: postgresql://user:passwd@localhost:5432/database?sslmode=disable
+
+  args:
+    $name: "Arguments"
+    $type: text
+    $default: --web.listen-address=":9187"
+    $help: Please refer to the documentation for available options.
