@@ -1,0 +1,29 @@
+## Path:           Applications/PostgreSQLExporter
+## Description:    Prometheus exporter for PostgreSQL
+## Type:           string()
+## Default:        "postgresql://user:passwd@localhost:5432/database?sslmode=disable"
+## ServiceRestart: prometheus-postgres_exporter
+#
+# Connection URL to postgresql instance
+#
+DATA_SOURCE_NAME="{{ salt['pillar.get']('postgres_exporter:data_source_name', 'postgresql://user:passwd@localhost:5432/database?sslmode=disable') }}"
+
+## Path:           Applications/PostgreSQLExporter
+## Description:    Prometheus exporter for PostgreSQL
+## Type:           string()
+## Default:        ""
+## ServiceRestart: prometheus-postgres_exporter
+#
+# Extra options for prometheus-postgres_exporter
+#
+POSTGRES_EXPORTER_PARAMS=""
+
+## Path:           Applications/PostgreSQLExporter
+## Description:    Prometheus exporter for PostgreSQL
+## Type:           string()
+## Default:        ":9187"
+## ServiceRestart: prometheus-postgres_exporter
+#
+# Address to listen on for web interface and telemetry
+#
+PG_EXPORTER_WEB_LISTEN_ADDRESS=":{{ salt['pillar.get']('postgres_exporter:listen_port', 9187) }}"

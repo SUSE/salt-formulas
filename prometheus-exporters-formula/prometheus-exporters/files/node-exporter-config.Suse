@@ -6,4 +6,4 @@
 #
 # Arguments for running prometheus-node_exporter
 #
-ARGS="--web.listen-address ':{{ salt['pillar.get']('node_exporter:listen_port', 9100) }}'"
+ARGS="--web.listen-address=':{{ salt['pillar.get']('node_exporter:listen_port', 9100) }}'"
