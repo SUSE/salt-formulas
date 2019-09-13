@@ -6,7 +6,7 @@ node_exporter:
     - name: {{ exporters.node_exporter_package }}
   file.managed:
     - name: {{ exporters.node_exporter_service_config }}
-    - source: {{ 'salt://prometheus-exporters/files/node-exporter-config' }}
+    - source: {{ 'salt://prometheus-exporters/files/node-exporter-config.' ~ salt['grains.get']('os_family') }}
     - makedirs: True
     - template: jinja
     - user: root
@@ -33,7 +33,7 @@ postgres_exporter:
     - name: {{ exporters.postgres_exporter_package }}
   file.managed:
     - name: {{ exporters.postgres_exporter_service_config }}
-    - source: {{ 'salt://prometheus-exporters/files/postgres-exporter-config' }}
+    - source: {{ 'salt://prometheus-exporters/files/postgres-exporter-config.' ~ salt['grains.get']('os_family') }}
     - makedirs: True
     - template: jinja
     - user: root
