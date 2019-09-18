@@ -1,0 +1,82 @@
+-------------------------------------------------------------------
+Wed Sep  4 09:07:07 UTC 2019 - Vladimir Nadvornik <nadvornik@suse.com>
+
+- Drop IPAPPEND pxe option
+
+-------------------------------------------------------------------
+Thu May 23 13:54:24 UTC 2019 - Ondrej Holecek <oholecek@suse.com>
+
+- Updated copyrights and bug reporting link
+- Update to version 0.1.1558613789.64ba093
+
+-------------------------------------------------------------------
+Thu May  2 14:02:01 UTC 2019 - Ondrej Holecek <oholecek@suse.com>
+- Update to version 0.1.1556553492.2bfae0b
+
+-------------------------------------------------------------------
+Thu Apr 25 09:34:38 UTC 2019 - nadvornik@suse.com
+
+- Adjust grub2 efi path for SLE15
+
+-------------------------------------------------------------------
+Wed Apr 10 14:55:12 UTC 2019 - nadvornik@suse.com
+
+- Version update to 0.1.1555335519.abf24f8
+- Allow uppercase MAC in grains
+
+-------------------------------------------------------------------
+Fri Mar 29 14:23:39 UTC 2019 - nadvornik@suse.com
+
+- UEFI PXE support
+
+-------------------------------------------------------------------
+Wed Mar 27 12:23:15 UTC 2019 - nadvornik@suse.com
+
+- Use "root" option on kernel commandline
+
+-------------------------------------------------------------------
+Tue Aug  7 12:48:40 UTC 2018 - nadvornik@suse.com
+
+- branch id is no longer optional
+
+-------------------------------------------------------------------
+Thu Jun 21 14:29:44 UTC 2018 - oholecek@suse.com
+
+- Rephrase form labels
+- Make Branch ID optional and change default to placeholder
+
+-------------------------------------------------------------------
+Thu Apr 26 15:21:18 UTC 2018 - nadvornik@suse.com
+
+- Adjusted metadata to use SUSE Manager Retail group
+
+-------------------------------------------------------------------
+Wed Mar 21 16:04:24 UTC 2018 - nadvornik@suse.com
+
+- Do not check existence of default kernel and initrd,
+  they can be synced later
+
+-------------------------------------------------------------------
+Sun Mar 18 16:32:44 UTC 2018 - oholecek@suse.com
+
+- Add 'after' tag to metada to ensure correct order
+  - see also bsc#1083326
+- Change iteritems to iter to be compatible with python3
+- Use boot image from pillar in pxe formula
+- Use new naming scheme
+- PXE deployment compatible with tftp service
+  - pxelinux.0 file is now copied instead of symlinked
+    so tftp can access it
+- Allow tftp access under directory in saltboot group
+  - cleaner code for default value in pxe
+- Configurable service directory for pxe and imagesync
+- Allow separate SALT config partition
+  - bsc#1039568 comment 3 option 1
+- Namespace separation in form pillar data
+  - conflicting ID fix for more NICs
+
+-------------------------------------------------------------------
+Fri Jun 23 13:01:07 UTC 2017 - psladek@suse.com
+
+- new package
+
