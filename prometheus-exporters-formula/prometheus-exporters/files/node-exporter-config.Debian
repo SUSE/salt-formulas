@@ -8,16 +8,17 @@ ARGS="{{ salt['pillar.get']('node_exporter:args', '') }}"
 #
 #  --collector.diskstats.ignored-devices="^(ram|loop|fd|(h|s|v|xv)d[a-z]|nvme\\d+n\\d+p)\\d+$"
 #                            Regexp of devices to ignore for diskstats.
-#  --collector.filesystem.ignored-mount-points="^/(sys|proc|dev)($|/)"
+#  --collector.filesystem.ignored-mount-points="^/(dev|proc|run|sys|mnt|media|var/lib/docker)($|/)"
 #                            Regexp of mount points to ignore for filesystem
 #                            collector.
-#  --collector.filesystem.ignored-fs-types="^(sys|proc|auto)fs$"
+#  --collector.filesystem.ignored-fs-types="^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$"
 #                            Regexp of filesystem types to ignore for
 #                            filesystem collector.
-#  --collector.megacli.command="megacli"
-#                            Command to run megacli.
-#  --collector.netdev.ignored-devices="^$"
+#  --collector.netdev.ignored-devices="^lo$"
 #                            Regexp of net devices to ignore for netdev
+#                            collector.
+#  --collector.netstat.fields="^(.*_(InErrors|InErrs)|Ip_Forwarding|Ip(6|Ext)_(InOctets|OutOctets)|Icmp6?_(InMsgs|OutMsgs)|TcpExt_(Listen.*|Syncookies.*)|Tcp_(ActiveOpens|PassiveOpens|RetransSegs|CurrEstab)|Udp6?_(InDatagrams|OutDatagrams|NoPorts))$"
+#                            Regexp of fields to return for netstat
 #                            collector.
 #  --collector.ntp.server="127.0.0.1"
 #                            NTP server to use for ntp collector
@@ -45,21 +46,22 @@ ARGS="{{ salt['pillar.get']('node_exporter:args', '') }}"
 #                            Regexp of systemd units to whitelist. Units must
 #                            both match whitelist and not match blacklist to
 #                            be included.
-#  --collector.systemd.unit-blacklist=".+\\.scope"
+#  --collector.systemd.unit-blacklist=".+(\\.device|\\.scope|\\.slice|\\.target)"
 #                            Regexp of systemd units to blacklist. Units must
 #                            both match whitelist and not match blacklist to
 #                            be included.
 #  --collector.systemd.private
 #                            Establish a private, direct connection to
 #                            systemd without dbus.
-#  --collector.textfile.directory=""
+#  --collector.textfile.directory="/var/lib/prometheus/node-exporter"
 #                            Directory to read text files with metrics from.
+#  --collector.vmstat.fields="^(oom_kill|pgpg|pswp|pg.*fault).*"
+#                            Regexp of fields to return for vmstat collector.
 #  --collector.wifi.fixtures=""
 #                            test fixtures to use for wifi collector metrics
 #  --collector.arp           Enable the arp collector (default: enabled).
 #  --collector.bcache        Enable the bcache collector (default: enabled).
-#  --collector.bonding       Enable the bonding collector (default:
-#                            disabled).
+#  --collector.bonding       Enable the bonding collector (default: enabled).
 #  --collector.buddyinfo     Enable the buddyinfo collector (default:
 #                            disabled).
 #  --collector.conntrack     Enable the conntrack collector (default:
@@ -73,7 +75,6 @@ ARGS="{{ salt['pillar.get']('node_exporter:args', '') }}"
 #  --collector.filefd        Enable the filefd collector (default: enabled).
 #  --collector.filesystem    Enable the filesystem collector (default:
 #                            enabled).
-#  --collector.gmond         Enable the gmond collector (default: disabled).
 #  --collector.hwmon         Enable the hwmon collector (default: enabled).
 #  --collector.infiniband    Enable the infiniband collector (default:
 #                            enabled).
@@ -84,8 +85,6 @@ ARGS="{{ salt['pillar.get']('node_exporter:args', '') }}"
 #  --collector.loadavg       Enable the loadavg collector (default: enabled).
 #  --collector.logind        Enable the logind collector (default: disabled).
 #  --collector.mdadm         Enable the mdadm collector (default: enabled).
-#  --collector.megacli       Enable the megacli collector (default:
-#                            disabled).
 #  --collector.meminfo       Enable the meminfo collector (default: enabled).
 #  --collector.meminfo_numa  Enable the meminfo_numa collector (default:
 #                            disabled).
@@ -93,7 +92,8 @@ ARGS="{{ salt['pillar.get']('node_exporter:args', '') }}"
 #                            disabled).
 #  --collector.netdev        Enable the netdev collector (default: enabled).
 #  --collector.netstat       Enable the netstat collector (default: enabled).
-#  --collector.nfs           Enable the nfs collector (default: disabled).
+#  --collector.nfs           Enable the nfs collector (default: enabled).
+#  --collector.nfsd          Enable the nfsd collector (default: enabled).
 #  --collector.ntp           Enable the ntp collector (default: disabled).
 #  --collector.qdisc         Enable the qdisc collector (default: disabled).
 #  --collector.runit         Enable the runit collector (default: disabled).
@@ -102,8 +102,7 @@ ARGS="{{ salt['pillar.get']('node_exporter:args', '') }}"
 #  --collector.stat          Enable the stat collector (default: enabled).
 #  --collector.supervisord   Enable the supervisord collector (default:
 #                            disabled).
-#  --collector.systemd       Enable the systemd collector (default:
-#                            disabled).
+#  --collector.systemd       Enable the systemd collector (default: enabled).
 #  --collector.tcpstat       Enable the tcpstat collector (default:
 #                            disabled).
 #  --collector.textfile      Enable the textfile collector (default:
@@ -127,4 +126,3 @@ ARGS="{{ salt['pillar.get']('node_exporter:args', '') }}"
 #                            Set the log target and format. Example:
 #                            "logger:syslog?appname=bob&local=7" or
 #                            "logger:stdout?json=true"
-#  --version                 Show application version.
