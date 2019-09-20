@@ -1,0 +1,26 @@
+{%- set kernel = salt['pillar.get']('pxe:kernel_name', 'linux') %}
+{%- set initrd = salt['pillar.get']('pxe:initrd_name', 'initrd.gz') %}
+{%- set boot_image = 'boot_images:' + salt['pillar.get']('boot_image', 'default') %}
+{%- if salt['pillar.get'](boot_image) %}
+{%-   set kernel = salt['pillar.get'](boot_image + ':kernel:url', '').split('/')[-1] %}
+{%-   set initrd = salt['pillar.get'](boot_image + ':initrd:url', '').split('/')[-1] %}
+{%-   set local_path = salt['pillar.get'](boot_image +':sync:local_path') %}
+{%-   if local_path %}
+{%-     set kernel = local_path + '/' + kernel %}
+{%-     set initrd = local_path + '/' + initrd %}
+{%-   endif %}
+{%- endif %}
+
+DEFAULT netboot
+
+LABEL netboot
+        kernel {{ kernel }}
+        append initrd={{ initrd }}  {{ salt['pillar.get']('pxe:default_kernel_parameters', '') }} MINION_ID_PREFIX={{ salt['pillar.get']('pxe:branch_id', 'UnknownBranch') }}
+{{-            ' root=' + pillar['root'] if salt['pillar.get']('root') else '' }}
+{{-            ' salt_device=' + pillar['salt_device'] if salt['pillar.get']('salt_device') else '' }}
+{{-            ' ' + salt['pillar.get']('terminal_kernel_parameters', '') }}
+
+LABEL localboot
+        localboot 0
+
+

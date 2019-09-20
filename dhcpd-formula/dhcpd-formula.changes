@@ -1,0 +1,64 @@
+-------------------------------------------------------------------
+Tue Sep 17 14:53:21 UTC 2019 - Ondrej Holecek <oholecek@suse.com>
+
+- Update to version 0.1.1568808472.be9f236
+- Update formula to upstream version hash e041d03bb
+
+-------------------------------------------------------------------
+Thu May 23 13:54:24 UTC 2019 - Ondrej Holecek <oholecek@suse.com>
+
+- Updated copyrights and bug reporting link
+- Update to version 0.1.1558613789.64ba093
+
+-------------------------------------------------------------------
+Fri Mar 29 14:25:08 UTC 2019 - nadvornik@suse.com
+
+- UEFI PXE support
+
+-------------------------------------------------------------------
+Tue Sep 25 14:00:12 UTC 2018 - Ondrej Holecek <oholecek@suse.com>
+
+- Form hardware address clarification (bsc#1106243)
+
+-------------------------------------------------------------------
+Fri Jun 15 09:27:46 UTC 2018 - oholecek@suse.com
+
+- Allow hosts to be specified under specific subnet
+
+-------------------------------------------------------------------
+Mon Jun 11 11:02:11 UTC 2018 - oholecek@suse.com
+
+- Mark domain name as optional in form
+
+-------------------------------------------------------------------
+Fri Jun  1 16:54:47 UTC 2018 - oholecek@suse.com
+
+- Update form.yml to use edit-groups
+- Remove no longer needed local changes
+- Update formula from upstream:
+  * 1bfce299 Add support for several config options
+  * 6e2941f5 add domain-search option
+  * 5b64a734 class and subnet pool minor fixes / additions
+  * cb98ea91 add option next-server for hosts in dhcpd.conf
+
+-------------------------------------------------------------------
+Sun Mar 18 16:04:52 UTC 2018 - oholecek@suse.com
+
+- Add 'after' tag to metada to ensure correct order
+  - see also bsc#1083326
+- Replace dict.has_key by key in dict to support python3
+- Update dhcpd from upstream
+  - commits:
+    * 1862e37 Add sysconfig file for SUSE
+    * e698297 Bugfix: Remove quotes from subnet-mask directive
+    * 159d52b Formatting tweaks
+    * fcf92c0 Add key directive
+    * 2ee9710 Modifications to allow/deny directives
+    * e3c9844 Add directives: router, update-static-leases, subnet-mask, ddns-domainname
+    * eeeee2a add domain-search option
+    * 1cdbc02 Add allow, deny and max-lease-time options for pool under subnet
+
+-------------------------------------------------------------------
+Tue May 30 08:35:07 UTC 2017 - oholecek@suse.com
+
+- Initial package

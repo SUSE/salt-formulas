@@ -1,0 +1,32 @@
+{% set vsftpd = salt['grains.filter_by']({
+    'Debian': {
+        'server': 'vsftpd',
+        'service': 'vsftpd',
+        'vsftpd_config': '/etc/vsftpd.conf',
+        'vsftpd_config_src': 'salt://vsftpd/files/vsftpd.conf',
+    },
+    'FreeBSD': {
+        'server': 'vsftpd-ssl',
+        'service': 'vsftpd',
+        'vsftpd_config': '/usr/local/etc/vsftpd.conf',
+        'vsftpd_config_src': 'salt://vsftpd/files/vsftpd.conf',
+    },
+    'RedHat': {
+        'server': 'vsftpd',
+        'service': 'vsftpd',
+        'vsftpd_config': '/etc/vsftpd/vsftpd.conf',
+        'vsftpd_config_src': 'salt://vsftpd/files/vsftpd.conf',
+    },
+    'Arch': {
+        'server': 'vsftpd',
+        'service': 'vssftpd',
+        'vsftpd_config': '/etc/vsftpd.conf',
+        'vsftpd_config_src': 'salt://vsftpd/files/vsftpd.conf',
+    },
+    'Suse': {
+        'server': 'vsftpd',
+        'service': 'vsftpd',
+        'vsftpd_config': '/etc/vsftpd.conf',
+        'vsftpd_config_src': 'salt://vsftpd/files/vsftpd.conf',
+    },
+}, merge=salt['pillar.get']('vsftpd:lookup')) %}

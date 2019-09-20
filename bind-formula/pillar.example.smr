@@ -1,0 +1,60 @@
+bind:
+  configured_zones:
+    branch1.smr.suse.cz:                          # First domain zone
+      type: master                                # We're the master of this zone
+      notify: False
+
+    128.168.192.in-addr.arpa:                       # Reverse lookup for local IPs
+      type: master                                # As above
+      notify: False
+
+
+### Define zone records in pillar ###
+  available_zones:
+    branch1.smr.suse.cz:
+      file: branch1.txt
+      soa:                                        # Declare the SOA RRs for the zone
+        ns: branchserver1.branch1.smr.suse.cz                       # Required
+        contact: hostmaster.smr.suse.cz           # Required
+        serial: auto                              # Required
+        class: IN                                 # Optional. Default: IN
+        refresh: 8600                             # Optional. Default: 12h
+        retry: 900                                # Optional. Default: 15m
+        expiry: 86000                             # Optional. Default: 2w
+        nxdomain: 500                             # Optional. Default: 1m
+        ttl: 8600                                 # Optional. Not set by default
+      records:                                    # Records for the zone, grouped by type
+        A:
+          branchserver1: 192.168.128.1
+          salt: 10.100.24.130
+
+        NS:
+          '@':
+            - branchserver1
+        CNAME:
+          ftp: branchserver1.branch1.smr.suse.cz.
+          tftp: branchserver1.branch1.smr.suse.cz.
+          dns: branchserver1.branch1.smr.suse.cz.
+          dhcp: branchserver1.branch1.smr.suse.cz.
+
+
+  128.168.192.in-addr.arpa:
+      file: branch1-rev.txt
+      soa:                                        # Declare the SOA RRs for the zone
+        ns: branchserver1.branch1.smr.suse.cz                       # Required
+        contact: hostmaster.smr.suse.cz           # Required
+        serial: auto                              # Required
+        class: IN                                 # Optional. Default: IN
+        refresh: 8600                             # Optional. Default: 12h
+        retry: 900                                # Optional. Default: 15m
+        expiry: 86000                             # Optional. Default: 2w
+        nxdomain: 500                             # Optional. Default: 1m
+        ttl: 8600                                 # Optional. Not set by default
+      records:                                    # Records for the zone, grouped by type
+        NS:
+          '@':
+            - branchserver1.branch1.smr.suse.cz.
+      generate_reverse:                           # take all A records from branch1.smr.suse.cz that are in 192.168.128.0/24 subnet
+        net: 192.168.128.0/24                     # and generate reverse records for them
+        for_zones:
+          - branch1.smr.suse.cz                   # branch1.smr.suse.cz is a zone defined in pillar, see above

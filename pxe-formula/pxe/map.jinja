@@ -1,0 +1,41 @@
+# This file is part of pxe-formula.
+#
+# pxe-formula is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# pxe-formula is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with pxe-formula.  If not, see <http://www.gnu.org/licenses/>.
+{% set pxeroot = pillar['pxe'].get('pxe_root_directory','/srv/tftpboot') %}
+
+{% set cfgmap = salt['grains.filter_by']({
+    'Suse': {
+      'package':            'syslinux',
+      'package_efi':        'grub2-x86_64-efi',
+      'path_base':          pxeroot + '/boot',
+      'path_cfg':           pxeroot + '/boot/pxelinux.cfg',
+      'pathname_defcfg':    pxeroot + '/boot/pxelinux.cfg/default',
+      'boot_pxelinux':      pxeroot + '/boot/pxelinux.0',
+      'path_pxelinux':      '/usr/share/syslinux/pxelinux.0',
+      'pathname_defcfg_efi': pxeroot + '/boot/pxelinux.cfg/default.grub2.cfg',
+      'boot_efi':           pxeroot + '/boot/grub.efi',
+      'pathname_basecfg_efi': pxeroot + '/boot/grub.cfg',
+      'boot_efi_dir':       pxeroot + '/boot/x86_64-efi'
+    }
+  }, merge=salt['grains.filter_by']({
+    'SLES-12': {
+      'path_efi':           '/usr/lib/grub2/x86_64-efi/grub.efi',
+      'path_efi_dir':       '/usr/lib/grub2/x86_64-efi'
+    },
+    'SLES-15': {
+      'path_efi':           '/usr/share/grub2/x86_64-efi/grub.efi',
+      'path_efi_dir':       '/usr/share/grub2/x86_64-efi'
+    }
+  }, grain='osfinger'))
+%}

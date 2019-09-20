@@ -1,0 +1,32 @@
+## Description: TFTP Configuration
+## Type:    string
+## Default: "tftp"
+#
+#  daemon user (tftp)
+#
+#TFTP_USER="tftp"
+TFTP_USER="{{pillar['tftpd'].get('tftpd_user','tftp')}}"
+
+## Type:    string
+## Default: ""
+##
+## INFO:
+#
+# tftp options
+#
+#TFTP_OPTIONS=""
+TFTP_OPTIONS="--address {{pillar['tftpd'].get('listen_ip','0.0.0.0')}}"
+
+
+## Type:    string
+## Default: "/srv/tftpboot"
+## was "/tftpboot" but
+## "/tftpboot" is not allowed anymore in FHS 2.2.
+#
+#  TFTP directory must be a world readable/writable directory.
+#  By default /srv/tftpboot is assumed.
+#
+#TFTP_DIRECTORY="/srv/tftpboot"
+TFTP_DIRECTORY="{{pillar['tftpd'].get('root_dir','/srv/tftpboot')}}"
+
+

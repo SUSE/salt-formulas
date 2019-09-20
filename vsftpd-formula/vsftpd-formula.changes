@@ -1,0 +1,34 @@
+-------------------------------------------------------------------
+Tue Sep 17 14:54:10 UTC 2019 - Ondrej Holecek <oholecek@suse.com>
+
+- Update to version 0.1.1568808472.be9f236
+- Update formula to upstream version hash cc7d6b15
+
+-------------------------------------------------------------------
+Thu May 23 13:54:24 UTC 2019 - Ondrej Holecek <oholecek@suse.com>
+
+- Updated copyrights and bug reporting link
+- Update to version 0.1.1558613789.64ba093
+
+-------------------------------------------------------------------
+Wed Jun  6 11:16:02 UTC 2018 - nadvornik@suse.com
+
+- Adjusted default directory
+- Use boolean values in pillar
+
+-------------------------------------------------------------------
+Sun Mar 18 16:39:16 UTC 2018 - oholecek@suse.com
+
+- Add 'after' tag to metada to ensure correct order
+  - see also bsc#1083326
+- Adjust vsftpd port range for SuSEfirewall2
+- Using default chroot in vsftpd
+- Configurable service directory for ftp and tftp
+  - sets up correct user, group and access in branch-network
+    adds service users into saltboot group
+
+-------------------------------------------------------------------
+Wed Aug 09 16:31:16 UTC 2017 - psladek@suse.com
+
+- new package
+

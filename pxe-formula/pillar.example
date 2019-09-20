@@ -1,0 +1,15 @@
+# from salt form:
+branchserver:
+  kernel_name: 'linux'
+  initrd_name: 'initrd.gz'
+  default_kernel_parameters: 'panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=1'
+
+
+# from reactor:
+root: '/dev/sda3'
+
+terminal_hwaddr_interfaces:
+  lo:   '00:00:00:00:00:00'
+  eth0: '6c:ae:8b:10:01:25'
+
+terminal_kernel_parameters: 'console=ttyS0,57600'
