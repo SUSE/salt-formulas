@@ -1,8 +1,9 @@
 -------------------------------------------------------------------
-Thu Sep 12 15:12:30 UTC 2019 - Johannes Renner <jrenner@suse.com>
+Wed Sep 25 09:43:34 UTC 2019 - Johannes Renner <jrenner@suse.com>
 
 - Version 0.4
 - Allow to configure arbitrary arguments when running exporters
+- Add support for Debian/Ubuntu and Red Hat systems (RHEL/CentOS)
 - Install the LICENSE together with the package
 
 -------------------------------------------------------------------
