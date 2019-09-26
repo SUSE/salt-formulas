@@ -5,17 +5,14 @@ bind:
     $type: group
     options:
       $type: edit-group
-      $itemName: Option ${i}
       $prototype:
         $type: text
         $key:
           $type: text
           $name: Option
-      $default: {}
     include_forwarders:
           $type: boolean
           $default: false
-
 
   configured_zones:
     $type: edit-group
@@ -33,8 +30,6 @@ bind:
       notify:
         $type: boolean
         $default: False
-
-
 
   available_zones:
     $type: edit-group
@@ -85,14 +80,14 @@ bind:
         $type: group
         A: 
           $type: edit-group
-          $optional:  true
+          $optional: true
           $minItems: 0
           $prototype:
             $key:
               $type: text
-              $name: hostname   #does not work
-            $type:  text
-            $name: ip   #does not work
+              $name: Hostname
+            $type: text
+            $name: IP address
         NS:
           $name: NS
           $type: group
@@ -109,8 +104,10 @@ bind:
           $minItems: 0
           $prototype:
             $key:
-              $type:   text
-            $type:  text
+              $type: text
+              $name: Alias
+            $type: text
+            $name: Hostname
       generate_reverse: 
         $type: group
         $optional:  true
@@ -123,5 +120,3 @@ bind:
           $minItems: 0
           $prototype:
             $type: text
-
-             
