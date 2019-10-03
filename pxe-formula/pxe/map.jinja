@@ -25,17 +25,15 @@
       'path_pxelinux':      '/usr/share/syslinux/pxelinux.0',
       'pathname_defcfg_efi': pxeroot + '/boot/pxelinux.cfg/default.grub2.cfg',
       'boot_efi':           pxeroot + '/boot/grub.efi',
+      'path_efi':           '/usr/share/grub2/x86_64-efi/grub.efi',
       'pathname_basecfg_efi': pxeroot + '/boot/grub.cfg',
-      'boot_efi_dir':       pxeroot + '/boot/x86_64-efi'
+      'boot_efi_dir':       pxeroot + '/boot/x86_64-efi',
+      'path_efi_dir':       '/usr/share/grub2/x86_64-efi'
     }
   }, merge=salt['grains.filter_by']({
     'SLES-12': {
       'path_efi':           '/usr/lib/grub2/x86_64-efi/grub.efi',
       'path_efi_dir':       '/usr/lib/grub2/x86_64-efi'
-    },
-    'SLES-15': {
-      'path_efi':           '/usr/share/grub2/x86_64-efi/grub.efi',
-      'path_efi_dir':       '/usr/share/grub2/x86_64-efi'
     }
   }, grain='osfinger'))
 %}
