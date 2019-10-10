@@ -1,0 +1,62 @@
+global:
+  scrape_interval: {{ salt['pillar.get']('prometheus:scrape_interval', 15) }}s 
+  evaluation_interval: {{ salt['pillar.get']('prometheus:evaluation_interval', 15) }}s
+
+{%- if salt['pillar.get']('prometheus:alerting:use_local_alertmanager', False) or salt['pillar.get']('prometheus:alerting:alertmanagers', None) %}
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+{%- if salt['pillar.get']('prometheus:alerting:use_local_alertmanager', False) %}    
+      - localhost:9093
+{%- endif %}
+{%- for alertmanager in salt['pillar.get']('prometheus:alerting:alertmanagers', {}) %}   
+      - {{ alertmanager }}
+{%- endfor %}   
+{%- endif %}
+
+{%- if salt['pillar.get']('prometheus:alerting:rule_files', None) %}
+rule_files:
+{%- for rule_file in salt['pillar.get']('prometheus:alerting:rule_files', []) %}
+  - {{ rule_file }}
+{%- endfor %}
+{%- endif %}
+
+# Scrape configurations
+scrape_configs:
+{%- if salt['pillar.get']('prometheus:mgr:monitor_server', False) %}
+  # --------------------
+  # Monitor {{ grains['master'] }}
+  # --------------------
+  - job_name: 'mgr-server'
+    static_configs:
+      - targets:
+        - {{ grains['master'] }}:9100 # Node exporter
+        - {{ grains['master'] }}:5556 # Tomcat JMX
+        - {{ grains['master'] }}:5557 # Taskomatic JMX
+        - {{ grains['master'] }}:9800 # Uyuni server exporter
+        labels: {}
+      - targets:
+        - {{ grains['master'] }}:9187 # PostgresSQL
+        labels:
+          role: postgres
+{%- endif %}
+{%- if salt['pillar.get']('prometheus:mgr:autodiscover_clients', False) %}
+  # --------------------
+  # Auto discover clients of {{ grains['master'] }} 
+  # --------------------
+  - job_name: 'mgr-clients'
+    uyuni_sd_configs:
+      - host: https://{{ grains['master'] }}
+        username: {{ salt['pillar.get']('prometheus:mgr:sd_username') }}
+        password: {{ salt['pillar.get']('prometheus:mgr:sd_password') }}
+{%- endif %}
+{%- for job, files in salt['pillar.get']('prometheus:scrape_configs', {}).items() %}
+  - job_name: {{ job }}
+    file_sd_configs:
+      - files:
+{%- for file in files.files %}
+        - {{ file }}
+{% endfor %}
+{%- endfor %}

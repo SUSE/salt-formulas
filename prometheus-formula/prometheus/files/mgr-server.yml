@@ -1,0 +1,10 @@
+- targets:
+  - {{ grains['master'] }}:9100
+  - {{ grains['master'] }}:5556
+  - {{ grains['master'] }}:5557
+  - {{ grains['master'] }}:9800
+  labels: {}
+- targets:
+  - {{ grains['master'] }}:9187
+  labels:
+    role: postgres

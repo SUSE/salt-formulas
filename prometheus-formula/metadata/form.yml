@@ -1,0 +1,91 @@
+prometheus:
+  $type: namespace
+
+  scrape_interval:
+    $type: number
+    $name: Scrape interval (s)
+    $default: 15
+
+  evaluation_interval:
+    $type: number
+    $name: Evaluation interval (s)
+    $default: 15
+
+  mgr:
+    $type: group
+    $name: Uyuni Server
+
+    monitor_server:
+      $name: Monitor this server
+      $type: boolean
+      $default: True
+
+    autodiscover_clients:
+      $name: Autodiscover clients 
+      $type: boolean
+      $default: True
+
+    sd_username:
+      $type: text
+      $name: Username
+      $help: Username for auto-discovering clients
+      $default: admin
+      $visibleIf: .autodiscover_clients == true
+
+    sd_password:
+      $type: password
+      $name: Password
+      $help: Password for auto-discovering clients
+      $visibleIf: .autodiscover_clients == true
+
+  alerting:
+    $type: group
+
+    alertmanager_service:
+      $type: boolean
+      $default: True
+      $name: Enable local Alertmanager service
+
+    use_local_alertmanager:
+      $type: boolean
+      $name: Use local Alertmanager
+      $help: Use local Alertmanager for this Prometheus instance
+      $visibleIf: .alertmanager_service == true
+      $default: True
+
+    alertmanagers:
+      $type: edit-group
+      $minItems: 0
+      $itemName: Target ${i}
+      $prototype:
+        $type: group 
+        $key:
+          $type: text 
+          $name: "IP Address : Port"
+          $default: localhost:9093
+
+    rule_files:
+      $type: edit-group
+      $minItems: 0
+      $prototype:
+        $type: text
+        $default: /etc/prometheus/my-rules.yml
+
+  scrape_configs:
+    $type: edit-group
+    $name: User defined scrape configurations
+    $minItems: 0
+    $itemName: File-based service discovery ${i}
+    $prototype:
+      $type: group 
+      $key:
+        $type: text 
+        $name: "Job name"
+      files:
+        $type: edit-group
+        $minItems: 1
+        $prototype:
+          $type: text
+          $default: /etc/prometheus/my-scrape-config.yml
+
+
