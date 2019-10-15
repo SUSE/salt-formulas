@@ -1,4 +1,4 @@
-{% from "prometheus-server/map.jinja" import prometheus with context %}
+{% from "prometheus/map.jinja" import prometheus with context %}
 
 {%- set monitor_server = pillar.get('prometheus:mgr:monitor_server', False) %}
 {%- set alertmanager_service = pillar.get('prometheus:alerting:alertmanager_service', False) %}
