@@ -5,6 +5,7 @@ bind:
     $type: group
     options:
       $type: edit-group
+      $optional: True
       $prototype:
         $type: text
         $key:
