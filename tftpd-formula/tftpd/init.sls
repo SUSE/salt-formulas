@@ -37,6 +37,24 @@ etc_sysconfig_tftp:
     - require:
       - pkg: install_tftp
       
+{% if cfgmap.deadservice != "" %}
+
+disable_tftp_service:
+  service.dead:
+    - name: {{ cfgmap.deadservice }}
+    - watch:
+        - file: etc_sysconfig_tftp
+
+enable_and_start_tftpd:
+  service.running:
+    - name: {{ cfgmap.servicename }}
+    - enable: True
+    - require:
+        - service: disable_tftp_service
+    - watch:
+        - file: etc_sysconfig_tftp
+
+{% else %}
 
 enable_and_start_tftpd:
   service.running:
@@ -44,3 +62,5 @@ enable_and_start_tftpd:
     - enable: True
     - watch:
         - file: etc_sysconfig_tftp
+
+{% endif %}
