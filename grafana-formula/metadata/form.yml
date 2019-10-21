@@ -1,0 +1,44 @@
+grafana:
+  $type: namespace
+
+  enabled:
+    $type: boolean
+    $default: True
+
+  # admin_user:
+  #   $type: text
+  #   $name: Default admin user
+    
+  # admin_pass:
+  #   $type: text
+  #   $name: Default admin password  
+
+  datasources:
+    $type: group
+    
+    use_this_minion:
+      $type: boolean
+      $name: Use Prometheus from this minion
+      $default: True
+
+    prometheus:
+      $type: edit-group
+      $minItems: 0
+      $itemName: Prometheous data source ${i}
+      $prototype:
+        $type: group
+        $key:
+          $type: text
+          $name: Name
+          $default: Prometheus
+        url:
+          $type: text
+          $default: http://localhost:9080
+
+  dashboards:
+    $type: group
+
+    add_uyuni_dashboards:
+      $type: boolean
+      $name: Add Uyuni dashboards
+      $default: True
