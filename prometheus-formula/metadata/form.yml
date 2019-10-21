@@ -1,6 +1,10 @@
 prometheus:
   $type: namespace
 
+  enabled:
+    $type: boolean
+    $default: True    
+
   scrape_interval:
     $type: number
     $name: Scrape interval (s)

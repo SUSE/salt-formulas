@@ -1,5 +1,7 @@
 {% from "prometheus/map.jinja" import prometheus with context %}
 
+{%- if pillar.get('prometheus:enabled', False) %}
+# setup Prometheus
 {%- set monitor_server = pillar.get('prometheus:mgr:monitor_server', False) %}
 {%- set alertmanager_service = pillar.get('prometheus:alerting:alertmanager_service', False) %}
 
@@ -64,5 +66,23 @@ alertmanager_running:
       - file: config_file
 {%- if monitor_server %}
       - file: mgr_scrape_config_file
-{%- endif %}      
+{%- endif %}
+{%- endif %}
+
+{%- else %}
+# remove prometheus
+remove_prometheus:
+  pkg.removed:
+    - name: {{ prometheus.prometheus_package }}
+
+remove_alertmanager:
+  pkg.removed:
+    - name: {{ prometheus.alertmanager_package }}
+
+/etc/prometheus:
+  file.absent:
+    - require:
+      - pkg: remove_prometheus
+      - pkg: remove_alertmanager
+
 {%- endif %}
