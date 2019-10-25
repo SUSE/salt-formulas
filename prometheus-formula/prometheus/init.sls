@@ -1,9 +1,9 @@
 {% from "prometheus/map.jinja" import prometheus with context %}
 
-{%- if pillar.get('prometheus:enabled', False) %}
+{%- if salt['pillar.get']('prometheus:enabled', False) %}
 # setup Prometheus
-{%- set monitor_server = pillar.get('prometheus:mgr:monitor_server', False) %}
-{%- set alertmanager_service = pillar.get('prometheus:alerting:alertmanager_service', False) %}
+{%- set monitor_server = salt['pillar.get']('prometheus:mgr:monitor_server', False) %}
+{%- set alertmanager_service = salt['pillar.get']('prometheus:alerting:alertmanager_service', False) %}
 
 install_prometheus:
   pkg.installed:
