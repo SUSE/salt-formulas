@@ -4,6 +4,7 @@
   file.managed:
     - source: salt://grafana/files/grafana.ini
     - makedirs: True
+    - template: jinja
 
 /etc/grafana/provisioning/datasources/datasources.yml:
   file.managed:
@@ -28,6 +29,12 @@
 /etc/grafana/provisioning/dashboards/{{ file }}:
   file.absent
 {%- endfor %}
+{%- endif %}
+
+{%- if salt['pillar.get']('grafana:dashboards:add_node_dashboad', False) %}
+# TODO
+{%- else %}
+# TODO
 {%- endif %}
 
 grafana-server:
