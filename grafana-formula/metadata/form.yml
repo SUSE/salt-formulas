@@ -42,12 +42,17 @@ grafana:
     $type: group
     $disabled: "!grafana.enabled"
 
-    add_uyuni_dashboards:
+    add_uyuni_dashboard:
       $type: boolean
-      $name: Add Uyuni dashboards
+      $name: Add Uyuni dashboard
       $default: True
 
-    add_node_dashboad:
+    add_uyuni_clients_dashboard:
       $type: boolean
-      $name: Add node_exporter dashboard
+      $name: Add Uyuni clients dashboard
       $default: True
+
+    add_postgresql_dasboard:
+      $type: boolean
+      $name: Add PostgreSQL dashboard
+      $default: True 

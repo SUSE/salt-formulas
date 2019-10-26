@@ -17,24 +17,34 @@
     - source: "salt://grafana/files/dashboard-provider.yml"
     - makedirs: True
 
-{%- if salt['pillar.get']('grafana:dashboards:add_uyuni_dashboards', False) %}
-{%- for file in ['mgr-client-systems.json','mgr-server.json', 'mgr-postgresql.json'] %}
-/etc/grafana/provisioning/dashboards/{{ file }}:
+{%- if salt['pillar.get']('grafana:dashboards:add_uyuni_dashboard', False) %}
+/etc/grafana/provisioning/dashboards/mgr-server.json:
   file.managed:
-    - source: "salt://grafana/files/{{ file }}"
+    - source: "salt://grafana/files/mgr-server.json"
     - makedirs: True
-{%- endfor %}
 {%- else %}
-{%- for file in ['mgr-client-systems.json','mgr-server.json', 'mgr-postgresql.json'] %}
-/etc/grafana/provisioning/dashboards/{{ file }}:
+/etc/grafana/provisioning/dashboards/mgr-server.json:
   file.absent
-{%- endfor %}
 {%- endif %}
 
-{%- if salt['pillar.get']('grafana:dashboards:add_node_dashboad', False) %}
-# TODO
+{%- if salt['pillar.get']('grafana:dashboards:add_uyuni_clients_dashboard', False) %}
+/etc/grafana/provisioning/dashboards/mgr-client-systems.json:
+  file.managed:
+    - source: "salt://grafana/files/mgr-client-systems.json"
+    - makedirs: True
 {%- else %}
-# TODO
+/etc/grafana/provisioning/dashboards/mgr-client-systems.json:
+  file.absent
+{%- endif %}
+
+{%- if salt['pillar.get']('grafana:dashboards:add_postgresql_dasboard', False) %}
+/etc/grafana/provisioning/dashboards/mgr-postgresql.json:
+  file.managed:
+    - source: "salt://grafana/files/mgr-postgresql.json"
+    - makedirs: True
+{%- else %}
+/etc/grafana/provisioning/dashboards/mgr-postgresql.json:
+  file.absent
 {%- endif %}
 
 grafana-server:
