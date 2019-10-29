@@ -1,0 +1,2 @@
+# Arguments for running prometheus-apache-exporter
+ARGS="{{ salt['pillar.get']('apache_exporter:args', '') }}"

@@ -11,6 +11,19 @@ node_exporter:
     $default: --web.listen-address=":9100"
     $help: Please refer to the documentation for available options.
 
+apache_exporter:
+  $type: group
+
+  enabled:
+    $type: boolean
+    $default: False
+
+  args:
+    $name: "Arguments"
+    $type: text
+    $default: --telemetry.address=":9117"
+    $help: Please refer to the documentation for available options.
+
 postgres_exporter:
   $type: group
 
