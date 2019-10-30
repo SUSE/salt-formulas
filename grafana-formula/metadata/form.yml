@@ -38,9 +38,8 @@ grafana:
           $default: Prometheus
           $help: Data source name
         url:
-          $type: text
+          $type: url
           $default: http://localhost:9080
-          $match: "https?:\\/\\/[a-zA-Z-]+:\\d{1,5}\\/?"
           $required: true
           $name: Prometheus URL
           $help: URL of a Prometheus instance
