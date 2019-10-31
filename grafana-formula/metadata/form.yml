@@ -28,7 +28,7 @@ grafana:
       $minItems: 1
       $name: Prometheus
       $help: Configure Prometheus data sources.
-      $itemName: Prometheous data source ${i}
+      $itemName: Prometheus data source ${i}
       $prototype:
         $type: group
         $disabled: "!formValues.grafana.enabled"
