@@ -1,5 +1,13 @@
+# check for supported os version
+{%- set supported_vers = ['42.3', '12.3', '12.4', '12.5', '15.0', '15.1', '15.2'] %}
+
+{% if grains['os_family'] == 'Suse' and grains['osrelease'] in supported_vers %}
+{%- set supported = True %}
+{% endif %} #check if supported
+
+{%- if supported %}
 {%- if salt['pillar.get']('grafana:enabled', False) %}
-# setup grafana
+# setup and enable service
 /etc/grafana/grafana.ini:
   file.managed:
     - source: salt://grafana/files/grafana.ini
@@ -60,13 +68,9 @@ grafana-server:
       - file: /etc/grafana/grafana.ini
 
 {%- else %}
-# remove grafana
+# disable service
 grafana-server:
-  pkg.removed:
-    - names:
-      - grafana
-
-/etc/grafana:
-  file.absent    
-
+  service.dead:
+    - enable: False
+{%- endif %}
 {%- endif %}
