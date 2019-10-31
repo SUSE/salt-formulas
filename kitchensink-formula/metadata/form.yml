@@ -67,5 +67,10 @@ kitchensync:
             field:
               $type: text
               $name: Yet another field
+<<<<<<< HEAD
               $placeholder: Enable/disable this field using the selecor in the group above
               $disabled: 'this.parent.parent.parent.value.field != "Enable"'
+=======
+              $placeholder: Enable/disable this field using the selector in the group above
+              $disabled: 'this.parent.parent.parent.value.field != "Enable"'
+>>>>>>> 3974161... fixup
