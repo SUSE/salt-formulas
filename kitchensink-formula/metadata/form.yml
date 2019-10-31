@@ -1,0 +1,70 @@
+kitchensync:
+  $type: namespace
+
+  enable_foo:
+    $type: boolean
+    $default: True
+    $name: Enable group Foo
+
+  foo:
+    $type: group
+    $name: Group Foo
+    $disabled: "!formValues.kitchensync.enable_foo"
+    $key:
+      $type: text
+      $name: Key
+      $default: fooX
+    required_field:
+      $type: text
+      $name: Required field
+      $help: "$required attribute example"
+      $required: true
+      $placeholder: This field is required
+    formatted_field:
+      $type: text
+      $name: Formatted field
+      $help: "Only lowercase letters allowed"
+      $match: "[a-z]*"
+      $placeholder: Only lowercase letters allowed
+
+  show_bar:
+    $type: boolean
+    $default: True
+    $help: "$visible example"
+    $name: Show group Bar
+    $default: True
+
+  bar:
+    $type: group
+    $name: Group Bar
+    $visible: "formValues.kitchensync.show_bar"
+    $help: "$help is shown here for groups."
+    sub_bar_relative:
+      $type: edit-group
+      $name: Example using relative expressions
+      $minItems: 2
+      $prototype:
+        enable:
+          $type: boolean
+          $name: Enable next field
+          $default: True
+        field:
+          $type: select
+          $values: ["Enable",
+                    "Disable"
+                    ]
+          $default: Enable   
+          $name: Some selector
+          $disabled: "!this.parent.value.enable"
+          $help: Example using $disabled with relative expression
+        sub_sub_bar:
+          $type: edit-group
+          $name: Example using two-level relative expressions
+          $minItems: 1
+          $itemName: Field ${i}
+          $prototype:
+            field:
+              $type: text
+              $name: Yet another field
+              $placeholder: Enable/disable this field using the selecor in the group above
+              $disabled: 'this.parent.parent.parent.value.field != "Enable"'
