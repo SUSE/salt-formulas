@@ -8,7 +8,7 @@ kitchensync:
 
   foo:
     $type: group
-    $name: Group Foo
+    $name: A simple group
     $disabled: "!formValues.kitchensync.enable_foo"
     $key:
       $type: text
@@ -36,12 +36,13 @@ kitchensync:
 
   bar:
     $type: group
-    $name: Group Bar
+    $name: Another simple group
     $visible: "formValues.kitchensync.show_bar"
     $help: "$help is shown here for groups."
     sub_bar_relative:
       $type: edit-group
-      $name: Example using relative expressions
+      $name: An edit-group
+      $help: Shows the usage of relative expressions in the $disabled attribute
       $minItems: 2
       $prototype:
         enable:
