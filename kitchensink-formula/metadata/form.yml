@@ -8,7 +8,7 @@ kitchensync:
 
   foo:
     $type: group
-    $name: A simple group
+    $name: Group Foo
     $disabled: "!formValues.kitchensync.enable_foo"
     $key:
       $type: text
@@ -36,13 +36,12 @@ kitchensync:
 
   bar:
     $type: group
-    $name: Another simple group
+    $name: Group Bar
     $visible: "formValues.kitchensync.show_bar"
     $help: "$help is shown here for groups."
     sub_bar_relative:
       $type: edit-group
-      $name: An edit-group
-      $help: Shows the usage of relative expressions in the $disabled attribute
+      $name: Example using relative expressions
       $minItems: 2
       $prototype:
         enable:
@@ -67,60 +66,5 @@ kitchensync:
             field:
               $type: text
               $name: Yet another field
-              $placeholder: Enable/disable this field using the selector in the group above
+              $placeholder: Enable/disable this field using the selecor in the group above
               $disabled: 'this.parent.parent.parent.value.field != "Enable"'
-
-  show_hidden:
-    $type: select
-    $values: ["Show",
-              "Hide"
-              ]
-    $default: Show   
-    $name: Show hidden
-
-  hidden:
-    $type: edit-group
-    $itemName: Hidden
-    $optional: True
-    $visibleIf: .show_hidden == 'Show'
-    $prototype:
-        $type: group
-        $minItems: 1
-        $key:
-            $type: text
-            $name: Hidden Key
-            $default: key default
-        mountpoint:
-            $type: text
-            $name: Device Mount Point
-            $help: What should the partition be mount as - /, swap, /var, ...
-            $optional: True      
-            $default: blabla   
-
-  recursive_dict_of_dicts:
-      $type: edit-group
-      $minItems: 1
-      $name: An edit-group of edit-groups with a nested default value
-      $prototype:
-          $type: group
-          $key:
-              $type: text
-          group_name:
-              $type: text
-          entries:
-              $type: edit-group
-              $minItems: 1
-              $prototype:
-                  $key:
-                      $type: text
-                  entry_name:
-                      $type: text
-                  entry_desc:
-                      $type: text
-      $default:
-          def_gr1:
-              group_name: default group 1
-              entries:
-                  def_entry1:
-                      entry_name: default entry 1
-                      entry_desc: some text
