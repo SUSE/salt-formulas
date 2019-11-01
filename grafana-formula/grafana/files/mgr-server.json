@@ -1482,7 +1482,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "rate(pg_stat_database_tup_fetched{instance=~\"$server:9187\", datname=\"susemanager\"}[5m])",
+            "expr": "rate(pg_stat_database_tup_fetched{instance=~\"$server:9187\", datname=~\"uyuni|susemanager\"}[5m])",
             "format": "time_series",
             "intervalFactor": 2,
             "legendFormat": "fetched",
@@ -1490,7 +1490,7 @@
             "step": 240
           },
           {
-            "expr": "rate(pg_stat_database_tup_inserted{instance=~\"$server:9187\", datname=\"susemanager\"}[5m])",
+            "expr": "rate(pg_stat_database_tup_inserted{instance=~\"$server:9187\", datname=~\"uyuni|susemanager\"}[5m])",
             "format": "time_series",
             "intervalFactor": 2,
             "legendFormat": "inserted",
@@ -1498,7 +1498,7 @@
             "step": 240
           },
           {
-            "expr": "rate(pg_stat_database_tup_updated{instance=~\"$server:9187\", datname=\"susemanager\"}[5m])",
+            "expr": "rate(pg_stat_database_tup_updated{instance=~\"$server:9187\", datname=~\"uyuni|susemanager\"}[5m])",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -1506,14 +1506,14 @@
             "refId": "C"
           },
           {
-            "expr": "rate(pg_stat_database_tup_deleted{instance=~\"$server:9187\", datname=\"susemanager\"}[5m])",
+            "expr": "rate(pg_stat_database_tup_deleted{instance=~\"$server:9187\", datname=~\"uyuni|susemanager\"}[5m])",
             "format": "time_series",
             "intervalFactor": 2,
             "legendFormat": "deleted",
             "refId": "D"
           },
           {
-            "expr": "sum(pg_locks_count{instance=~\"$server:9187\" ,datname=\"susemanager\"})",
+            "expr": "sum(pg_locks_count{instance=~\"$server:9187\" ,datname=~\"uyuni|susemanager\"})",
             "format": "time_series",
             "hide": false,
             "intervalFactor": 2,
@@ -2167,4 +2167,3 @@
     "uid": "2p2qPSUik",
     "version": 1
   }
-  
