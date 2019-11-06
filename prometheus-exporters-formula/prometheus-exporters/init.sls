@@ -27,6 +27,33 @@ node_exporter:
     - enable: False
 {% endif %}
 
+apache_exporter:
+{% if salt['pillar.get']('apache_exporter:enabled', False) %}
+  pkg.installed:
+    - name: {{ exporters.apache_exporter_package }}
+  file.managed:
+    - name: {{ exporters.apache_exporter_service_config }}
+    - source: {{ 'salt://prometheus-exporters/files/apache-exporter-config.' ~ salt['grains.get']('os_family') }}
+    - makedirs: True
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - pkg: apache_exporter
+    - watch_in:
+      - service: apache_exporter
+  service.running:
+    - name: {{ exporters.apache_exporter_service }}
+    - enable: True
+    - require:
+      - file: apache_exporter
+{% else %}
+  service.dead:
+    - name: {{ exporters.apache_exporter_service }}
+    - enable: False
+{% endif %}
+
 postgres_exporter:
 {% if salt['pillar.get']('postgres_exporter:enabled', False) %}
   pkg.installed:
