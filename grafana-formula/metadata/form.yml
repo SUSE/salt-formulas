@@ -65,4 +65,10 @@ grafana:
       $type: boolean
       $name: PostgreSQL dashboard
       $help: Add dashboard for monitoring a PostgreSQL database
-      $default: True 
+      $default: True
+
+    add_apache_dashboard:
+      $type: boolean
+      $name: Apache HTTPD dashboard
+      $help: Add dashboard for monitoring an Apache HTTPD server
+      $default: True

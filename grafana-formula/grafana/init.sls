@@ -55,6 +55,16 @@
   file.absent
 {%- endif %}
 
+{%- if salt['pillar.get']('grafana:dashboards:add_apache_dashboard', False) %}
+/etc/grafana/provisioning/dashboards/mgr-apache.json:
+  file.managed:
+    - source: "salt://grafana/files/mgr-apache.json"
+    - makedirs: True
+{%- else %}
+/etc/grafana/provisioning/dashboards/mgr-apache.json:
+  file.absent
+{%- endif %}
+
 grafana-server:
   pkg.installed:
     - names:
