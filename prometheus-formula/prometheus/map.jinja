@@ -1,0 +1,9 @@
+{% set prometheus = salt['grains.filter_by']({
+    'Suse': {
+        'prometheus_package': 'golang-github-prometheus-prometheus',
+        'alertmanager_package': 'golang-github-prometheus-alertmanager',
+        'prometheus_service': 'prometheus',
+        'alertmanager_service': 'prometheus-alertmanager'
+    },
+}, default='Suse') %}
+

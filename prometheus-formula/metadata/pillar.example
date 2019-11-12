@@ -1,0 +1,8 @@
+prometheus:
+  scrape_interval: 15
+  evaluation_interval: 15
+  monitor_mgr_server: True
+
+alertmanager:
+  enabled: True
+ 
