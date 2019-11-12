@@ -38,6 +38,10 @@ scrape_configs:
         - {{ grains['master'] }}:9800 # Uyuni server exporter
         labels: {}
       - targets:
+        - {{ grains['master'] }}:80 # Message queue
+        labels:
+          __metrics_path__: /rhn/metrics
+      - targets:
         - {{ grains['master'] }}:9187 # PostgresSQL
         labels:
           role: postgres
