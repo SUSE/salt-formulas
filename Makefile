@@ -1,7 +1,8 @@
 
 LOCALE_VERSION=0.2
 CPU_MITIGATIONS_VERSION=0.1
-PROMETHEUS_EXPORTERS_VERSION=0.5
+PROMETHEUS_EXPORTERS_VERSION=0.4
+GRAFANA_VERSION=0.1
 VIRTUALIZATION_HOST_VERSION=0.1
 
 locale:: clean
@@ -12,6 +13,9 @@ cpu-mitigations:: clean
 
 prometheus-exporters:: clean
 	git archive --format=tar.gz --prefix=prometheus-exporters-formula-${PROMETHEUS_EXPORTERS_VERSION}/ HEAD:prometheus-exporters-formula/ >prometheus-exporters-formula-${PROMETHEUS_EXPORTERS_VERSION}.tar.gz
+
+grafana:: clean
+	git archive --format=tar.gz --prefix=grafana-formula-${GRAFANA_VERSION}/ HEAD:grafana-formula/ >grafana-formula-${GRAFANA_VERSION}.tar.gz
 
 virtualization-host:: clean
 	git archive --format=tar.gz --prefix=virtualization-host-formula-${VIRTUALIZATION_HOST_VERSION}/ HEAD:virtualization-host-formula/ >virtualization-host-formula-${VIRTUALIZATION_HOST_VERSION}.tar.gz
