@@ -1,0 +1,5 @@
+description:
+  Change minion blackout mode. When in blackout mode, all remote execution commands are disabled.
+group: general_system_configuration
+after:
+  - users
