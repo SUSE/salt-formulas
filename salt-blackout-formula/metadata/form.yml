@@ -15,7 +15,3 @@ minion_blackout_whitelist:
   - test.ping
   - grains.item
   - grains.items
-  - mgractionchains.start
-  - mgractionchains.start
-  - mgractionchains.get_pending_resume
-  - mgractionchains.resume  

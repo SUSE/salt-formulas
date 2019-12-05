@@ -17,7 +17,7 @@
 
 
 %define fname salt-blackout
-%define fdir  %{_datadir}/susemanager/formulas
+%define fdir  %{_datadir}/salt-formulas
 Name:           salt-blackout-formula
 Version:        0.1
 Release:        0
