@@ -9,20 +9,20 @@ prometheus:
     $type: number
     $name: Scrape interval (s)
     $default: 15
-    $disabled: "!prometheus.enabled"
+    $disabled: "!formValues.prometheus.enabled"
     $required: true
 
   evaluation_interval:
     $type: number
     $name: Evaluation interval (s)
     $default: 15
-    $disabled: "!prometheus.enabled"
+    $disabled: "!formValues.prometheus.enabled"
     $required: true
 
   mgr:
     $type: group
     $name: Uyuni Server
-    $disabled: "!prometheus.enabled"
+    $disabled: "!formValues.prometheus.enabled"
 
     monitor_server:
       $name: Monitor this server
@@ -39,19 +39,19 @@ prometheus:
       $name: Username
       $help: Username for auto-discovering clients
       $default: admin
-      $visibleIf: .autodiscover_clients == true
+      $visible: "this.parent.value.autodiscover_clients"
       $required: true
 
     sd_password:
       $type: password
       $name: Password
       $help: Password for auto-discovering clients
-      $visibleIf: .autodiscover_clients == true
+      $visible: "this.parent.value.autodiscover_clients"
       $required: true
 
   alerting:
     $type: group
-    $disabled: "!prometheus.enabled"
+    $disabled: "!formValues.prometheus.enabled"
 
     alertmanager_service:
       $type: boolean
@@ -62,7 +62,7 @@ prometheus:
       $type: boolean
       $name: Use local Alertmanager
       $help: Use local Alertmanager for this Prometheus instance
-      $visibleIf: .alertmanager_service == true
+      $visible: "this.parent.value.alertmanager_service"
       $default: True
 
     alertmanagers:
@@ -75,7 +75,7 @@ prometheus:
           $type: text 
           $name: "IP Address : Port"
           $default: localhost:9093
-          $match: ".*\\:\\d{1,5}"
+          $match: "\\S*:\\d{1,5}"
 
     rule_files:
       $type: edit-group
@@ -90,7 +90,7 @@ prometheus:
     $name: User defined scrape configurations
     $minItems: 0
     $itemName: File-based service discovery ${i}
-    $disabled: "!prometheus.enabled"
+    $disabled: "!formValues.prometheus.enabled"
     $prototype:
       $type: group 
       $key:
