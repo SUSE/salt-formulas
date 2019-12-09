@@ -46,7 +46,7 @@ cp -R metadata/* %{buildroot}%{fdir}/metadata/%{fname}
 %files
 %defattr(-,root,root)
 %license LICENSE
-%dir %{_datadir}/susemanager
+%dir %{_datadir}/salt-formulas
 %dir %{fdir}
 %dir %{fdir}/states
 %dir %{fdir}/metadata
