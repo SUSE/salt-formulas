@@ -1,13 +1,13 @@
 minion_blackout:
   $type: boolean
   $default: False
-  $name: Blackout
+  $name: System lock
   $help: Disable all remote execution commands
 
 minion_blackout_whitelist:  
   $type: edit-group
-  $name: Blackout whitelist
-  $help: Modules allowed during blackout. Removing the default values is not recommended because it can prevent Uyuni from working properly.
+  $name: Allowed Salt modules
+  $help: Removing the default values is not recommended because it can prevent Uyuni from working properly.
   $disabled: "!formValues.minion_blackout"
   $prototype:
     $type: text
