@@ -67,10 +67,32 @@ kitchensync:
             field:
               $type: text
               $name: Yet another field
-<<<<<<< HEAD
               $placeholder: Enable/disable this field using the selecor in the group above
               $disabled: 'this.parent.parent.parent.value.field != "Enable"'
-=======
-              $placeholder: Enable/disable this field using the selector in the group above
-              $disabled: 'this.parent.parent.parent.value.field != "Enable"'
->>>>>>> 3974161... fixup
+  show_hidden:
+    $type: select
+    $values: ["Show",
+              "Hide"
+              ]
+    $default: Show   
+    $name: Show hidden
+  hidden:
+    $type: edit-group
+    $itemName: Hidden
+    $optional: True
+    $visibleIf: .show_hidden == 'Show'
+    $prototype:
+        $type: group
+        $minItems: 1
+        $key:
+            $type: text
+            $name: Hidden Key
+            $default: key default
+        mountpoint:
+            $type: text
+            $name: Device Mount Point
+            $help: What should the partition be mount as - /, swap, /var, ...
+            $optional: True      
+            $default: blabla      
+
+              
