@@ -5,7 +5,7 @@ PROMETHEUS_VERSION=0.1
 PROMETHEUS_EXPORTERS_VERSION=0.4
 GRAFANA_VERSION=0.1
 VIRTUALIZATION_HOST_VERSION=0.1
-SALT_BLACKOUT_VERSION=0.1
+SYSTEM_LOCK_VERSION=0.1
 
 locale:: clean
 	git archive --format=tar.gz --prefix=locale-formula-${LOCALE_VERSION}/ HEAD:locale-formula/ >locale-formula-${LOCALE_VERSION}.tar.gz
@@ -26,7 +26,7 @@ virtualization-host:: clean
 	git archive --format=tar.gz --prefix=virtualization-host-formula-${VIRTUALIZATION_HOST_VERSION}/ HEAD:virtualization-host-formula/ >virtualization-host-formula-${VIRTUALIZATION_HOST_VERSION}.tar.gz
 
 salt-blackout:: clean
-	git archive --format=tar.gz --prefix=salt-blackout-formula-${SALT_BLACKOUT_VERSION}/ HEAD:salt-blackout-formula/ >salt-blackout-formula-${SALT_BLACKOUT_VERSION}.tar.gz
+	git archive --format=tar.gz --prefix=system-lock-formula-${SYSTEM_LOCK_VERSION}/ HEAD:system-lock-formula/ >system-lock-formula-${SALT_BLACKOUT_VERSION}.tar.gz
 
 clean::
 	find . -name "*~" | xargs rm -f
