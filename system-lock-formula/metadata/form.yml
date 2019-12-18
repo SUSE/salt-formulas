@@ -7,7 +7,7 @@ minion_blackout:
 minion_blackout_whitelist:  
   $type: edit-group
   $name: Allowed Salt modules
-  $help: Removing the default values is not recommended because it may prevent Uyuni from working properly.
+  $help: Removing the default values is not recommended because it may prevent ${productName} from working properly.
   $disabled: "!formValues.minion_blackout"
   $prototype:
     $type: text
