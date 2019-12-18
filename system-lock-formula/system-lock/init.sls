@@ -1,1 +1,1 @@
-# no states needed for blackout
+# no states needed for system lock

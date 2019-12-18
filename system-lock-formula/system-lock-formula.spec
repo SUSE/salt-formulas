@@ -1,5 +1,5 @@
 #
-# spec file for package salt-blackout-formula
+# spec file for package system-lock-formula
 #
 # Copyright (c) 2019 SUSE LLC
 #
@@ -16,16 +16,16 @@
 #
 
 
-%define fname salt-blackout
+%define fname system-lock
 %define fdir  %{_datadir}/salt-formulas
-Name:           salt-blackout-formula
+Name:           system-lock-formula
 Version:        0.1
 Release:        0
 Summary:        Salt formula for configuring Salt blackout mode
 License:        Apache-2.0
 Group:          System/Packages
 Url:            https://github.com/SUSE/salt-formulas
-Source:         salt-blackout-formula-%{version}.tar.gz
+Source:         system-lock-formula-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
@@ -40,7 +40,7 @@ Salt formula for configuring Salt blackout mode.
 %install
 mkdir -p %{buildroot}%{fdir}/states/%{fname}
 mkdir -p %{buildroot}%{fdir}/metadata/%{fname}
-cp -R salt-blackout/* %{buildroot}%{fdir}/states/%{fname}
+cp -R system-lock/* %{buildroot}%{fdir}/states/%{fname}
 cp -R metadata/* %{buildroot}%{fdir}/metadata/%{fname}
 
 %files

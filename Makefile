@@ -25,8 +25,8 @@ grafana:: clean
 virtualization-host:: clean
 	git archive --format=tar.gz --prefix=virtualization-host-formula-${VIRTUALIZATION_HOST_VERSION}/ HEAD:virtualization-host-formula/ >virtualization-host-formula-${VIRTUALIZATION_HOST_VERSION}.tar.gz
 
-salt-blackout:: clean
-	git archive --format=tar.gz --prefix=system-lock-formula-${SYSTEM_LOCK_VERSION}/ HEAD:system-lock-formula/ >system-lock-formula-${SALT_BLACKOUT_VERSION}.tar.gz
+system-lock:: clean
+	git archive --format=tar.gz --prefix=system-lock-formula-${SYSTEM_LOCK_VERSION}/ HEAD:system-lock-formula/ >system-lock-formula-${SYSTEM_LOCK_VERSION}.tar.gz
 
 clean::
 	find . -name "*~" | xargs rm -f
