@@ -1,0 +1,4 @@
+description:
+  Lock a minion by enabling the Salt blackout mode. When in blackout mode, all remote execution commands are disabled.
+group: general_system_configuration
+pillar_only: True

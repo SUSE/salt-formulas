@@ -1,0 +1,5 @@
+minion_blackout: true
+minion_blackout_whitelist:
+- test.ping
+- grains.item
+- grains.items
