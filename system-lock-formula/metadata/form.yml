@@ -11,6 +11,7 @@ minion_blackout_whitelist:
   $disabled: "!formValues.minion_blackout"
   $prototype:
     $type: text
+    $required: true
   $default:
   - test.ping
   - grains.item
