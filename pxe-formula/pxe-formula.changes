@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan 29 13:05:09 UTC 2020 - Ondrej Holecek <oholecek@suse.com>
+
+- Add support for new features in terminal naming
+- Remove branch_id from pxe form, moved to branch-network form
+
+-------------------------------------------------------------------
 Wed Oct 16 12:22:35 UTC 2019 - Vladimir Nadvornik <nadvornik@suse.com>
 
 - Use absolute paths in grub2 config

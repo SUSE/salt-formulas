@@ -21,8 +21,3 @@ pxe:
      $type: text
      $default: '/srv/saltboot'
 
-  branch_id:
-     $name: 'Branch Id'
-     $type: text
-     $placeholder: 'Enter unique Branch server ID (e.g. "B0001")'
-     $help: 'Branch server ID is used as a prefix in terminal ID'
