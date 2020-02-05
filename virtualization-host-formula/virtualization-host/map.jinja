@@ -1,23 +1,26 @@
 {% if grains['os_family'] == 'Suse' %}
   {% if '15' in grains['osrelease'] %}
-    {% set pattern = 'patterns-server-%s_server'|format(pillar['hypervisor']|lower()) %}
+    {% set hypervisor_packages = [
+        'patterns-server-%s_server'|format(pillar['hypervisor']|lower()),
+        'python3-six',
+       ]
+    %}
   {% elif grains['osfullname'] == 'Leap' %}
-    {% set pattern = 'patterns-openSUSE-%s_server'|format(pillar['hypervisor']|lower()) %}
+    {% set hypervisor_packages = ['patterns-openSUSE-%s_server'|format(pillar['hypervisor']|lower())] %}
   {% else %}
-    {% set pattern = 'patterns-sles-%s_server'|format(pillar['hypervisor']|lower()) %}
+    {% set hypervisor_packages = ['patterns-sles-%s_server'|format(pillar['hypervisor']|lower())] %}
   {% endif %}
 
   {% if pillar['hypervisor'] =='KVM' %}
-    {% set hypervisor_packages = ['libvirt-daemon-qemu'] %}
+    {% set hypervisor_packages = hypervisor_packages + ['libvirt-daemon-qemu'] %}
   {% elif pillar['hypervisor'] == 'Xen' %}
-    {% set hypervisor_packages = ['libvirt-daemon-xen'] %}
+    {% set hypervisor_packages = hypervisor_packages + ['libvirt-daemon-xen'] %}
   {% endif %}
 
-  {% set packages = [
-      pattern,
-      hypervisor_packages,
+  {% set packages = hypervisor_packages + [
       'qemu-tools',
       'guestfs-tools',
+      'libvirt-client',
     ]
   %}
 {% endif %}
