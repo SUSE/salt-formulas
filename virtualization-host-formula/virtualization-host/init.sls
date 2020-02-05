@@ -20,3 +20,12 @@ guestfs-fix:
     - require:
       - pkg: virthost_packages
 {% endif %}
+
+{% if pillar['hypervisor'] == 'Xen' %}
+# Set XEN kernel as default in grub
+set_xen_default:
+  bootloader.grub_set_default:
+    - name: Xen
+    - require:
+      - pkg: virthost_packages
+{% endif %}  {# pillar['hypervisor'] == 'Xen' #}
