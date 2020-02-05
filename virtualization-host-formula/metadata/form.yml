@@ -4,3 +4,89 @@ hypervisor:
             "Xen"
             ]
   $default: KVM
+
+default_pool_enabled:
+  $type: boolean
+  $name: Create default storage pool
+  $default: True
+
+default_net_enabled:
+    $type: boolean
+    $name: Create default virtual network
+    $default: True
+
+default_pool:
+  $type: group
+  $help: Configure the default storage pool
+  $visibleIf: default_pool_enabled == true
+
+  path:
+    $type: text
+    $name: Pool local path
+    $default: /var/lib/libvirt/images
+    $help: Path to the folder containing the disk images
+    $optional: false
+
+default_net:
+  $type: group
+  $help: Configure the default virtual network
+  $visibleIf: default_net_enabled == true
+
+  mode:
+    $type: select
+    $values: ["NAT", "Bridged"]
+
+  bridge:
+    $type: text
+    $name: Bridge name
+    $help: Name of the network bridge interface to use
+    $placeholder: br0
+    $visibleIf: default_net#mode == "Bridged"
+
+  ipv4:
+    $type: group
+    $help: IPv4 settings
+    $visibleIf: default_net#mode == "NAT"
+
+    gateway:
+      $type: text
+      $name: virtual host IPv4 address
+      $default: 192.168.122.1
+
+    prefix:
+      $type: number
+      $name: Network address prefix
+      $default: 24
+
+    dhcp_start:
+      $type: text
+      $name: First IP adress for DHCP
+      $default: 192.168.122.2
+
+    dhcp_end:
+      $type: text
+      $name: Last IP adress for DHCP
+      $default: 192.168.122.254
+
+  ipv6:
+    $type: group
+    $help: IPv6 settings
+    $visibleIf: default_net#mode == "NAT"
+
+    gateway:
+      $type: text
+      $name: virtual host IPv4 address
+      $placeholder: 2001:db8:ca2:2::1
+
+    prefix:
+      $type: number
+      $name: Network address prefix
+      $placeholder: 64
+
+    dhcp_start:
+      $type: text
+      $name: First IP adress for DHCP
+
+    dhcp_end:
+      $type: text
+      $name: Last IP adress for DHCP

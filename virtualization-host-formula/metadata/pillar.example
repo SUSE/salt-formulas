@@ -1,1 +1,15 @@
 hypervisor: KVM
+default_pool_enabled: True
+default_net_enabled: True
+default_pool:
+  path: /var/lib/libvirt/images
+default_net:
+  mode: NAT
+  ipv4:
+    gateway: 192.168.122.1
+    prefix: 24
+    dhcp_start: 192.168.122.2
+    dhcp_end: 192.168.122.254
+  ipv6:
+    gateway: 2001:db8:ca2:2::1
+    prefix: 64
