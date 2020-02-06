@@ -30,26 +30,27 @@ def grub_set_default(name):
     cmd = 'sed -nre "s/[[:blank:]]*menuentry \'([^\']+)\'.*/\\1/p;" /boot/grub2/grub.cfg'
     entries = __salt__['cmd.run'](cmd).splitlines()
     filtered_entries = [entry for entry in entries if name in entry]
-    if len(filtered_entries) > 0:
-        entry = filtered_entries[0]
-        ret = __states__['file.append'](name='/etc/default/grub', text='GRUB_DEFAULT="{0}"'.format(entry))
-        # Stop here if the append failed
-        if not ret['result']:
-            return ret
-
-        # Regenerate grub config
-        out = None
-        if not __opts__['test']:
-            try:
-                out = __salt__['cmd.run']('grub2-mkconfig -o /boot/grub2/grub.cfg', raise_err=True)
-            except CommandExecutionError:
-                ret['comment'] = 'Failed to run grub2-mkconfig: {0}'.format(out)
-                ret['result'] = False
-            ret['result'] = True
-        else:
-            ret['result'] = None
-    else:
+    if len(filtered_entries) == 0:
         ret['comment'] = 'No matching grub2 entry in configuration'
+        return ret
+
+    entry = filtered_entries[0]
+    ret = __states__['file.append'](name='/etc/default/grub', text='GRUB_DEFAULT="{0}"'.format(entry))
+    # Stop here if the append failed
+    if not ret['result']:
+        return ret
+
+    # Regenerate grub config
+    out = None
+    if __opts__['test']:
+        ret['result'] = None
+        return ret
+    try:
+        out = __salt__['cmd.run']('grub2-mkconfig -o /boot/grub2/grub.cfg', raise_err=True)
+    except CommandExecutionError:
+        ret['comment'] = 'Failed to run grub2-mkconfig: {0}'.format(out)
+        return ret
+    ret['result'] = True
     return ret
 
     
