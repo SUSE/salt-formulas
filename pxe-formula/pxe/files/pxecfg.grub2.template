@@ -11,10 +11,24 @@
 {%-   endif %}
 {%- endif %}
 
+{%- set naming_config = '' %}
+{%- if salt['pillar.get']('pxe:disable_id_prefix') %}
+{%-   set naming_config = "DISABLE_ID_PREFIX=1" %}
+{%- endif %}
+{%- if salt['pillar.get']('pxe:disable_unique_suffix') %}
+{%-   set naming_config = naming_config + " DISABLE_UNIQUE_SUFFIX=1" %}
+{%- endif %}
+{%- set minion_id_naming = salt['pillar.get']('pxe:minion_id_naming', 'Hostname') %}
+{%- if minion_id_naming == 'FQDN' %}
+{%-   set naming_config = naming_config + " USE_FQDN_MINION_ID=1"  %}
+{%- elif minion_id_naming == 'HWType' %}
+{%-   set naming_config = naming_config + " DISABLE_HOSTNAME_ID=1" %}
+{%- endif %}
+
 default=0
 timeout=1
 menuentry netboot {
-        linux /boot/{{ kernel }} {{ salt['pillar.get']('pxe:default_kernel_parameters', '') }} MINION_ID_PREFIX={{ salt['pillar.get']('pxe:branch_id', 'UnknownBranch') }}
+        linux /boot/{{ kernel }} {{ salt['pillar.get']('pxe:default_kernel_parameters', '') }} {{ naming_config }} MINION_ID_PREFIX={{ salt['pillar.get']('pxe:branch_id', 'UnknownBranch') }}
 {{-            ' root=' + pillar['root'] if salt['pillar.get']('root') else '' }}
 {{-            ' salt_device=' + pillar['salt_device'] if salt['pillar.get']('salt_device') else '' }}
 {{-            ' ' + salt['pillar.get']('terminal_kernel_parameters', '') }}
