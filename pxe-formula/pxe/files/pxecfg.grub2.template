@@ -28,9 +28,9 @@
 default=0
 timeout=1
 menuentry netboot {
-        linux /boot/{{ kernel }} {{ salt['pillar.get']('pxe:default_kernel_parameters', '') }} {{ naming_config }} MINION_ID_PREFIX={{ salt['pillar.get']('pxe:branch_id', 'UnknownBranch') }}
+        linuxefi /boot/{{ kernel }} {{ salt['pillar.get']('pxe:default_kernel_parameters', '') }} {{ naming_config }} MINION_ID_PREFIX={{ salt['pillar.get']('pxe:branch_id', 'UnknownBranch') }}
 {{-            ' root=' + pillar['root'] if salt['pillar.get']('root') else '' }}
 {{-            ' salt_device=' + pillar['salt_device'] if salt['pillar.get']('salt_device') else '' }}
 {{-            ' ' + salt['pillar.get']('terminal_kernel_parameters', '') }}
-        initrd /boot/{{ initrd }}
+        initrdefi /boot/{{ initrd }}
 }
