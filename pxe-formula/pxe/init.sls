@@ -20,11 +20,11 @@
 
 install_pxe:
   pkg.installed:
-    - name: {{ cfgmap.package }}
+    - pkgs: {{ cfgmap.packages | json }}
 
 install_efi:
   pkg.installed:
-    - name: {{ cfgmap.package_efi }}
+    - pkgs: {{ cfgmap.packages_efi | json }}
 
 
 srv_tftpboot_default:
@@ -70,10 +70,17 @@ pxe_copy:
     - require:
       - file: srv_tftpboot_default
 
-pxe_copy_efi:
+pxe_copy_grub_efi:
   file.copy:
-    - name:   {{ cfgmap.boot_efi }}
-    - source: {{ cfgmap.path_efi }}
+    - name:   {{ cfgmap.boot_grub_efi }}
+    - source: {{ cfgmap.path_grub_efi }}
+    - require:
+      - file: srv_tftpboot_default_efi
+
+pxe_copy_shim_efi:
+  file.copy:
+    - name:   {{ cfgmap.boot_shim_efi }}
+    - source: {{ cfgmap.path_shim_efi }}
     - require:
       - file: srv_tftpboot_default_efi
 

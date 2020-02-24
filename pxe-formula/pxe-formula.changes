@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 24 12:42:43 UTC 2020 - Vladimir Nadvornik <nadvornik@suse.com>
+
+- Prepare configuration for UEFI with Secure Boot
+
+-------------------------------------------------------------------
 Fri Feb  7 14:04:44 UTC 2020 - Ondrej Holecek <oholecek@suse.com>
 
 - Add support fot new terminal naming for UEFI network boot
