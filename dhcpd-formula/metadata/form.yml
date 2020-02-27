@@ -78,8 +78,13 @@ dhcpd:
         filename_efi:
           $type: text
           $visibleIf: .next_server != ''
-          $default: boot/grub.efi
+          $default: boot/shim.efi
           $help: Specify the name of the initial boot file which is to be loaded by a client in EFI mode
+          $optional: true
+        filename_http:
+          $type: text
+          $default:
+          $help: Specify the URL of the initial boot file which is to be loaded by a client in EFI HTTP mode
           $optional: true
         hosts:
           $type: edit-group
@@ -116,6 +121,11 @@ dhcpd:
                 $visibleIf: .next_server != ''
                 $default:
                 $help: Specify the name of the initial boot file which is to be loaded by a client in EFI mode
+                $optional: true
+            filename_http:
+                $type: text
+                $default:
+                $help: Specify the URL of the initial boot file which is to be loaded by a client in EFI HTTP mode
                 $optional: true
             comment:
                 $type: text
