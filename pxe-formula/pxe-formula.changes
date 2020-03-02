@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar  2 14:03:07 UTC 2020 - Vladimir Nadvornik <nadvornik@suse.com>
+
+- Use grub2 variable "prefix" instead of hardcoded /boot
+
+-------------------------------------------------------------------
 Mon Feb 24 12:42:43 UTC 2020 - Vladimir Nadvornik <nadvornik@suse.com>
 
 - Prepare configuration for UEFI with Secure Boot

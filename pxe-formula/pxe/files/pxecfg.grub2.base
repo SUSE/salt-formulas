@@ -1,2 +1,2 @@
-configfile /boot/pxelinux.cfg/01:$net_default_mac.grub2.cfg
-configfile /boot/pxelinux.cfg/default.grub2.cfg
+configfile ${prefix}/pxelinux.cfg/01:$net_default_mac.grub2.cfg
+configfile ${prefix}/pxelinux.cfg/default.grub2.cfg
