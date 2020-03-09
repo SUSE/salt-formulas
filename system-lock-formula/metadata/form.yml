@@ -2,12 +2,12 @@ minion_blackout:
   $type: boolean
   $default: False
   $name: Lock system
-  $help: Disable all remote execution commands
+  $help: Disable all actions that can be issued on the minion
 
-minion_blackout_whitelist:  
+minion_blackout_whitelist:
   $type: edit-group
   $name: Allowed Salt modules
-  $help: Removing the default values is not recommended because it may prevent ${productName} from working properly.
+  $help: Removing the default values is not recommended.
   $disabled: "!formValues.minion_blackout"
   $prototype:
     $type: text
