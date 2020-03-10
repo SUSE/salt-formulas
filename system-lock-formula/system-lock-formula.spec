@@ -19,7 +19,7 @@
 %define fname system-lock
 %define fdir  %{_datadir}/salt-formulas
 Name:           system-lock-formula
-Version:        0.1
+Version:        0.2
 Release:        0
 Summary:        Salt formula for configuring Salt blackout mode
 License:        Apache-2.0
