@@ -2,12 +2,12 @@ minion_blackout:
   $type: boolean
   $default: False
   $name: Lock system
-  $help: Disable all actions that can be issued on the minion
+  $help: Disable all actions that can be issued on the minion.
 
 minion_blackout_whitelist:
   $type: edit-group
   $name: Allowed Salt modules
-  $help: Removing the default values is not recommended.
+  $help: Removing the default values is not advised.
   $disabled: "!formValues.minion_blackout"
   $prototype:
     $type: text

@@ -1,4 +1,4 @@
 description:
-  Lock a minion by enabling the Salt blackout mode. When in blackout mode, all actions are disabled except the ones configured in the configuration of this formula.
+  Lock a minion by enabling the Salt blackout mode. When a system is locked, all actions can be scheduled but will ultimately fail.
 group: general_system_configuration
 pillar_only: True
