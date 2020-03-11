@@ -77,4 +77,16 @@ grafana:
       $type: boolean
       $name: Kubernetes cluster dashboard
       $help: Add dashboard for monitoring a Kubernetes cluster
-      $default: True
+      $default: False
+
+    add_etcd_dashboard:
+      $type: boolean
+      $name: Kubernetes etcd dashboard
+      $help: Add dashboard for monitoring an etcd daemon
+      $default: False
+
+    add_k8s_namespaces_dashboard:
+      $type: boolean
+      $name: Kubernetes namespaces dashboard
+      $help: Add dashboard for monitoring Kubernetes namespaces
+      $default: False
