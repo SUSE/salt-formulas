@@ -1,17 +1,15 @@
 # config file version
-apiVersion: 1
-
-deleteDatasources:
-  - name: Prometheus
-    orgId: 1
+apiVersion: 2
 
 datasources:
-- name: Prometheus
+{% for name, datasource in salt['pillar.get']('grafana:datasources:prometheus').items() %}
+- name: {{ name }}
   type: prometheus
   access: proxy
-  url: http://{{ grains['fqdn']}}:9090/
+  url: {{ datasource.url }}
   basicAuth: False
-  isDefault: True
+  isDefault: {{ loop.first }}
   editable: true
   jsonData:
     timeInterval: 5s
+{% endfor %}

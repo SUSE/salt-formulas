@@ -11,10 +11,10 @@ grafana:
     $name: Default admin user
     $required: true
     $disabled: "!formValues.grafana.enabled"
-    
+
   admin_pass:
     $type: password
-    $name: Default admin password  
+    $name: Default admin password
     $required: true
     $disabled: "!formValues.grafana.enabled"
 
@@ -39,7 +39,7 @@ grafana:
           $help: Data source name
         url:
           $type: url
-          $default: http://localhost:9080
+          $default: http://localhost:9090
           $required: true
           $name: Prometheus URL
           $help: URL of a Prometheus instance
