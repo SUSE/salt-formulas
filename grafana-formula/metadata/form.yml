@@ -72,3 +72,9 @@ grafana:
       $name: Apache HTTPD dashboard
       $help: Add dashboard for monitoring an Apache HTTPD server
       $default: True
+
+    add_k8s_dashboard:
+      $type: boolean
+      $name: Kubernetes cluster dashboard
+      $help: Add dashboard for monitoring a Kubernetes cluster
+      $default: True
