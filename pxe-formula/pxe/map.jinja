@@ -14,6 +14,9 @@
 # along with pxe-formula.  If not, see <http://www.gnu.org/licenses/>.
 {% set pxeroot = pillar['pxe'].get('pxe_root_directory','/srv/tftpboot') %}
 
+# workaround for bsc#1166523: this does not work on Leap
+#      'path_shim_efi':      '/usr/share/efi/x86_64/shim.efi',
+
 {% set cfgmap = salt['grains.filter_by']({
     'Suse': {
       'packages':           ['syslinux'],
@@ -27,7 +30,7 @@
       'boot_grub_efi':      pxeroot + '/boot/grub.efi',
       'path_grub_efi':      '/usr/share/grub2/x86_64-efi/grub.efi',
       'boot_shim_efi':      pxeroot + '/boot/shim.efi',
-      'path_shim_efi':      '/usr/share/efi/x86_64/shim.efi',
+      'path_shim_efi':      '/usr/lib64/efi/shim.efi',
       'pathname_basecfg_efi': pxeroot + '/boot/grub.cfg',
       'boot_efi_dir':       pxeroot + '/boot/x86_64-efi',
       'path_efi_dir':       '/usr/share/grub2/x86_64-efi'
