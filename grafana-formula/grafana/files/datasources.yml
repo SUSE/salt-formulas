@@ -1,5 +1,5 @@
 # config file version
-apiVersion: 2
+apiVersion: 1
 
 datasources:
 {% for name, datasource in salt['pillar.get']('grafana:datasources:prometheus').items() %}
