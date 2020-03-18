@@ -2,11 +2,13 @@
 Thu Mar 12 17:09:17 UTC 2020 - Vladimir Nadvornik <nadvornik@suse.com>
 
 - Use /usr/lib64/efi/shim.efi path (workaround for bsc#1166523)
+- Update to version 0.1.1584100911.88fad0f
 
 -------------------------------------------------------------------
 Mon Mar  2 14:03:07 UTC 2020 - Vladimir Nadvornik <nadvornik@suse.com>
 
 - Use grub2 variable "prefix" instead of hardcoded /boot
+- Update to version 0.1.1583829431.db6edda
 
 -------------------------------------------------------------------
 Mon Feb 24 12:42:43 UTC 2020 - Vladimir Nadvornik <nadvornik@suse.com>
