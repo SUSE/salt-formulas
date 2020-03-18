@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 18 11:40:01 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Add CaaSP datasource and dashboards
+
+-------------------------------------------------------------------
 Wed Oct 30 16:05:07 UTC 2019 - Johannes Renner <jrenner@suse.com>
 
 - Initial version of grafana-formula
