@@ -65,6 +65,36 @@
   file.absent
 {%- endif %}
 
+{%- if salt['pillar.get']('grafana:dashboards:add_k8s_dashboard', False) %}
+/etc/grafana/provisioning/dashboards/caasp-cluster.json:
+  file.managed:
+    - source: "salt://grafana/files/caasp-cluster.json"
+    - makedirs: True
+{%- else %}
+/etc/grafana/provisioning/dashboards/caasp-cluster.json:
+  file.absent
+{%- endif %}
+
+{%- if salt['pillar.get']('grafana:dashboards:add_etcd_dashboard', False) %}
+/etc/grafana/provisioning/dashboards/caasp-etcd-cluster.json:
+  file.managed:
+    - source: "salt://grafana/files/caasp-etcd-cluster.json"
+    - makedirs: True
+{%- else %}
+/etc/grafana/provisioning/dashboards/caasp-etcd-cluster.json:
+  file.absent
+{%- endif %}
+
+{%- if salt['pillar.get']('grafana:dashboards:add_k8s_namespaces_dashboard', False) %}
+/etc/grafana/provisioning/dashboards/caasp-namespaces.json:
+  file.managed:
+    - source: "salt://grafana/files/caasp-namespaces.json"
+    - makedirs: True
+{%- else %}
+/etc/grafana/provisioning/dashboards/caasp-namespaces.json:
+  file.absent
+{%- endif %}
+
 grafana-server:
   pkg.installed:
     - names:
