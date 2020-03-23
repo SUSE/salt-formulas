@@ -1,5 +1,5 @@
 global:
-  scrape_interval: {{ salt['pillar.get']('prometheus:scrape_interval', 15) }}s 
+  scrape_interval: {{ salt['pillar.get']('prometheus:scrape_interval', 15) }}s
   evaluation_interval: {{ salt['pillar.get']('prometheus:evaluation_interval', 15) }}s
 
 {%- if salt['pillar.get']('prometheus:alerting:use_local_alertmanager', False) or salt['pillar.get']('prometheus:alerting:alertmanagers', None) %}
@@ -8,12 +8,12 @@ alerting:
   alertmanagers:
   - static_configs:
     - targets:
-{%- if salt['pillar.get']('prometheus:alerting:use_local_alertmanager', False) %}    
+{%- if salt['pillar.get']('prometheus:alerting:use_local_alertmanager', False) %}
       - localhost:9093
 {%- endif %}
-{%- for alertmanager in salt['pillar.get']('prometheus:alerting:alertmanagers', {}) %}   
+{%- for alertmanager in salt['pillar.get']('prometheus:alerting:alertmanagers', {}) %}
       - {{ alertmanager }}
-{%- endfor %}   
+{%- endfor %}
 {%- endif %}
 
 {%- if salt['pillar.get']('prometheus:alerting:rule_files', None) %}
@@ -48,7 +48,7 @@ scrape_configs:
 {%- endif %}
 {%- if salt['pillar.get']('prometheus:mgr:autodiscover_clients', False) %}
   # --------------------
-  # Auto discover clients of {{ grains['master'] }} 
+  # Auto discover clients of {{ grains['master'] }}
   # --------------------
   - job_name: 'mgr-clients'
     uyuni_sd_configs:
@@ -64,3 +64,23 @@ scrape_configs:
         - {{ file }}
 {% endfor %}
 {%- endfor %}
+{% for job, config in salt['pillar.get']('prometheus:federation').items() %}
+  {% if loop.first %}
+  # --------------------
+  # Federation
+  # --------------------
+  {% endif %}
+  - job_name: {{ job }}
+    honor_labels: true
+    metrics_path: '/{{ job }}'
+    params:
+      'match[]':
+        {% for pattern in config.match %}
+        - '{__name__=~"{{ pattern }}"}'
+        {% endfor %}
+    static_configs:
+      - targets:
+        {% for url in config.targets %}
+        - '{{ url }}'
+        {% endfor %}
+{% endfor %}

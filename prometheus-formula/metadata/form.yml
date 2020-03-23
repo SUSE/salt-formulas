@@ -30,7 +30,7 @@ prometheus:
       $default: True
 
     autodiscover_clients:
-      $name: Autodiscover clients 
+      $name: Autodiscover clients
       $type: boolean
       $default: True
 
@@ -70,9 +70,9 @@ prometheus:
       $minItems: 0
       $itemName: Target ${i}
       $prototype:
-        $type: group 
+        $type: group
         $key:
-          $type: text 
+          $type: text
           $name: "IP Address : Port"
           $default: localhost:9093
           $match: "\\S*:\\d{1,5}"
@@ -85,6 +85,34 @@ prometheus:
         $default: /etc/prometheus/my-rules.yml
         $required: true
 
+  federation:
+    $type: edit-group
+    $name: Federation
+    $minItems: 0
+    $itemName: Prometheus server ${i}
+    $disabled: "!formValues.prometheus.enabled"
+    $prototype:
+      $type: group
+      $key:
+        $type: text
+        $name: "Job name"
+        $default: "federate"
+      match:
+        $type: edit-group
+        $minItems: 1
+        $name: "Metric name patterns"
+        $prototype:
+            $type: text
+            $default: "node:.*"
+      targets:
+        $type: edit-group
+        $minItems: 1
+        $itemName: Target ${i}
+        $prototype:
+          $type: text
+          $placeholder: "IP Address : Port"
+          $match: "\\S*:\\d{1,5}"
+
   scrape_configs:
     $type: edit-group
     $name: User defined scrape configurations
@@ -92,9 +120,9 @@ prometheus:
     $itemName: File-based service discovery ${i}
     $disabled: "!formValues.prometheus.enabled"
     $prototype:
-      $type: group 
+      $type: group
       $key:
-        $type: text 
+        $type: text
         $name: "Job name"
       files:
         $type: edit-group
@@ -103,5 +131,3 @@ prometheus:
           $type: text
           $default: /etc/prometheus/my-scrape-config.yml
           $required: true
-
-
