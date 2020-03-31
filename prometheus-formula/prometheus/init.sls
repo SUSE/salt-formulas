@@ -12,15 +12,27 @@ install_prometheus:
 install_alertmanager:
   pkg.installed:
     - name: {{ prometheus.alertmanager_package }}
-  
+
 config_file:
   file.managed:
-    - name: /etc/prometheus/prometheus.yml 
+    - name: /etc/prometheus/prometheus.yml
     - source: salt://prometheus/files/prometheus.yml
     - user: root
     - group: root
     - mode: 644
     - template: jinja
+    - require:
+      - pkg: install_prometheus
+      - pkg: install_alertmanager
+
+config_file:
+  file.managed:
+    - name: /etc/prometheus/rules/prometheus-rules.yml
+    - source: salt://prometheus/files/prometheus-rules.yml
+    - user: root
+    - group: root
+    - mode: 644
+    - makedirs: True
     - require:
       - pkg: install_prometheus
       - pkg: install_alertmanager

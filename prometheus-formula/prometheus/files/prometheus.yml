@@ -16,12 +16,11 @@ alerting:
 {%- endfor %}
 {%- endif %}
 
-{%- if salt['pillar.get']('prometheus:alerting:rule_files', None) %}
 rule_files:
+  - /etc/prometheus/rules/prometheus-rules.yml
 {%- for rule_file in salt['pillar.get']('prometheus:alerting:rule_files', []) %}
   - {{ rule_file }}
 {%- endfor %}
-{%- endif %}
 
 # Scrape configurations
 scrape_configs:
@@ -64,23 +63,31 @@ scrape_configs:
         - {{ file }}
 {% endfor %}
 {%- endfor %}
+  # --------------------
+  # Metamonitoring
+  # --------------------
+  - job_name: prometheus
+    static_configs:
+      - targets:
+        - {{ grains['fqdn'] }}:9090
 {% for job, config in salt['pillar.get']('prometheus:federation').items() %}
-  {% if loop.first %}
+{% if loop.first %}
   # --------------------
   # Federation
   # --------------------
-  {% endif %}
+{% endif %}
   - job_name: {{ job }}
     honor_labels: true
     metrics_path: '/{{ job }}'
     params:
       'match[]':
-        {% for pattern in config.match %}
+        - '{job="prometheus"}'
+{% for pattern in config.match %}
         - '{__name__=~"{{ pattern }}"}'
-        {% endfor %}
+{% endfor %}
     static_configs:
       - targets:
-        {% for url in config.targets %}
+{% for url in config.targets %}
         - '{{ url }}'
-        {% endfor %}
+{% endfor %}
 {% endfor %}
