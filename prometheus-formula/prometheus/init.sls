@@ -25,7 +25,7 @@ config_file:
       - pkg: install_prometheus
       - pkg: install_alertmanager
 
-config_file:
+prometheus_rules_file:
   file.managed:
     - name: /etc/prometheus/rules/prometheus-rules.yml
     - source: salt://prometheus/files/prometheus-rules.yml
@@ -58,11 +58,13 @@ prometheus_running:
     - enable: True
     - require:
       - file: config_file
+      - file: prometheus_rules_file
 {%- if monitor_server %}
       - file: mgr_scrape_config_file
 {%- endif %}
     - watch:
       - file: config_file
+      - file: prometheus_rules_file
 {%- if monitor_server %}
       - file: mgr_scrape_config_file
 {%- endif %}
