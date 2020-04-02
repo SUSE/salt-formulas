@@ -4,6 +4,7 @@
 # setup Prometheus
 {%- set monitor_server = salt['pillar.get']('prometheus:mgr:monitor_server', False) %}
 {%- set alertmanager_service = salt['pillar.get']('prometheus:alerting:alertmanager_service', False) %}
+{%- set default_rules = salt['pillar.get']('prometheus:alerting:default_rules', False) %}
 
 install_prometheus:
   pkg.installed:
@@ -25,10 +26,14 @@ config_file:
       - pkg: install_prometheus
       - pkg: install_alertmanager
 
-prometheus_rules_file:
+{% if default_rules %}
+default_rule_files:
   file.managed:
-    - name: /etc/prometheus/rules/prometheus-rules.yml
-    - source: salt://prometheus/files/prometheus-rules.yml
+    - names:
+      - /etc/prometheus/rules/prometheus-rules.yml:
+        - source: salt://prometheus/files/prometheus-rules.yml
+      - /etc/prometheus/rules/general-rules.yml:
+        - source: salt://prometheus/files/general-rules.yml
     - user: root
     - group: root
     - mode: 644
@@ -36,6 +41,7 @@ prometheus_rules_file:
     - require:
       - pkg: install_prometheus
       - pkg: install_alertmanager
+{% endif %}
 
 {%- if monitor_server %}
 mgr_scrape_config_file:
@@ -58,13 +64,17 @@ prometheus_running:
     - enable: True
     - require:
       - file: config_file
-      - file: prometheus_rules_file
+{% if default_rules %}
+      - file: default_rule_files
+{% endif %}
 {%- if monitor_server %}
       - file: mgr_scrape_config_file
 {%- endif %}
     - watch:
       - file: config_file
-      - file: prometheus_rules_file
+{% if default_rules %}
+      - file: default_rule_files
+{% endif %}
 {%- if monitor_server %}
       - file: mgr_scrape_config_file
 {%- endif %}

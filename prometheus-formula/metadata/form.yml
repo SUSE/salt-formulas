@@ -65,6 +65,11 @@ prometheus:
       $visible: "this.parent.value.alertmanager_service"
       $default: True
 
+    default_rules:
+      $type: boolean
+      $default: True
+      $name: Enable default alerting rules
+
     alertmanagers:
       $type: edit-group
       $minItems: 0

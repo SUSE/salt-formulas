@@ -17,7 +17,10 @@ alerting:
 {%- endif %}
 
 rule_files:
+{% if salt['pillar.get']('prometheus:alerting:default_rules', False) %}
+  - /etc/prometheus/rules/general-rules.yml
   - /etc/prometheus/rules/prometheus-rules.yml
+{% endif %}
 {%- for rule_file in salt['pillar.get']('prometheus:alerting:rule_files', []) %}
   - {{ rule_file }}
 {%- endfor %}
