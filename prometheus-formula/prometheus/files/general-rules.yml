@@ -1,0 +1,12 @@
+groups:
+- name: general.rules
+  rules:
+  - alert: TargetDown
+    annotations:
+      message: '{{ printf "%.4g" $value }}% of the {{ $labels.job }}/{{ $labels.instance
+        }} instances are down.'
+    expr: 100 * (count(up == 0) BY (job, instance) / count(up) BY (job,
+      instance)) > 10
+    for: 10m
+    labels:
+      severity: warning
