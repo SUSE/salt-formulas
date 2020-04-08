@@ -68,7 +68,7 @@ default-net.xml:
       {% endif %}
     {% endfor %}
   {% endif %}  {# pillar['default_net']['mode'] == NAT #}
-  {% if pillar['default_net']['mode'] == "Bridged" %}
+  {% if pillar['default_net']['mode'] == "Bridge" %}
           <bridge name='{{ pillar['default_net']['bridge'] }}'/>
   {% endif %}
         </network>
