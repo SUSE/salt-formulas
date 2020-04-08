@@ -34,7 +34,7 @@ default_net:
 
   mode:
     $type: select
-    $values: ["NAT", "Bridged"]
+    $values: ["NAT", "Bridge"]
     $default: "NAT"
 
   bridge:
@@ -42,7 +42,7 @@ default_net:
     $name: Bridge name
     $help: Name of the network bridge interface to use
     $placeholder: br0
-    $visibleIf: default_net#mode == "Bridged"
+    $visibleIf: default_net#mode == "Bridge"
     $required: true
 
   ipv4:
