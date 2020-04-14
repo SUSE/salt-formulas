@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 14 14:10:16 UTC 2020 - Vladimir Nadvornik <nadvornik@suse.com>
+
+- Add non-EFI grub menu variant
+
+-------------------------------------------------------------------
 Thu Mar 12 17:09:17 UTC 2020 - Vladimir Nadvornik <nadvornik@suse.com>
 
 - Use /usr/lib64/efi/shim.efi path (workaround for bsc#1166523)

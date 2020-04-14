@@ -27,6 +27,7 @@
 
 default=0
 timeout=1
+if test "${grub_platform}" = "efi"; then
 menuentry netboot {
         linuxefi ${prefix}/{{ kernel }} {{ salt['pillar.get']('pxe:default_kernel_parameters', '') }} {{ naming_config }} MINION_ID_PREFIX={{ salt['pillar.get']('pxe:branch_id', 'UnknownBranch') }}
 {{-            ' root=' + pillar['root'] if salt['pillar.get']('root') else '' }}
@@ -34,3 +35,12 @@ menuentry netboot {
 {{-            ' ' + salt['pillar.get']('terminal_kernel_parameters', '') }}
         initrdefi ${prefix}/{{ initrd }}
 }
+else
+menuentry netboot {
+        linux ${prefix}/{{ kernel }} {{ salt['pillar.get']('pxe:default_kernel_parameters', '') }} {{ naming_config }} MINION_ID_PREFIX={{ salt['pillar.get']('pxe:branch_id', 'UnknownBranch') }}
+{{-            ' root=' + pillar['root'] if salt['pillar.get']('root') else '' }}
+{{-            ' salt_device=' + pillar['salt_device'] if salt['pillar.get']('salt_device') else '' }}
+{{-            ' ' + salt['pillar.get']('terminal_kernel_parameters', '') }}
+        initrd ${prefix}/{{ initrd }}
+}
+fi
