@@ -1,0 +1,3 @@
+{%- from "openvpn/map.jinja" import server with context %}{%- for client in server.interface.get('clients', []) %}
+{{ client.name }},{{ client.address }}
+{%- endfor %}

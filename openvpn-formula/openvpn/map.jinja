@@ -1,0 +1,58 @@
+{% set common = salt['grains.filter_by']({
+    'Debian': {
+        'pkgs': ['openvpn'],
+        'service': 'openvpn',
+        'config_dir': '/etc/openvpn',
+    },
+    'RedHat': {
+        'pkgs': ['openvpn'],
+        'service': 'openvpn',
+        'config_dir': '/etc/openvpn',
+    },
+    'Suse': {
+        'pkgs': ['openvpn'],
+        'service': 'openvpn',
+        'config_dir': '/etc/openvpn',
+    },
+    'Arch': {
+        'pkgs': ['openvpn'],
+        'service': 'openvpn',
+        'config_dir': '/etc/openvpn',
+    },
+}, merge=salt['pillar.get']('openvpn')) %}
+
+{% set client = salt['grains.filter_by']({
+    'Debian': {
+        'service_enabled': True,
+        'tunnel': {},
+        'pkipath': 'pki',
+    },
+    'RedHat': {
+        'service_enabled': True,
+        'tunnel': {},
+    },
+    'Suse': {
+        'service_enabled': True,
+        'tunnel': {},
+    },
+    'Arch': {
+        'service_enabled': True,
+        'tunnel': {},
+    },
+}, merge=salt['pillar.get']('openvpn:client')) %}
+
+{% set server = salt['grains.filter_by']({
+    'Debian': {
+        'service_enabled': True,
+        'pkipath': 'pki'
+    },
+    'RedHat': {
+        'service_enabled': True,
+    },
+    'Suse': {
+        'service_enabled': True,
+    },
+    'Arch': {
+        'service_enabled': True,
+    },
+}, merge=salt['pillar.get']('openvpn:server')) %}
