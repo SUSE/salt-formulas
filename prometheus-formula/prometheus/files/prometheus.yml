@@ -48,15 +48,18 @@ scrape_configs:
         labels:
           role: postgres
 {%- endif %}
-{%- if salt['pillar.get']('prometheus:mgr:autodiscover_clients', False) %}
+{% set sd_username = salt['pillar.get']('prometheus:mgr:sd_username') %}
+{% set sd_password = salt['pillar.get']('prometheus:mgr:sd_password') %}
+{%- if salt['pillar.get']('prometheus:mgr:autodiscover_clients', False) and
+       sd_username and sd_password %}
   # --------------------
   # Auto discover clients of {{ grains['master'] }}
   # --------------------
   - job_name: 'mgr-clients'
     uyuni_sd_configs:
       - host: https://{{ grains['master'] }}
-        username: {{ salt['pillar.get']('prometheus:mgr:sd_username') }}
-        password: {{ salt['pillar.get']('prometheus:mgr:sd_password') }}
+        username: {{ sd_username }}
+        password: {{ sd_password }}
 {%- endif %}
 {%- for job, files in salt['pillar.get']('prometheus:scrape_configs', {}).items() %}
   - job_name: {{ job }}
