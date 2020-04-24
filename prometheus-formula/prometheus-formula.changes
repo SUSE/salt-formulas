@@ -2,7 +2,7 @@
 Thu Apr 23 08:11:39 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Update to version 0.2.1
-- Bugfix: Check for non-empty credentials
+- Bugfix: Check for non-empty credentials (bsc#1168805)
 
 -------------------------------------------------------------------
 Tue Mar 31 15:30:05 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
