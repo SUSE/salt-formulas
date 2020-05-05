@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May  5 15:45:20 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.2.1
+- Restart Grafana when updating configuration
+
+-------------------------------------------------------------------
 Wed Mar 18 11:40:01 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.2

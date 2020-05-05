@@ -101,10 +101,10 @@ grafana-server:
       - grafana
   service.running:
     - enable: True
-    - restart: True
-    - requires:
+    - watch_any:
       - file: /etc/grafana/provisioning/datasources/datasources.yml
       - file: /etc/grafana/provisioning/dashboards/dashboard-provider.yml
+      - file: /etc/grafana/provisioning/*/*.json
       - file: /etc/grafana/grafana.ini
 
 {%- else %}
