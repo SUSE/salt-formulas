@@ -25,7 +25,7 @@ default_pool:
     $name: Pool local path
     $default: /var/lib/libvirt/images
     $help: Path to the folder containing the disk images
-    $required: true
+    $required: default_pool_enabled == true
 
 default_net:
   $type: group
@@ -43,7 +43,7 @@ default_net:
     $help: Name of the network bridge interface to use
     $placeholder: br0
     $visibleIf: default_net#mode == "Bridge"
-    $required: true
+    $required: default_net#mode == "Bridge"
 
   ipv4:
     $type: group
