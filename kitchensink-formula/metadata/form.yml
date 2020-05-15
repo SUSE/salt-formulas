@@ -69,6 +69,7 @@ kitchensync:
               $name: Yet another field
               $placeholder: Enable/disable this field using the selector in the group above
               $disabled: 'this.parent.parent.parent.value.field != "Enable"'
+
   show_hidden:
     $type: select
     $values: ["Show",
@@ -76,6 +77,7 @@ kitchensync:
               ]
     $default: Show   
     $name: Show hidden
+
   hidden:
     $type: edit-group
     $itemName: Hidden
@@ -93,6 +95,32 @@ kitchensync:
             $name: Device Mount Point
             $help: What should the partition be mount as - /, swap, /var, ...
             $optional: True      
-            $default: blabla      
+            $default: blabla   
 
-              
+  recursive_dict_of_dicts:
+      $type: edit-group
+      $minItems: 1
+      $name: An edit-group of edit-groups with a nested default value
+      $prototype:
+          $type: group
+          $key:
+              $type: text
+          group_name:
+              $type: text
+          entries:
+              $type: edit-group
+              $minItems: 1
+              $prototype:
+                  $key:
+                      $type: text
+                  entry_name:
+                      $type: text
+                  entry_desc:
+                      $type: text
+      $default:
+          def_gr1:
+              group_name: default group 1
+              entries:
+                  def_entry1:
+                      entry_name: default entry 1
+                      entry_desc: some text
