@@ -1,7 +1,7 @@
 #
 # spec file for package prometheus-exporters-formula
 #
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -18,7 +18,7 @@
 %define fname prometheus-exporters
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           prometheus-exporters-formula
-Version:        0.5
+Version:        0.6
 Release:        0
 Summary:        Salt formula for installing and configuring Prometheus exporters
 License:        Apache-2.0
