@@ -1183,27 +1183,58 @@
   "templating": {
     "list": [
       {
-        "allValue": null,
+        "allValue": ".{0}",
         "current": {
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "selected": true,
+          "tags": [],
+          "text": "",
+          "value": [
+            ""
+          ]
         },
         "datasource": "Prometheus",
-        "definition": "label_values(up{job='mgr-clients', instance=~'.*'} , hostname)",
+        "definition": "query_result(label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \"([^,]*).*\") or label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*),.*\") or  label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*)\"))",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Group",
+        "multi": true,
+        "name": "group",
+        "options": [],
+        "query": "query_result(label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \"([^,]*).*\") or label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*),.*\") or  label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*)\"))",
+        "refresh": 1,
+        "regex": "/.*grp=\\\"([^,]*)\\\".*/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "apps.$group",
+        "tags": [],
+        "tagsQuery": "test",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "tags": [],
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(up{job='mgr-clients', groups=~'(.*,)?$group(,.*)?'} , hostname)",
         "hide": 0,
         "includeAll": true,
         "label": "Host",
         "multi": false,
         "name": "hostname",
         "options": [],
-        "query": "label_values(up{job='mgr-clients', instance=~'.*'} , hostname)",
+        "query": "label_values(up{job='mgr-clients', groups=~'(.*,)?$group(,.*)?'} , hostname)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 2,
-        "tagValuesQuery": "",
+        "tagValuesQuery": "apps.$tag",
         "tags": [],
-        "tagsQuery": "",
+        "tagsQuery": "label_values(up{job='mgr-clients', groups=~'(.*,)?$group(,.*)?'} , hostname)",
         "type": "query",
         "useTags": false
       }

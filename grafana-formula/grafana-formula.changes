@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun  9 13:05:22 UTC 2020 - Joao Cavalheiro <jcavalheiro@suse.com>
+
+- Version 0.2.2
+- Add support for system groups in Client Systems dashboard
+
+-------------------------------------------------------------------
 Tue May  5 15:45:20 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.2.1
