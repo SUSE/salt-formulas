@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun  9 15:05:11 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.7
+- Add support for exporters proxy (exporter_exporter)
+
+-------------------------------------------------------------------
 Wed May 27 09:15:43 UTC 2020 - Johannes Renner <jrenner@suse.com>
 
 - Version 0.6

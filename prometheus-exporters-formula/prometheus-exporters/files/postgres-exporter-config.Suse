@@ -16,4 +16,10 @@ DATA_SOURCE_NAME="{{ salt['pillar.get']('postgres_exporter:data_source_name', 'p
 #
 # Extra options for prometheus-postgres_exporter
 #
-POSTGRES_EXPORTER_PARAMS="{{ salt['pillar.get']('postgres_exporter:args', '') }}"
+{% set exporter_args = salt['pillar.get']('postgres_exporter:args') %}
+{% set exporter_address = salt['pillar.get']('postgres_exporter:address') %}
+{% if exporter_address and '-web.listen-address' not in exporter_args %}
+  {% set exporter_args = exporter_args +
+    " --web.listen-address=" + exporter_address %}
+{% endif %}
+POSTGRES_EXPORTER_PARAMS={{ exporter_args }}

@@ -1,0 +1,10 @@
+## Path:           Applications/ExporterExporter
+## Description:    Reverse proxy designed for Prometheus exporters
+## Type:           string()
+## Default:        ""
+## ServiceRestart: prometheus-exporter_exporter
+#
+# Arguments for running prometheus-exporter_exporter
+#
+{% set proxy_port = salt['pillar.get']('proxy_port') %}
+EXPEXP_FLAGS='-web.listen-address=:{{ proxy_port }}'
