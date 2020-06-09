@@ -116,6 +116,7 @@ openvpn:
 
     ssl:
       $type: group
+      $help: Required SSL/TLS certificates and key file. When "Location" is set to "local", ensure the files are in present on the OpenVPN server system before applying the highstate!
 
       ca_group:
         $type: group
