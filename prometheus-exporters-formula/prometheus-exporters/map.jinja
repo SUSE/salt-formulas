@@ -9,6 +9,9 @@
         'postgres_exporter_package': 'golang-github-wrouesnel-postgres_exporter',
         'postgres_exporter_service': 'prometheus-postgres_exporter',
         'postgres_exporter_service_config': '/etc/sysconfig/prometheus-postgres_exporter',
+        'exporter_exporter_package': 'golang-github-QubitProducts-exporter_exporter',
+        'exporter_exporter_service': 'prometheus-exporter_exporter',
+        'exporter_exporter_service_config': '/etc/sysconfig/prometheus-exporter_exporter',
     },
     'Debian': {
         'node_exporter_package': 'prometheus-node-exporter',
@@ -33,4 +36,3 @@
         'postgres_exporter_service_config': '/etc/sysconfig/prometheus-postgres_exporter',
     },
 }, merge=salt['pillar.get']('exporters:lookup')) %}
-

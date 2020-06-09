@@ -1,12 +1,18 @@
+proxy_enabled: True
+proxy_port: 9999
+
 node_exporter:
   enabled: True
-  args: --web.listen-address=":9100"
+  address: ':9100'
+  args:
 
 apache_exporter:
   enabled: False
-  args: --telemetry.address=":9117"
+  address: ':9117'
+  args:
 
 postgres_exporter:
   enabled: False
+  address: ':9187'
   data_source_name: postgresql://user:passwd@localhost:5432/database?sslmode=disable
-  args: --web.listen-address=":9187"
+  args:

@@ -1,5 +1,11 @@
 # Set the command-line arguments to pass to the server.
-ARGS="{{ salt['pillar.get']('apache_exporter:args', '') }}"
+{% set exporter_args = salt['pillar.get']('apache_exporter:args') %}
+{% set exporter_address = salt['pillar.get']('apache_exporter:address') %}
+{% if exporter_address and '-telemetry.address' not in exporter_args %}
+  {% set exporter_args = exporter_args +
+    " --telemetry.address=" + exporter_address %}
+{% endif %}
+ARGS={{ exporter_args }}
 
 #Usage of prometheus-apache-exporter:
 #  -host_override string

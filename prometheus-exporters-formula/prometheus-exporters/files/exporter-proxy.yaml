@@ -1,0 +1,10 @@
+{% set exporter_address = salt['pillar.get'](module ~ '_exporter:address') %}
+{% set exporter_port = exporter_address.rsplit(':')[-1] %}
+{% set exporter_host = exporter_address.split(':')[0] %}
+
+method: http
+http:
+   port: {{ exporter_port }}
+{% if exporter_host %}
+   address: {{ exporter_host }}
+{% endif %}

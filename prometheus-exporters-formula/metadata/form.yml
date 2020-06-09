@@ -1,3 +1,15 @@
+proxy_enabled:
+  $type: boolean
+  $name: Enable reverse proxy
+  $help: Install reverse proxy for Prometheus exporters
+
+proxy_port:
+  $type: number
+  $name: Reverse proxy port number
+  $default: 9999
+  $disabled: '!formValues.proxy_enabled'
+  $required: True
+
 node_exporter:
   $type: group
   $help: Prometheus exporter for hardware and OS metrics.
@@ -6,10 +18,13 @@ node_exporter:
     $type: boolean
     $default: True
 
+  address:
+    $type: text
+    $default: ':9100'
+
   args:
     $name: "Arguments"
     $type: text
-    $default: --web.listen-address=":9100"
     $help: Please refer to the documentation for available options.
 
 apache_exporter:
@@ -20,10 +35,13 @@ apache_exporter:
     $type: boolean
     $default: False
 
+  address:
+    $type: text
+    $default: ':9117'
+
   args:
     $name: "Arguments"
     $type: text
-    $default: --telemetry.address=":9117"
     $help: Please refer to the documentation for available options.
 
 postgres_exporter:
@@ -34,6 +52,10 @@ postgres_exporter:
     $type: boolean
     $default: False
 
+  address:
+    $type: text
+    $default: ':9187'
+
   data_source_name:
     $type: text
     $default: postgresql://user:passwd@localhost:5432/database?sslmode=disable
@@ -41,5 +63,4 @@ postgres_exporter:
   args:
     $name: "Arguments"
     $type: text
-    $default: --web.listen-address=":9187"
     $help: Please refer to the documentation for available options.
