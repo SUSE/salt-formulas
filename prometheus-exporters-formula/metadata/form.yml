@@ -1,6 +1,7 @@
 proxy_enabled:
   $type: boolean
   $name: Enable reverse proxy
+  $default: False
   $help: Install reverse proxy for Prometheus exporters
 
 proxy_port:
