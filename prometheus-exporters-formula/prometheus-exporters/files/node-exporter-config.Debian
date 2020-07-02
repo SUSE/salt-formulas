@@ -2,13 +2,7 @@
 # Due to shell scaping, to pass backslashes for regexes, you need to double
 # them (\\d for \d). If running under systemd, you need to double them again
 # (\\\\d to mean \d), and escape newlines too.
-{% set exporter_args = salt['pillar.get']('node_exporter:args') %}
-{% set exporter_address = salt['pillar.get']('node_exporter:address') %}
-{% if exporter_address and '-web.listen-address' not in exporter_args %}
-  {% set exporter_args = exporter_args +
-    " --web.listen-address=" + exporter_address %}
-{% endif %}
-ARGS={{ exporter_args }}
+ARGS={{ args }}
 
 # Prometheus-node-exporter supports the following options:
 #
