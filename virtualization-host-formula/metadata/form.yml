@@ -18,19 +18,19 @@ default_net_enabled:
 default_pool:
   $type: group
   $help: Configure the default storage pool
-  $visibleIf: default_pool_enabled == true
+  $visible: formValues.default_pool_enabled == true
 
   path:
     $type: text
     $name: Pool local path
     $default: /var/lib/libvirt/images
     $help: Path to the folder containing the disk images
-    $required: default_pool_enabled == true
+    $required: formValues.default_pool_enabled == true
 
 default_net:
   $type: group
   $help: Configure the default virtual network
-  $visibleIf: default_net_enabled == true
+  $visible: formValues.default_net_enabled == true
 
   mode:
     $type: select
@@ -41,14 +41,14 @@ default_net:
     $type: text
     $name: Bridge name
     $help: Name of the network bridge interface to use
-    $placeholder: br0
-    $visibleIf: default_net#mode == "Bridge"
-    $required: default_net#mode == "Bridge"
+    $default: br0
+    $visible: formValues.default_net.mode == 'Bridge'
+    $required: formValues.default_net.mode == 'Bridge'
 
   ipv4:
     $type: group
     $help: IPv4 settings
-    $visibleIf: default_net#mode == "NAT"
+    $visible: formValues.default_net.mode == 'NAT'
 
     gateway:
       $type: text
@@ -73,7 +73,7 @@ default_net:
   ipv6:
     $type: group
     $help: IPv6 settings
-    $visibleIf: default_net#mode == "NAT"
+    $visible: formValues.default_net.mode == 'NAT'
 
     gateway:
       $type: text
