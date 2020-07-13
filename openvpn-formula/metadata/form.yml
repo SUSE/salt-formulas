@@ -1,0 +1,239 @@
+openvpn:
+  $type: namespace
+  server:
+    $type: namespace
+
+    enabled:
+      $type: boolean
+      $default: True
+      $help: Enable OpenVPN server.
+
+    client_to_client:
+      $type: boolean
+      $default: false
+      $name: Client-to-client communication
+      $help: Allow communication between clients.
+
+    duplicate_cn:
+      $type: boolean
+      $default: false
+      $name: Duplicate CN
+      $help: Allow multiple clients with the same common name.
+
+    compression:
+      $type: boolean
+      $default: true
+      $help: Enable LZ4 compression.
+
+    max_clients:
+      $type: number
+      $help: Limit the number of allowed concurrent clients.
+
+    verbosity:
+      $type: number
+      $default: 3
+      $help: |
+        Set verbosity level.
+
+        0 -- No output except fatal errors.
+        1 to 4 -- Normal usage range.
+        5  --  Output R and W characters to the console for each packet read and write, uppercase is
+        used for TCP/UDP packets and lowercase is used for TUN/TAP packets.
+        6 to 11 -- Debug info range (see errlevel.h for additional information on debug levels).
+
+    device:
+      $type: select
+      $default: tun
+      $values:
+        - tun
+        - tap
+      $help: |
+        tun: OSI Layer 3 (IPv4/IPv6)
+        tap: OSI Layer 2 (Ethernet)
+
+    topology:
+      $type: select
+      $default: subnet
+      $values:
+        - subnet
+        - gateway
+
+    tls_auth:
+      $type: boolean
+      $default: true
+      $help: Add an additional layer of HMAC authentication to mitigate DoS attacks.
+
+    auth:
+      $help: Use unix user account via PAM instead of client certificates.
+      $name: Client Authentication via PAM
+      $type: boolean
+
+    bind:
+      $type: group
+      $help: Socket the server binds to.
+
+      address:
+        $default: 0.0.0.0
+        $help: Only bind to hostname or IP address. Default is 0.0.0.0 (bind to all interfaces).
+
+      port:
+        $type: number
+        $default: 1194
+        $help: Listening port.
+
+      protocol:
+        $type: select
+        $default: udp
+        $help: Transport protocol. UDP is recommended for better performance.
+        $values:
+          - udp
+          - tcp
+
+    interface:
+      $type: group
+      $help: |
+        VPN Network information. In gateway mode, this is used for the route.
+        In subnet mode, this network is used to draw client IP addresses from.
+
+      network:
+        $type: text
+        $default: 10.8.0.0
+
+      netmask:
+        $type: text
+        $default: 255.255.255.0
+
+    routes:
+      $help: Additional routes to push to a client.
+      $type: edit-group
+      $itemName: Route ${i}
+      $prototype:
+        $type: group
+        network:
+          $type: text
+        netmask:
+          $type: text
+
+    ssl:
+      $type: group
+      $help: Required SSL/TLS certificates and key file. When "Location" is set to "local", ensure the files are in present on the OpenVPN server system before applying the highstate!
+
+      ca_group:
+        $type: group
+        $name: CA Certificate
+        location:
+          $help: Select a CA certificate on the OpenVPN server system or download one over HTTP(s)/FTP.
+          $type: select
+          $values:
+            - local
+            - remote
+        file:
+          $help: Path to the CA certificate on the OpenVPN server system.
+          $visible: this.parent.value.location == "local"
+          $default: "/etc/openvpn/ssl/ca.crt"
+        url:
+          $type: url
+          $help: URL to the CA certificate (HTTP(s)/FTP are supported).
+          $visible: this.parent.value.location == "remote"
+
+      cert_group:
+        $type: group
+        $name: Server Certificate
+        location:
+          $help: Select a server certificate on the OpenVPN server system or download one over HTTP(s)/FTP.
+          $type: select
+          $values:
+            - local
+            - remote
+        file:
+          $help: Path to the server certificate on the OpenVPN server system.
+          $visible: this.parent.value.location == "local"
+          $default: "/etc/openvpn/ssl/server.crt"
+        url:
+          $type: url
+          $help: URL to the server certificate (HTTP(s)/FTP are supported).
+          $visible: this.parent.value.location == "remote"
+
+      key_group:
+        $type: group
+        $name: Server Key
+        location:
+          $help: Select a server key on the OpenVPN server system or download one over HTTP(s)/FTP.
+          $type: select
+          $values:
+            - local
+            - remote
+        file:
+          $help: Path to the server key on the OpenVPN server system.
+          $visible: this.parent.value.location == "local"
+          $default: "/etc/openvpn/ssl/server.key"
+        url:
+          $type: url
+          $help: URL to the server key (HTTP(s)/FTP are supported).
+          $visible: this.parent.value.location == "remote"
+
+      crl_group:
+        $type: group
+        $name: Client Revocation List (CRL)
+
+        enabled:
+          $help: Enable verification of revoked clients via a Certificate Revocation List (CRL).
+          $type: boolean
+        location:
+          $help: Select a CRL on the OpenVPN server system or download one over HTTP(s)/FTP.
+          $visible: this.parent.value.enabled == true
+          $type: select
+          $values:
+            - local
+            - remote
+        file:
+          $help: Path to the CRL on the OpenVPN server system.
+          $visible: this.parent.value.enabled == true && this.parent.value.location == "local"
+          $default: "/etc/openvpn/ssl/crl.pem"
+        url:
+          $type: url
+          $help: URL to the CRL (HTTP(s)/FTP are supported).
+          $visible: this.parent.value.enabled == true && this.parent.value.location == "remote"
+
+    endpoint:
+      $visible: this.parent.value.topology == "gateway"
+      $type: group
+      $name: Gateway Endpoint
+
+      local:
+        $type: text
+
+      remote:
+        $type: text
+
+    dhcp_pool:
+      $visible: this.parent.value.topology == "gateway"
+      $type: group
+      $name: Gateway DHCP-Pool
+
+      start:
+        $type: text
+
+      end:
+        $type: text
+
+    redirect_gateway:
+      $visible: this.parent.value.topology == "gateway"
+      $type: boolean
+
+    firewall:
+      $type: group
+
+      enabled:
+        $type: boolean
+        $name: Open Firewall Ports
+
+      zone:
+        $visible: this.parent.value.enabled == true
+        $help: Which zone to open the port in. Uses the default firewalld zone if left empty.
+        $default: public
+
+      masquerade:
+        $type: boolean
+        $visible: this.parent.value.enabled == true
+        $default: true
