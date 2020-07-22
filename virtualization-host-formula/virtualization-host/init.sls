@@ -1,8 +1,15 @@
 {% from "virtualization-host/map.jinja" import packages with context %}
 
+# SLES JeOS doesn't ship the KVM and Xen modules
+no_kernel_default_base:
+  pkg.removed:
+    - name: kernel-default-base
+
 virthost_packages:
   pkg.installed:
     - pkgs: {{ packages }}
+    - require:
+        - pkg: no_kernel_default_base
 
 libvirtd_service:
   service.running:
