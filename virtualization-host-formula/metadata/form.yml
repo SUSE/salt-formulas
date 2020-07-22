@@ -35,7 +35,7 @@ default_net:
   mode:
     $type: select
     $values: ["NAT", "Bridge"]
-    $default: "NAT"
+    $default: "Bridge"
 
   bridge:
     $type: text

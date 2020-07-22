@@ -43,6 +43,31 @@ default_pool:
 {% endif %}
 
 {% if pillar['default_net_enabled'] %}
+
+{% if pillar['default_net']['mode'] == "Bridge" %}
+
+# pick the first non-lo in grains['hwaddr_interfaces']
+{% set port = grains['hwaddr_interfaces']|reject('equalto', 'lo')|first() %}
+{% set nic = pillar['default_net']['bridge'] %}
+
+ifcfg-{{ port }}:
+  file.managed:
+    - name: /etc/sysconfig/network/ifcfg-{{ port }}
+    - contents: |
+        STARTMODE=auto
+        BOOTPROTO=none
+
+ifcfg-{{ nic }}:
+  file.managed:
+    - name: /etc/sysconfig/network/ifcfg-{{ nic }}
+    - contents: |
+        STARTMODE=onboot
+        BOOTPROTO=dhcp
+        BRIDGE=yes
+        BRIDGE_PORTS={{ port }}
+
+{% endif %}  {# if pillar['default_net']['mode'] == "Bridge" #}
+
 # We can't use the virt.network_running here since the IP patch isn't in 4.0's salt
 default-net.xml:
   file.managed:
