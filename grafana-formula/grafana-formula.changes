@@ -1,7 +1,13 @@
 -------------------------------------------------------------------
 Fri Oct  2 12:37:21 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
+- Version 0.3.0
 - Use variable for product name
+
+-------------------------------------------------------------------
+Tue Aug  4 12:26:03 UTC 2020 - Dario Maiocchi <dmaiocchi@suse.com>
+
+- Add HA/SAP dashboards 
 
 -------------------------------------------------------------------
 Tue Jun  9 13:05:22 UTC 2020 - Joao Cavalheiro <jcavalheiro@suse.com>
