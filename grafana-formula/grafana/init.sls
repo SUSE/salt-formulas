@@ -95,6 +95,21 @@
   file.absent
 {%- endif %}
 
+# HA and SAP dashboards
+# * HA:
+{%- if salt['pillar.get']('grafana:dashboards:add_ha_dashboards', False) %}
+  pkg.installed:
+    - name:
+      - grafana-ha-cluster-dashboards
+{%- endif %}
+# * SAP:
+{%- if salt['pillar.get']('grafana:dashboards:add_sap_dashboards', False) %}
+  pkg.installed:
+    - pkgs:
+      - grafana-sap-hana-dashboards
+      - grafana-sap-netweaver-dashboards
+{%- endif %}
+
 grafana-server:
   pkg.installed:
     - names:
