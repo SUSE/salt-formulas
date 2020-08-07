@@ -94,13 +94,13 @@ grafana:
     add_ha_dashboard:
       $type: boolean
       $name: HA pacemaker cluster dashboards
-      $help: Add dashboard for monitoring HA pacemaker clusters
+      $help: Add dashboard for monitoring HA pacemaker clusters components
       $default: False
 
     add_sap_hana_dashboard:
       $type: boolean
       $name: SAP HANA dashboards
-      $help: Add dashboard for monitoring HA SAP HANA components
+      $help: Add dashboard for monitoring SAP HANA components
       $default: False
 
     add_sap_netweaver_dashboard:
