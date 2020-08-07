@@ -91,14 +91,20 @@ grafana:
       $help: Add dashboard for monitoring Kubernetes namespaces
       $default: False
 
-    add_ha_dashboards:
+    add_ha_dashboard:
       $type: boolean
       $name: HA pacemaker cluster dashboards
       $help: Add dashboard for monitoring HA pacemaker clusters
       $default: False
 
-    add_sap_dashboards:
+    add_sap_hana_dashboard:
       $type: boolean
-      $name: SAP dashboards
-      $help: Add dashboard for monitoring HA SAP components (hana/netweaver)
+      $name: SAP HANA dashboards
+      $help: Add dashboard for monitoring HA SAP HANA components
+      $default: False
+
+    add_sap_netweaver_dashboard:
+      $type: boolean
+      $name: SAP NETWEAVER dashboards
+      $help: Add dashboard for monitoring SAP NETWAVER components
       $default: False
