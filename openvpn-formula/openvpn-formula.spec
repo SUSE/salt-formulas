@@ -17,12 +17,12 @@
 
 
 Name:           openvpn-formula
-Version:        0.1
+Version:        0.1.1
 Release:        0
 Summary:        OpenVPN Salt Formula for Uyuni/SUSE Manager
 License:        Apache-2.0
 URL:            https://github.com/SUSE/salt-formulas/
-Source:         %{name}-%{version}.tar.gz
+Source:         %{name}-%{version}.tar.xz
 Requires:       susemanager-sls
 
 %description
@@ -45,7 +45,6 @@ cp -r openvpn/* %{buildroot}/usr/share/susemanager/formulas/states/openvpn/
 %dir /usr/share/susemanager/formulas/metadata/openvpn
 %dir /usr/share/susemanager/formulas/states/openvpn
 %dir /usr/share/susemanager/formulas/states/openvpn/server
-%dir /usr/share/susemanager/formulas/states/openvpn/client
 %dir /usr/share/susemanager/formulas/states/openvpn/files
 /usr/share/susemanager/formulas/metadata/openvpn/form.yml
 /usr/share/susemanager/formulas/metadata/openvpn/metadata.yml
@@ -54,10 +53,6 @@ cp -r openvpn/* %{buildroot}/usr/share/susemanager/formulas/states/openvpn/
 /usr/share/susemanager/formulas/states/openvpn/map.jinja
 /usr/share/susemanager/formulas/states/openvpn/server/init.sls
 /usr/share/susemanager/formulas/states/openvpn/server/service.sls
-/usr/share/susemanager/formulas/states/openvpn/client/init.sls
-/usr/share/susemanager/formulas/states/openvpn/client/service.sls
-/usr/share/susemanager/formulas/states/openvpn/files/client.conf
-/usr/share/susemanager/formulas/states/openvpn/files/default
 /usr/share/susemanager/formulas/states/openvpn/files/_gateway.conf
 /usr/share/susemanager/formulas/states/openvpn/files/server.conf
 /usr/share/susemanager/formulas/states/openvpn/files/_subnet.conf
