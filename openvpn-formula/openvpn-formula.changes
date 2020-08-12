@@ -5,6 +5,6 @@ Tue Aug 11 12:37:26 UTC 2020 - Alexander Graul <alexander.graul@suse.com>
 - Add hint that ssl certs must be on system (bsc#1172279)
 
 -------------------------------------------------------------------
-Mon Jul  6 11:01:18 UTC 2020 - Alexander Graul <alexander.graul@suse.com>
+Mon Apr 27 14:35:26 UTC 2020 - Alexander Graul <agraul@suse.com>
 
 - Initial Package v0.1
