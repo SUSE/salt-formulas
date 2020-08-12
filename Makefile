@@ -28,5 +28,8 @@ virtualization-host:: clean
 system-lock:: clean
 	git archive --format=tar.gz --prefix=system-lock-formula-${SYSTEM_LOCK_VERSION}/ HEAD:system-lock-formula/ >system-lock-formula-${SYSTEM_LOCK_VERSION}.tar.gz
 
+uyuni-users:: clean
+	git archive --format=tar.gz --prefix=uyuni-users-formula-${SYSTEM_LOCK_VERSION}/ HEAD:uyuni-users-formula/ >uyuni-users-formula-${SYSTEM_LOCK_VERSION}.tar.gz
+
 clean::
 	find . -name "*~" | xargs rm -f
