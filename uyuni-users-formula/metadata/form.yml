@@ -1,0 +1,115 @@
+uyuni:
+  $type: namespace
+
+  xmlrpc:
+    $type: group
+    $name: Server Administrator (use to create orgs)
+    user:
+      $type: text
+      $name: username
+      $help: "Uyumi server manager username"
+      $required: false
+    password:
+      $type: password
+      $name: password
+      $help: "Uyumi server manager password"
+      $required: false
+  orgs:
+    $type: edit-group
+    $name: Organizations
+    $prototype:
+      org_id:
+        $type: text
+        $name: Organization Name
+        $required: true
+      org_admin_user:
+        $type: text
+        $name: org admin user
+        $required: true
+      org_admin_password:
+        $type: password
+        $name: org admin password
+        $required: true
+      first_name:
+        $type: text
+        $name: org admin first name
+        $required: true
+      last_name:
+        $type: text
+        $name: org admin last name
+        $required: true
+      email:
+        $type: text
+        $name: org admin email
+        $required: true
+      system_groups:
+        $type: edit-group
+        $name: System Groups
+        $prototype:
+          name:
+            $type: text
+            $name: System Group
+            $required: true
+          description:
+            $type: text
+            $name: System Group description
+            $required: true
+          expression:
+            $type: text
+            $name: System Group Expression
+            $help: "default value will be '*'"
+            $required: false
+          target:
+            $type: text
+            $name: System Group Target
+            $default: 'glob'
+            $help: "default value will be 'glob'"
+            $required: false
+      users:
+        $type: edit-group
+        $name: Users
+        $prototype:
+          name:
+            $type: text
+            $name: Name
+            $required: true
+          password:
+            $type: password
+            $name: Password
+            $required: true
+          email:
+            $type: text
+            $name: Email
+            $required: true
+          first_name:
+            $type: text
+            $name: First Name
+            $required: true
+          last_name:
+            $type: text
+            $name: last Name
+            $required: true
+          roles:
+            $type: edit-group
+            $name: Roles
+            $prototype:
+              $type: text
+              $required: true
+          system_groups:
+            $type: edit-group
+            $name: System Groups
+            $prototype:
+              $type: text
+              $required: true
+          manageable_channels:
+            $type: edit-group
+            $name: Manageable Channels
+            $prototype:
+              $type: text
+              $required: true
+          subscribable_channels:
+            $type: edit-group
+            $name: Subscribable Channels
+            $prototype:
+              $type: text
+              $required: true

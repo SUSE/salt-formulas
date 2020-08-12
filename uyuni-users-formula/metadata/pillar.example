@@ -1,0 +1,41 @@
+uyuni:
+  xmlrpc:
+    user: admin
+    password: admin
+  orgs:
+    - org_id: org_form
+      org_admin_user: org_form_user
+      org_admin_password: org_form_user
+      first_name: admin org
+      last_name: admin org
+      email: admin_org@org.com
+      system_groups:
+        - name: httpd_servers
+          description: httpd_servers
+          expression: "*httpd*"
+      users:
+        - name: user_form_1
+          password: user_form_1
+          email: user_form_1@teest.como
+          first_name: first
+          last_name: last
+          roles: ['config_admin']
+          system_groups: ['httpd_servers']
+          manageable_channels : []
+          subscribable_channels : []
+    - org_id: my_org
+      org_admin_user: my_org_user
+      org_admin_password: my_org_user
+      first_name: first_name
+      last_name: last_name__
+      email: my_org_user@org.com
+      users:
+        - name: user2
+          password: user2
+          email: user1@teest.como
+          first_name: first
+          last_name: last
+          roles: []
+          system_groups: ['httpd_servers', 'example_group']
+          manageable_channels : ['my_local_channel']
+          subscribable_channels : ['new_local', 'my_local_channel_2']
