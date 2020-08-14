@@ -65,3 +65,55 @@ postgres_exporter:
     $name: "Arguments"
     $type: text
     $help: Please refer to the documentation for available options.
+
+# SAP/HA exporters
+ha_cluster_exporter:
+  $type: group
+  $help: Prometheus exporter for Pacemaker based HA clusters.
+
+  enabled:
+    $type: boolean
+    $default: False
+
+  address:
+    $type: text
+    $default: ':9664'
+
+  args:
+    $name: "Arguments"
+    $type: text
+    $help: Please refer to the documentation for available options.
+
+sap_host_exporter:
+  $type: group
+  $help: Prometheus exporter for SAP systems (NetWeaver)
+
+  enabled:
+    $type: boolean
+    $default: False
+
+  address:
+    $type: text
+    $default: ':9680'
+
+  args:
+    $name: "Arguments"
+    $type: text
+    $help: Please refer to the documentation for available options.
+
+hanadb_exporter:
+  $type: group
+  $help: Prometheus exporter for SAP HANA database metrics.
+
+  enabled:
+    $type: boolean
+    $default: False
+
+  address:
+    $type: text
+    $default: ':9668'
+
+  args:
+    $name: "Arguments"
+    $type: text
+    $help: Please refer to the documentation for available options.

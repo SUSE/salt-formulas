@@ -16,3 +16,20 @@ postgres_exporter:
   address: ':9187'
   data_source_name: postgresql://user:passwd@localhost:5432/database?sslmode=disable
   args:
+
+
+# SAP/HA exporters:
+ha_cluster_exporter:
+  enabled: False
+  address: ':9664'
+  args:
+
+sap_host_exporter:
+  enabled: False
+  address: ':9680'
+  args:
+
+hanadb_exporter:
+  enabled: False
+  address: ':9668'
+  args:
