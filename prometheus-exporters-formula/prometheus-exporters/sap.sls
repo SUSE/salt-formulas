@@ -2,7 +2,6 @@
 
 {% set proxy_enabled = salt['pillar.get']('proxy_enabled') %}
 
-
 {% set ha_cluster_exporter_enabled = salt['pillar.get']('ha_cluster_exporter:enabled', False) %}
 ha_cluster_exporter:
 {% if ha_cluster_exporter_enabled %}

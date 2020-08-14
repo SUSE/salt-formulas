@@ -88,10 +88,6 @@ sap_host_exporter:
     $type: boolean
     $default: False
 
-  address:
-    $type: text
-    $default: ':9680'
-
   args:
     $name: "Arguments"
     $type: text
@@ -105,9 +101,6 @@ hanadb_exporter:
     $type: boolean
     $default: False
 
-  address:
-    $type: text
-    $default: ':9668'
 
   args:
     $name: "Arguments"

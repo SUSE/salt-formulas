@@ -21,15 +21,12 @@ postgres_exporter:
 # SAP/HA exporters:
 ha_cluster_exporter:
   enabled: False
-  address: ':9664'
   args:
 
 sap_host_exporter:
   enabled: False
-  address: ':9680'
   args:
 
 hanadb_exporter:
   enabled: False
-  address: ':9668'
   args:
