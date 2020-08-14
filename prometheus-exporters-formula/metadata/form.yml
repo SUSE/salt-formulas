@@ -75,10 +75,6 @@ ha_cluster_exporter:
     $type: boolean
     $default: False
 
-  address:
-    $type: text
-    $default: ':9664'
-
   args:
     $name: "Arguments"
     $type: text
