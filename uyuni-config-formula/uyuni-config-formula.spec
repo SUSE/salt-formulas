@@ -1,5 +1,5 @@
 #
-# spec file for package uyuni-users-formula
+# spec file for package uyuni-config-formula
 #
 # Copyright (c) 2020 SUSE LLC
 #
@@ -16,21 +16,21 @@
 #
 
 
-%define fname uyuni-users
+%define fname uyuni-config
 %define fdir  %{_datadir}/susemanager/formulas
-Name:           kitchensink-formula
+Name:           uyuni-config-formula
 Version:        0.1
 Release:        0
-Summary:        Create uyuni users and organizations
+Summary:        Configure uyuni with organizations, users, groups, etc
 License:        Apache-2.0
 Group:          System/Packages
 Url:            https://github.com/SUSE/salt-formulas
-Source:         kitchensink-formula-%{version}.tar.gz
+Source:         uyuni-config-formula-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 %description
-Create uyuni users and organizations
+Create uyuni configuration
 
 %prep
 %setup -q
@@ -40,7 +40,7 @@ Create uyuni users and organizations
 %install
 mkdir -p %{buildroot}%{fdir}/states/%{fname}
 mkdir -p %{buildroot}%{fdir}/metadata/%{fname}
-cp -R kitchensink/* %{buildroot}%{fdir}/states/%{fname}
+cp -R uyuni-config/* %{buildroot}%{fdir}/states/%{fname}
 cp -R metadata/* %{buildroot}%{fdir}/metadata/%{fname}
 
 %files

@@ -1,0 +1,4 @@
+description:
+  Create organizations, users, system groups, etc using salt states
+group: hub
+

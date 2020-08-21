@@ -8,7 +8,7 @@ org_{{org['org_id']}}:
     - last_name: {{org['last_name']}}
     - email: {{org['email']}}
 
-    {% for group in org.get('system_groups', []) %}
+{% for group in org.get('system_groups', []) %}
 {{org['org_id']}}_{{group['name']}}:
   uyuni.group_present:
     - name: {{group['name']}}
@@ -19,9 +19,9 @@ org_{{org['org_id']}}:
     {% endif %}
     - org_admin_user: {{org['org_admin_user']}}
     - org_admin_password: {{org['org_admin_password']}}
-    {% endfor %}
+{% endfor %}
 
-    {% for user in org.get('users', []) %}
+{% for user in org.get('users', []) %}
 {{org['org_id']}}_{{user['name']}}:
   uyuni.user_present:
     - name: {{user['name']}}
@@ -43,6 +43,6 @@ org_{{org['org_id']}}:
     - manageable_channels: {{user.get('manageable_channels',[])}}
     - subscribable_channels: {{user.get('subscribable_channels', [])}}
 
-    {% endfor %}
+{% endfor %}
 
 {% endfor %}
