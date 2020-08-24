@@ -1,6 +1,8 @@
 {% from "prometheus-exporters/map.jinja" import exporters with context %}
 
-{% set proxy_enabled = salt['pillar.get']('proxy_enabled') %}
+{% set proxy_enabled = salt['pillar.get']('proxy_enabled') and
+  'exporter_exporter_package' in exporters and
+  exporters.exporter_exporter_package %}
 
 exporter_exporter:
 {% if proxy_enabled %}
