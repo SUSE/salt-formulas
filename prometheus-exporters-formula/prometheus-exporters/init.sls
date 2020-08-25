@@ -1,11 +1,10 @@
 {% from "prometheus-exporters/map.jinja" import exporters with context %}
 
-{% set proxy_enabled = salt['pillar.get']('proxy_enabled') and
-  'exporter_exporter_package' in exporters and
-  exporters.exporter_exporter_package %}
+{% set proxy_enabled = salt['pillar.get']('proxy_enabled') %}
+{% set proxy_supported = 'exporter_exporter_package' in exporters and exporters.exporter_exporter_package %}
 
 exporter_exporter:
-{% if proxy_enabled %}
+{% if proxy_enabled and proxy_supported %}
   pkg.installed:
     - name: {{ exporters.exporter_exporter_package }}
   file.managed:
@@ -25,7 +24,7 @@ exporter_exporter:
     - enable: True
     - require:
       - file: exporter_exporter
-{% else %}
+{% elif proxy_supported %}
   service.dead:
     - name: {{ exporters.exporter_exporter_service }}
     - enable: False
@@ -67,7 +66,7 @@ node_exporter:
     - enable: False
 {% endif %}
 
-{% if node_exporter_enabled and proxy_enabled %}
+{% if node_exporter_enabled and proxy_enabled and proxy_supported %}
 node_exporter_proxy:
     file.managed:
       - name: /etc/exporter_exporter.d/node.yaml
@@ -120,7 +119,7 @@ apache_exporter:
     - enable: False
 {% endif %}
 
-{% if apache_exporter_enabled and proxy_enabled %}
+{% if apache_exporter_enabled and proxy_enabled and proxy_supported %}
 apache_exporter_proxy:
   file.managed:
     - name: /etc/exporter_exporter.d/apache.yaml
@@ -173,7 +172,7 @@ postgres_exporter:
     - enable: False
 {% endif %}
 
-{% if postgres_exporter_enabled and proxy_enabled %}
+{% if postgres_exporter_enabled and proxy_enabled and proxy_supported %}
 postgres_exporter_proxy:
   file.managed:
     - name: /etc/exporter_exporter.d/postgres.yaml
