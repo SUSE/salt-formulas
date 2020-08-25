@@ -3,8 +3,9 @@
 {% set proxy_enabled = salt['pillar.get']('proxy_enabled') %}
 {% set proxy_supported = 'exporter_exporter_package' in exporters and exporters.exporter_exporter_package %}
 
+{% if proxy_supported %}
 exporter_exporter:
-{% if proxy_enabled and proxy_supported %}
+  {% if proxy_enabled %}
   pkg.installed:
     - name: {{ exporters.exporter_exporter_package }}
   file.managed:
@@ -24,10 +25,11 @@ exporter_exporter:
     - enable: True
     - require:
       - file: exporter_exporter
-{% elif proxy_supported %}
+  {% else %}
   service.dead:
     - name: {{ exporters.exporter_exporter_service }}
     - enable: False
+  {% endif %}
 {% endif %}
 
 {% set node_exporter_enabled = salt['pillar.get']('node_exporter:enabled', True) %}
