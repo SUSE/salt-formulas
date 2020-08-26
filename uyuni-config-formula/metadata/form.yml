@@ -60,10 +60,17 @@ uyuni:
             $help: "default value will be '*'"
             $required: false
           target:
-            $type: text
+            $type: select
             $name: System Group Target
+            $values: ['glob',
+                      'grain',
+                      'grain_pcre',
+                      'pillar',
+                      'pillar_pcre',
+                      'pillar_exact',
+                      'compound',
+                      'compound_pillar_exact']
             $default: 'glob'
-            $help: "default value will be 'glob'"
             $required: false
       users:
         $type: edit-group

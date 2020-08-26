@@ -28,6 +28,7 @@ Url:            https://github.com/SUSE/salt-formulas
 Source:         uyuni-config-formula-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
+Require:        uyuni-config-modules
 
 %description
 A formula to configure an Uyuni or SUSE Manager Server with organizations, users, groups and so on.

@@ -12,10 +12,10 @@ org_{{org['org_id']}}:
 {{org['org_id']}}_{{group['name']}}:
   uyuni.group_present:
     - name: {{group['name']}}
-    - description: {{group['description']}}
-    - expression: "{{group['expression']}}"
+    - description: {{group['description']|yaml_encode}}
+    - expression: {{group['expression']|yaml_encode}}
     {% if 'target' in group %}
-    - target: "{{group['target']}}"
+    - target: {{group['target']}}
     {% endif %}
     - org_admin_user: {{org['org_admin_user']}}
     - org_admin_password: {{org['org_admin_password']}}
@@ -29,10 +29,10 @@ org_{{org['org_id']}}:
     - email: {{user['email']}}
     - first_name: {{user['first_name']}}
     - last_name: {{user['last_name']}}
-    - org_admin_user: {{org['org_admin_user']}}
-    - org_admin_password: {{org['org_admin_password']}}
     - roles: {{user.get('roles', [])}}
     - system_groups: {{user.get('system_groups', [])}}
+    - org_admin_user: {{org['org_admin_user']}}
+    - org_admin_password: {{org['org_admin_password']}}
 
 {{org['org_id']}}_{{user['name']}}_channels:
   uyuni.user_channels:
