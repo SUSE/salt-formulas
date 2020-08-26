@@ -21,7 +21,7 @@
 Name:           uyuni-config-formula
 Version:        0.1
 Release:        0
-Summary:        Configure uyuni with organizations, users, groups, etc
+Summary:        Configure Uyuni with organizations, users, groups, etc.
 License:        Apache-2.0
 Group:          System/Packages
 Url:            https://github.com/SUSE/salt-formulas
