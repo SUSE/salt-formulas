@@ -3,7 +3,7 @@ uyuni:
 
   xmlrpc:
     $type: group
-    $name: Server Administrator (use to create orgs)
+    $name: Server Administrator (used to create orgs)
     user:
       $type: text
       $name: username
