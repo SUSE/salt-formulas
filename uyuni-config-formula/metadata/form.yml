@@ -12,7 +12,7 @@ uyuni:
     password:
       $type: password
       $name: password
-      $help: "Uyumi server manager password"
+      $help: "Server administrator password"
       $required: false
   orgs:
     $type: edit-group
