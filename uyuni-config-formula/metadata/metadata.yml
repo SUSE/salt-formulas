@@ -1,4 +1,3 @@
 description:
-  Create organizations, users, system groups, etc using salt states
+  Create organizations, users, system groups, etc. on an Uyuni or SUSE Manager Server
 group: hub
-
