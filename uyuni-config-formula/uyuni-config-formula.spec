@@ -30,7 +30,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 %description
-Create uyuni configuration
+A formula to configure an Uyuni or SUSE Manager Server with organizations, users, groups and so on.
 
 %prep
 %setup -q
