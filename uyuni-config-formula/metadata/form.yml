@@ -7,7 +7,7 @@ uyuni:
     user:
       $type: text
       $name: username
-      $help: "Uyumi server manager username"
+      $help: "Server administrator username"
       $required: false
     password:
       $type: password
