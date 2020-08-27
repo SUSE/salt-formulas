@@ -12,7 +12,7 @@ uyuni:
       system_groups:
         - name: httpd_servers
           description: httpd_servers
-          expression: "*httpd*"
+          target: "*httpd*"
       users:
         - name: user_form_1
           password: user_form_1

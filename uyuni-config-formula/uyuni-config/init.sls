@@ -13,9 +13,9 @@ org_{{org['org_id']}}:
   uyuni.group_present:
     - name: {{group['name']}}
     - description: {{group['description']|yaml_encode}}
-    - expression: {{group['expression']|yaml_encode}}
-    {% if 'target' in group %}
-    - target: {{group['target']}}
+    - target: {{group['target']|yaml_encode}}
+    {% if 'target_type' in group %}
+    - target_type: {{group['target_type']}}
     {% endif %}
     - org_admin_user: {{org['org_admin_user']}}
     - org_admin_password: {{org['org_admin_password']}}

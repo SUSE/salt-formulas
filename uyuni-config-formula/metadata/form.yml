@@ -54,12 +54,12 @@ uyuni:
             $type: text
             $name: System Group description
             $required: true
-          expression:
+          target:
             $type: text
             $name: System Group Expression
             $help: "default value will be '*'"
             $required: false
-          target:
+          target_type:
             $type: select
             $name: System Group Target
             $values: ['glob',
