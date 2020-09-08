@@ -98,21 +98,21 @@
 # HA and SAP dashboards
 # * HA:
 {%- if salt['pillar.get']('grafana:dashboards:add_ha_dashboard', False) %}
+ha_dashboard:
   pkg.installed:
-    - name:
-      - grafana-ha-cluster-dashboards
+    - name: grafana-ha-cluster-dashboards
 {%- endif %}
 # * SAP HANA:
 {%- if salt['pillar.get']('grafana:dashboards:add_sap_hana_dashboard', False) %}
+sap_hana_dashboard:
   pkg.installed:
-    - name:
-      - grafana-sap-hana-dashboards
+    - name: grafana-sap-hana-dashboards
 {%- endif %}
 # * SAP Netweaver:
 {%- if salt['pillar.get']('grafana:dashboards:add_sap_netweaver_dashboard', False) %}
+sap_netweaver_dashboard:
   pkg.installed:
-    - name:
-      - grafana-sap-netweaver-dashboards
+    - name: grafana-sap-netweaver-dashboards
 {%- endif %}
 
 grafana-server:
