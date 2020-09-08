@@ -73,38 +73,49 @@ grafana:
       $help: Add dashboard for monitoring an Apache HTTPD server
       $default: True
 
-    add_k8s_dashboard:
-      $type: boolean
-      $name: Kubernetes cluster dashboard
-      $help: Add dashboard for monitoring a Kubernetes cluster
-      $default: False
+    kubernetes:
+      $type: group
+      $disabled: "!formValues.grafana.enabled"
+      $help: CaaSP dashboards to install.
 
-    add_etcd_dashboard:
-      $type: boolean
-      $name: Kubernetes etcd dashboard
-      $help: Add dashboard for monitoring an etcd daemon
-      $default: False
+      add_k8s_dashboard:
+        $type: boolean
+        $name: Kubernetes cluster dashboard
+        $help: Add dashboard for monitoring a Kubernetes cluster
+        $default: False
 
-    add_k8s_namespaces_dashboard:
-      $type: boolean
-      $name: Kubernetes namespaces dashboard
-      $help: Add dashboard for monitoring Kubernetes namespaces
-      $default: False
+      add_etcd_dashboard:
+        $type: boolean
+        $name: Kubernetes etcd dashboard
+        $help: Add dashboard for monitoring an etcd daemon
+        $default: False
 
-    add_ha_dashboard:
-      $type: boolean
-      $name: HA pacemaker cluster dashboards
-      $help: Add dashboard for monitoring HA pacemaker clusters components
-      $default: False
+      add_k8s_namespaces_dashboard:
+        $type: boolean
+        $name: Kubernetes namespaces dashboard
+        $help: Add dashboard for monitoring Kubernetes namespaces
+        $default: False
 
-    add_sap_hana_dashboard:
-      $type: boolean
-      $name: SAP HANA dashboards
-      $help: Add dashboard for monitoring SAP HANA components
-      $default: False
+    sap:
+      $name: SAP
+      $type: group
+      $disabled: "!formValues.grafana.enabled"
+      $help: SAP dashboards to install.
 
-    add_sap_netweaver_dashboard:
-      $type: boolean
-      $name: SAP NETWEAVER dashboards
-      $help: Add dashboard for monitoring SAP NETWAVER components
-      $default: False
+      add_ha_dashboard:
+        $type: boolean
+        $name: HA pacemaker cluster dashboards
+        $help: Add dashboard for monitoring HA pacemaker clusters components
+        $default: False
+
+      add_sap_hana_dashboard:
+        $type: boolean
+        $name: SAP HANA dashboards
+        $help: Add dashboard for monitoring SAP HANA components
+        $default: False
+
+      add_sap_netweaver_dashboard:
+        $type: boolean
+        $name: SAP NETWEAVER dashboards
+        $help: Add dashboard for monitoring SAP NETWAVER components
+        $default: False
