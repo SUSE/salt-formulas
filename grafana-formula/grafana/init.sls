@@ -65,7 +65,7 @@
   file.absent
 {%- endif %}
 
-{%- if salt['pillar.get']('grafana:dashboards:add_k8s_dashboard', False) %}
+{%- if salt['pillar.get']('grafana:dashboards:kubernetes:add_k8s_dashboard', False) %}
 /etc/grafana/provisioning/dashboards/caasp-cluster.json:
   file.managed:
     - source: "salt://grafana/files/caasp-cluster.json"
@@ -75,7 +75,7 @@
   file.absent
 {%- endif %}
 
-{%- if salt['pillar.get']('grafana:dashboards:add_etcd_dashboard', False) %}
+{%- if salt['pillar.get']('grafana:dashboards:kubernetes:add_etcd_dashboard', False) %}
 /etc/grafana/provisioning/dashboards/caasp-etcd-cluster.json:
   file.managed:
     - source: "salt://grafana/files/caasp-etcd-cluster.json"
@@ -85,7 +85,7 @@
   file.absent
 {%- endif %}
 
-{%- if salt['pillar.get']('grafana:dashboards:add_k8s_namespaces_dashboard', False) %}
+{%- if salt['pillar.get']('grafana:dashboards:kubernetes:add_k8s_namespaces_dashboard', False) %}
 /etc/grafana/provisioning/dashboards/caasp-namespaces.json:
   file.managed:
     - source: "salt://grafana/files/caasp-namespaces.json"
@@ -97,22 +97,25 @@
 
 # HA and SAP dashboards
 # * HA:
-{%- if salt['pillar.get']('grafana:dashboards:add_ha_dashboard', False) %}
-ha_dashboard:
-  pkg.installed:
-    - name: grafana-ha-cluster-dashboards
+grafana-ha-cluster-dashboards:
+{%- if salt['pillar.get']('grafana:dashboards:sap:add_ha_dashboard', False) %}
+  pkg.installed
+{%- else %}
+  pkg.removed
 {%- endif %}
 # * SAP HANA:
-{%- if salt['pillar.get']('grafana:dashboards:add_sap_hana_dashboard', False) %}
-sap_hana_dashboard:
-  pkg.installed:
-    - name: grafana-sap-hana-dashboards
+grafana-sap-hana-dashboards:
+{%- if salt['pillar.get']('grafana:dashboards:sap:add_sap_hana_dashboard', False) %}
+  pkg.installed
+{%- else %}
+  pkg.removed
 {%- endif %}
 # * SAP Netweaver:
-{%- if salt['pillar.get']('grafana:dashboards:add_sap_netweaver_dashboard', False) %}
-sap_netweaver_dashboard:
-  pkg.installed:
-    - name: grafana-sap-netweaver-dashboards
+grafana-sap-netweaver-dashboards:
+{%- if salt['pillar.get']('grafana:dashboards:sap:add_sap_netweaver_dashboard', False) %}
+  pkg.installed
+{%- else %}
+  pkg.removed
 {%- endif %}
 
 grafana-server:
@@ -123,8 +126,7 @@ grafana-server:
     - enable: True
     - watch_any:
       - file: /etc/grafana/provisioning/datasources/datasources.yml
-      - file: /etc/grafana/provisioning/dashboards/dashboard-provider.yml
-      - file: /etc/grafana/provisioning/*/*.json
+      - file: /etc/grafana/provisioning/dashboards/*
       - file: /etc/grafana/grafana.ini
 
 {%- else %}
