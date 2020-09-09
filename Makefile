@@ -6,6 +6,7 @@ PROMETHEUS_EXPORTERS_VERSION=0.7.1
 GRAFANA_VERSION=0.2.2
 VIRTUALIZATION_HOST_VERSION=0.5
 SYSTEM_LOCK_VERSION=0.1
+UYUNI_CONFIG_VERSION=0.1
 
 locale:: clean
 	git archive --format=tar.gz --prefix=locale-formula-${LOCALE_VERSION}/ HEAD:locale-formula/ >locale-formula-${LOCALE_VERSION}.tar.gz
@@ -27,6 +28,9 @@ virtualization-host:: clean
 
 system-lock:: clean
 	git archive --format=tar.gz --prefix=system-lock-formula-${SYSTEM_LOCK_VERSION}/ HEAD:system-lock-formula/ >system-lock-formula-${SYSTEM_LOCK_VERSION}.tar.gz
+
+uyuni-config:: clean
+	git archive --format=tar.gz --prefix=uyuni-config-formula-${UYUNI_CONFIG_VERSION}/ HEAD:uyuni-config-formula/ >uyuni-config-formula-${UYUNI_CONFIG_VERSION}.tar.gz
 
 clean::
 	find . -name "*~" | xargs rm -f
