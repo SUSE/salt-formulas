@@ -10,23 +10,26 @@
 {% endif %} #check if supported
 
 {% if supported %}
+# Change the mitigations parameters for the kernel
 remove_mitigations:
   file.replace:
     - name: /etc/default/grub
     - pattern: ^GRUB_CMDLINE_LINUX_DEFAULT="(.*?)(?:\s*)mitigations=(?:auto,nosmt|off|auto)(.*?)"
     - repl: GRUB_CMDLINE_LINUX_DEFAULT="\1\2"
-    - onlyif:
-      - 'grep mitigations= /etc/default/grub'
+    - unless:
+      - 'grep "{{ map.cpu_opt.get(selected) }}[ \"]" /etc/default/grub'
 
 add_mitigation_option:
   file.replace:
     - name: /etc/default/grub
-    - pattern: ^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"
+    - pattern: ^GRUB_CMDLINE_LINUX_DEFAULT="([^"]*)"
 {% if selected == 'Manual' %}
     - repl: GRUB_CMDLINE_LINUX_DEFAULT="\1"
 {% else %}
-    - repl: GRUB_CMDLINE_LINUX_DEFAULT="\1 {{ map.cpu_opt.get(selected) }}"
+    - repl: GRUB_CMDLINE_LINUX_DEFAULT="\1{{ map.cpu_opt.get(selected) }}"
 {% endif %} #manual
+    - unless:
+      - 'grep "{{ map.cpu_opt.get(selected) }}[ \"]" /etc/default/grub'
 
 rebuild_grub_conf:
    cmd.run:
