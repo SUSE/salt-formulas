@@ -1,9 +1,26 @@
 {% set map = {
     'cpu_opt': {
-    'Auto'           : 'mitigations=auto',
-    'Auto + No SMT'  : 'mitigations=auto,nosmt',
-    'Off'            : 'mitigations=off',
-    'Manual'         : '',
+        'Auto'           : {
+            'kernel': ' mitigations=auto',
+            'xen': {
+            },
+        },
+        'Auto + No SMT'  : {
+            'kernel': ' mitigations=auto,nosmt',
+            'xen': {
+                'smt': False
+            },
+        },
+        'Off'            : {
+            'kernel': ' mitigations=off',
+            'xen': {
+                'spec-ctrl': False,
+            },
+        },
+        'Manual'         : {
+            'kernel': '',
+            'xen': '',
+        },
     },
   }
 %}
