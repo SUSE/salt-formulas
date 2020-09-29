@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Sep 29 11:06:37 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.7.3
+- Bugfix: More robust handling of NoneType arguments (bsc#1176844)
+
+-------------------------------------------------------------------
 Wed Sep 23 12:13:34 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.7.2
