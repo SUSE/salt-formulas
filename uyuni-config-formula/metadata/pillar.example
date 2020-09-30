@@ -23,6 +23,26 @@ uyuni:
           system_groups: ['httpd_servers']
           manageable_channels : []
           subscribable_channels : []
+      activation_keys:
+        - name: my_key
+          description: My Activation Key created via formula
+          base_channel: sle-product-sles15-sp2-pool-x86_64
+          child_channels: ['sle-module-server-applications15-sp2-pool-x86_64']
+          configuration_channels: ['firewall']
+          packages:
+            - name: vim
+            - name: emacs
+              arch: x86_64
+          server_groups: ['httpd_servers']
+          usage_limit: 10
+          # HACK do to limitation on the form framework we had to have a list of objects, instead of a list o string.
+          # This was needed to allow the usage of select instead of free text.
+          system_types:
+            - type: 'virtualization_host'
+            - type: 'container_build_host'
+          contact_method: 'ssh-push'
+          universal_default: false
+          configure_after_registration: true
     - org_id: my_org
       org_admin_user: my_org_user
       org_admin_password: my_org_user

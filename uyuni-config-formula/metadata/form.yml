@@ -120,3 +120,83 @@ uyuni:
             $prototype:
               $type: text
               $required: true
+
+      activation_keys:
+        $type: edit-group
+        $name: Activation Keys
+        $prototype:
+          name:
+            $type: text
+            $name: Name
+            $required: true
+          description:
+            $type: text
+            $name: Description
+            $required: true
+          base_channel:
+            $type: text
+            $name: Base Channel
+            $help: "Leave it black to use the default channel"
+          usage_limit:
+            $type: number
+            $name: Usage Limit
+            $help: "leave black or set to 0 for unlimited usage"
+          contact_method:
+            $type: select
+            $name: Contact method
+            $values: [ 'default',
+                       'ssh-push',
+                       'ssh-push-tunnel' ]
+            $default: 'default'
+            $required: false
+          universal_default:
+            $type: boolean
+            $name: Universal default
+            $default: False
+          configure_after_registration:
+            $type: boolean
+            $name: Configure after registration
+            $default: False
+            $help: "Deploy configuration files to systems on registration"
+          child_channels:
+            $type: edit-group
+            $name: Child Channels
+            $prototype:
+              $type: text
+              $required: true
+          configuration_channels:
+            $type: edit-group
+            $name: Configuration Channels
+            $prototype:
+              $type: text
+              $required: true
+          packages:
+            $type: edit-group
+            $name: packages
+            $prototype:
+              name:
+                $type: text
+                $name: Name
+                $required: true
+              arch:
+                $type: text
+                $name: Arch
+                $required: false
+          server_groups:
+            $type: edit-group
+            $name: Server groups
+            $prototype:
+              $type: text
+              $required: true
+          system_types:
+            $type: edit-group
+            $name: System types
+            $prototype:
+              # HACK limitation on the framework  which doesn't allow select directly on edit-groups.
+              # We have to add a sub-type to the array of system types, if we want to use a select
+              type:
+                $type: select
+                $values: ['virtualization_host',
+                        'container_build_host',
+                        'monitoring_entitled',
+                        'osimage_build_host']

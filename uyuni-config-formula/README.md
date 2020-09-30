@@ -7,3 +7,4 @@ This formula allows to define:
     * User groups
     * Access to system groups
     * Access to software channels
+* Activation keys
