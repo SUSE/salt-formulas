@@ -45,4 +45,33 @@ org_{{org['org_id']}}:
 
 {% endfor %}
 
+{% for ak in org.get('activation_keys', []) %}
+
+# HACK do to limitation on the form framework we had to have a list of objects, instead of a list o string.
+# This was needed to allow the usage of select instead of free text.
+# the next lines convert the system_types back to a list of strings, as expected on the salt stated
+{% set system_types = [] %}
+{% for ak in ak.get('system_types', []) %}
+    {% set system_types = system_types.append(ak['type']) %}
+{% endfor %}
+
+{{org['org_id']}}_{{ak['name']}}:
+  uyuni.activation_key_present:
+    - name: {{ak['name']}}
+    - description: {{ak['description']}}
+    - org_admin_user: {{org['org_admin_user']}}
+    - org_admin_password: {{org['org_admin_password']}}
+    - base_channel: {{ak['base_channel']}}
+    - child_channels: {{ak['child_channels']}}
+    - configuration_channels: {{ak['configuration_channels']}}
+    - packages: {{ak['packages']}}
+    - server_groups: {{ak['server_groups']}}
+    - usage_limit: {{ak['usage_limit']}}
+    - system_types: {{system_types}}
+    - contact_method: {{ak['contact_method']}}
+    - universal_default: {{ak.get('universal_default', false)}}
+    - configure_after_registration: {{ak.get('configure_after_registration', false)}}
+
+{% endfor %}
+
 {% endfor %}
