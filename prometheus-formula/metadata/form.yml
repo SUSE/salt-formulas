@@ -21,7 +21,7 @@ prometheus:
 
   mgr:
     $type: group
-    $name: Uyuni Server
+    $name: ${productName}
     $disabled: "!formValues.prometheus.enabled"
 
     monitor_server:
