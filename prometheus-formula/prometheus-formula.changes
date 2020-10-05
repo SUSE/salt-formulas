@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct  2 12:36:57 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Use variable for product name
+
+-------------------------------------------------------------------
 Thu Apr 23 08:11:39 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Update to version 0.2.1

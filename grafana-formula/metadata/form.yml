@@ -51,14 +51,14 @@ grafana:
 
     add_uyuni_dashboard:
       $type: boolean
-      $name: Uyuni server dashboard
-      $help: Add dashboard for monitoring an Uyuni server
+      $name: ${productName} server dashboard
+      $help: Add dashboard for monitoring an ${productName} server
       $default: True
 
     add_uyuni_clients_dashboard:
       $type: boolean
-      $name: Uyuni clients dashboard
-      $help: Add dashboard for monitoring Uyuni clients
+      $name: ${productName} clients dashboard
+      $help: Add dashboard for monitoring ${productName} clients
       $default: True
 
     add_postgresql_dasboard:

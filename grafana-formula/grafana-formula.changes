@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct  2 12:37:21 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Use variable for product name
+
+-------------------------------------------------------------------
 Tue Jun  9 13:05:22 UTC 2020 - Joao Cavalheiro <jcavalheiro@suse.com>
 
 - Version 0.2.2
