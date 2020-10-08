@@ -4,7 +4,7 @@ proxy_port: 9999
 node_exporter:
   enabled: True
   address: ':9100'
-  args:
+  args: '--collector.systemd'
 
 apache_exporter:
   enabled: False

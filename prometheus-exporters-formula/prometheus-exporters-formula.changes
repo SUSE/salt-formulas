@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct  8 13:23:59 UTC 2020 - Dario Maiocchi <dmaiocchi@suse.com>
+
+- Version 0.8.0:
+- Add systemd collector as default for node_exporters
+  since otherwise some SAP/HA grafana dashboards will be empty  
+-------------------------------------------------------------------
 Mon Oct  5 10:04:04 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Disable reverse proxy on default
