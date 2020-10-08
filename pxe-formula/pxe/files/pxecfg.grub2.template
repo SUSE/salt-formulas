@@ -1,5 +1,5 @@
 {%- set kernel = salt['pillar.get']('pxe:kernel_name', 'linux') %}
-{%- set initrd = salt['pillar.get']('pxe:initrd_name', 'initrd.gz') %}
+{%- set initrd = salt['pillar.get']('pxe:initrd_name', 'initrd') %}
 {%- set boot_image = 'boot_images:' + salt['pillar.get']('boot_image', 'default') %}
 {%- if salt['pillar.get'](boot_image) %}
 {%-   set kernel = salt['pillar.get'](boot_image + ':kernel:url', '').split('/')[-1] %}
