@@ -1,4 +1,4 @@
-proxy_enabled: True
+proxy_enabled: False
 proxy_port: 9999
 
 node_exporter:

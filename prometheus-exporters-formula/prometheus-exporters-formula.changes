@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct  5 10:04:04 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Disable reverse proxy on default
+
+-------------------------------------------------------------------
 Fri Oct  2 07:44:37 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.7.4
