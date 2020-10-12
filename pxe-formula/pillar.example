@@ -1,7 +1,7 @@
 # from salt form:
 branchserver:
   kernel_name: 'linux'
-  initrd_name: 'initrd.gz'
+  initrd_name: 'initrd'
   default_kernel_parameters: 'panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=1'
 
 

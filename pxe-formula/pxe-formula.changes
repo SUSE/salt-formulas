@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct  8 13:50:59 UTC 2020 - Vladimir Nadvornik <nadvornik@suse.com>
+
+- Change default to "initrd" without .gz suffix
+
+-------------------------------------------------------------------
 Tue Apr 14 14:10:16 UTC 2020 - Vladimir Nadvornik <nadvornik@suse.com>
 
 - Add non-EFI grub menu variant

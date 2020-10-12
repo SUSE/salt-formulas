@@ -9,7 +9,7 @@ pxe:
   initrd_name:
      $name: 'Initrd Filename'
      $type: text
-     $default: 'initrd.gz'
+     $default: 'initrd'
 
   default_kernel_parameters:
      $name: 'Kernel Command Line Parameters'
