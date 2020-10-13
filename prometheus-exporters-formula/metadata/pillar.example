@@ -9,10 +9,8 @@ node_exporter:
 apache_exporter:
   enabled: False
   address: ':9117'
-  args:
 
 postgres_exporter:
   enabled: False
   address: ':9187'
   data_source_name: postgresql://user:passwd@localhost:5432/database?sslmode=disable
-  args:
