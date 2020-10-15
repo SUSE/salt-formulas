@@ -27,7 +27,7 @@ example-formula
 
 For information about packaging Formulas as RPM packages (including a `spec` file template) please refer to the [packaging guide](https://github.com/SUSE/salt-formulas/wiki/Packaging-Guide).
 
-## Stable branches
+## Stable Branches
 
 The repository includes stable branches for maintaining bug-fixes of released versions.
 When submitting a bug-fix, please consider if it needs a cherry-pick to stable branch,
