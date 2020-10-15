@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct 15 08:34:06 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.7.5
+- Fix empty directory values initialization
+
+-------------------------------------------------------------------
 Mon Oct  5 10:04:04 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Disable reverse proxy on default
