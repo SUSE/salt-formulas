@@ -7,4 +7,6 @@
 # Arguments for running prometheus-exporter_exporter
 #
 {% set proxy_port = salt['pillar.get']('proxy_port') %}
-EXPEXP_FLAGS='-web.listen-address=:{{ proxy_port }}'
+[Service]
+EnvironmentFile=
+Environment="ARGS=-config.file /etc/exporter_exporter.yaml -config.dirs /etc/exporter_exporter.d -web.listen-address=:{{ proxy_port }}"

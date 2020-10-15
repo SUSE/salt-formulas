@@ -23,6 +23,9 @@
         'postgres_exporter_package': 'prometheus-postgres-exporter',
         'postgres_exporter_service': 'prometheus-postgres-exporter',
         'postgres_exporter_service_config': '/etc/default/prometheus-postgres-exporter',
+        'exporter_exporter_package': 'prometheus-exporter-exporter',
+        'exporter_exporter_service': 'prometheus-exporter-exporter',
+        'exporter_exporter_service_config': '/etc/systemd/system/prometheus-exporter-exporter.service.d/uyuni.conf',
     },
     'RedHat': {
         'node_exporter_package': 'golang-github-prometheus-node_exporter',
