@@ -3,14 +3,21 @@
 {% set proxy_enabled = salt['pillar.get']('proxy_enabled') %}
 {% set proxy_supported = 'exporter_exporter_package' in exporters and exporters.exporter_exporter_package %}
 
+{% if proxy_supported and proxy_enabled and grains['os_family'] == 'Debian' %}
+exporter_exporter_conf_dir:
+  file.directory:
+    - name: /etc/exporter_exporter.d
+    - user: root
+    - group: root
+    - mode: 755
+{% endif %}
+
 {% if proxy_supported %}
 exporter_exporter:
   {% if proxy_enabled %}
   pkg.installed:
     - name: {{ exporters.exporter_exporter_package }}
   file.managed:
-    - name: {{ exporters.exporter_exporter_service_config }}
-    - source: {{ 'salt://prometheus-exporters/files/exporter-exporter-config.' ~ salt['grains.get']('os_family') }}
     - makedirs: True
     - template: jinja
     - user: root
@@ -20,6 +27,13 @@ exporter_exporter:
       - pkg: exporter_exporter
     - watch_in:
       - service: exporter_exporter
+    - names:
+      - {{ exporters.exporter_exporter_service_config }}:
+        - source: {{ 'salt://prometheus-exporters/files/exporter-exporter-config.' ~ salt['grains.get']('os_family') }}
+  {% if grains['os_family'] == 'Debian' %}
+      - /etc/exporter_exporter.yaml:
+        - source: salt://prometheus-exporters/files/exporter-exporter.yaml
+  {% endif %}
   service.running:
     - name: {{ exporters.exporter_exporter_service }}
     - enable: True
