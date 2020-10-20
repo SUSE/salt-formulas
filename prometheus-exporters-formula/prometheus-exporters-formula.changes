@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct 20 08:08:41 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Add Ubuntu support for Prometheus exporters' reverse proxy
+
+-------------------------------------------------------------------
 Tue Oct 13 11:55:01 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.8.0
