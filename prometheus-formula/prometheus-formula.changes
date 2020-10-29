@@ -1,6 +1,7 @@
 -------------------------------------------------------------------
 Thu Oct 29 12:00:47 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
+- Update to version 0.3.0
 - Disable Alertmanager clustering (bsc#1178145)
 
 -------------------------------------------------------------------
