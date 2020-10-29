@@ -79,8 +79,16 @@ prometheus_running:
       - file: mgr_scrape_config_file
 {%- endif %}
 
-{%- if alertmanager_service %}
 alertmanager_running:
+{% if alertmanager_service %}
+  file.managed:
+    - name: /etc/systemd/system/prometheus-alertmanager.service.d/uyuni.conf
+    - source: salt://prometheus/files/alertmanager-service.conf
+    - makedirs: True
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 644
   service.running:
     - name: {{ prometheus.alertmanager_service }}
     - enable: True
@@ -91,6 +99,12 @@ alertmanager_running:
 {%- if monitor_server %}
       - file: mgr_scrape_config_file
 {%- endif %}
+{% else %}
+  file.absent:
+    - name: /etc/systemd/system/prometheus-alertmanager.service.d
+  service.dead:
+    - name: {{ prometheus.alertmanager_service }}
+    - enable: False
 {%- endif %}
 
 {%- else %}

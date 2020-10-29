@@ -57,11 +57,12 @@ prometheus:
       $type: boolean
       $default: True
       $name: Enable local Alertmanager service
+      $help: Install and start local Alertmanager without clustering
 
     use_local_alertmanager:
       $type: boolean
       $name: Use local Alertmanager
-      $help: Use local Alertmanager for this Prometheus instance
+      $help: Use local Alertmanager for this Prometheus instance (without HA)
       $visible: "this.parent.value.alertmanager_service"
       $default: True
 
@@ -74,6 +75,7 @@ prometheus:
       $type: edit-group
       $minItems: 0
       $itemName: Target ${i}
+      $help: Configure Alertmanager HA cluster targets
       $prototype:
         $type: group
         $key:
