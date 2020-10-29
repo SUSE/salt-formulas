@@ -2,19 +2,22 @@ global:
   scrape_interval: {{ salt['pillar.get']('prometheus:scrape_interval', 15) }}s
   evaluation_interval: {{ salt['pillar.get']('prometheus:evaluation_interval', 15) }}s
 
-{%- if salt['pillar.get']('prometheus:alerting:use_local_alertmanager', False) or salt['pillar.get']('prometheus:alerting:alertmanagers', None) %}
+{% set ha_alertmanager = salt['pillar.get']('prometheus:alerting:alertmanagers', {}) %}
+{% set local_alertmanager = salt['pillar.get']('prometheus:alerting:use_local_alertmanager', False)%}
+{% if local_alertmanager or ha_alertmanager %}
 # Alertmanager configuration
 alerting:
   alertmanagers:
   - static_configs:
     - targets:
-{%- if salt['pillar.get']('prometheus:alerting:use_local_alertmanager', False) %}
-      - localhost:9093
-{%- endif %}
-{%- for alertmanager in salt['pillar.get']('prometheus:alerting:alertmanagers', {}) %}
+{% if ha_alertmanager %}
+{% for alertmanager in ha_alertmanager %}
       - {{ alertmanager }}
-{%- endfor %}
-{%- endif %}
+{% endfor %}
+{% elif local_alertmanager %}
+      - localhost:9093
+{% endif %}
+{% endif %}
 
 rule_files:
 {% if salt['pillar.get']('prometheus:alerting:default_rules', False) %}
