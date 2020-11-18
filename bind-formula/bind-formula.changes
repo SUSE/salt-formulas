@@ -2,6 +2,7 @@
 Tue Oct 20 11:21:05 UTC 2020 - Ondrej Holecek <oholecek@suse.com>
 
 - Temporarily disable dnssec-validation as hotfix for bsc#1177790
+- Update to version 0.1.1603299886.60e4bcf
 
 -------------------------------------------------------------------
 Thu Oct  3 15:56:55 UTC 2019 - Ondrej Holecek <oholecek@suse.com>
