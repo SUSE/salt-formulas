@@ -5,9 +5,7 @@
 # check for supported os version
 {%- set supported_vers = ['42.3', '12.3', '12.4', '12.5', '15.0', '15.1', '15.2'] %}
 
-{% if grains['os_family'] == 'Suse' and grains['osrelease'] in supported_vers %}
-{%- set supported = True %}
-{% endif %} #check if supported
+{%- set supported = (grains['os_family'] == 'Suse' and grains['osrelease'] in supported_vers) %}
 
 {% if supported %}
 # Change the mitigations parameters for the kernel
