@@ -5,6 +5,8 @@ tftpd:
      $name: 'Internal Network Address'
      $type: text
      $optional: True
+     $match: '(^$)|(^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}$)'
+     $help: 'IPv4 address TFTP server should listen on. Empty value means 0.0.0.0'
 
   root_dir:
      $name: 'TFTP base directory'
