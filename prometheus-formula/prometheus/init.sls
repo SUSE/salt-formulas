@@ -5,6 +5,7 @@
 {%- set monitor_server = salt['pillar.get']('prometheus:mgr:monitor_server', False) %}
 {%- set alertmanager_service = salt['pillar.get']('prometheus:alerting:alertmanager_service', False) %}
 {%- set default_rules = salt['pillar.get']('prometheus:alerting:default_rules', False) %}
+{%- set uyuni_server_hostname = salt['pillar.get']('mgr_origin_server', grains['master'])%}
 
 install_prometheus:
   pkg.installed:
@@ -25,6 +26,8 @@ config_file:
     - require:
       - pkg: install_prometheus
       - pkg: install_alertmanager
+    - defaults:
+        uyuni_server_hostname: {{ uyuni_server_hostname }}
 
 {% if default_rules %}
 default_rule_files:
@@ -56,6 +59,8 @@ mgr_scrape_config_file:
     - require:
       - pkg: install_prometheus
       - pkg: install_alertmanager
+    - defaults:
+        uyuni_server_hostname: {{ uyuni_server_hostname }}
 {%- endif %}
 
 prometheus_running:
