@@ -32,22 +32,22 @@ rule_files:
 scrape_configs:
 {%- if salt['pillar.get']('prometheus:mgr:monitor_server', False) %}
   # --------------------
-  # Monitor {{ grains['master'] }}
+  # Monitor {{ uyuni_server_hostname }}
   # --------------------
   - job_name: 'mgr-server'
     static_configs:
       - targets:
-        - {{ grains['master'] }}:9100 # Node exporter
-        - {{ grains['master'] }}:5556 # Tomcat JMX
-        - {{ grains['master'] }}:5557 # Taskomatic JMX
-        - {{ grains['master'] }}:9800 # Uyuni server exporter
+        - {{ uyuni_server_hostname }}:9100 # Node exporter
+        - {{ uyuni_server_hostname }}:5556 # Tomcat JMX
+        - {{ uyuni_server_hostname }}:5557 # Taskomatic JMX
+        - {{ uyuni_server_hostname }}:9800 # Uyuni server exporter
         labels: {}
       - targets:
-        - {{ grains['master'] }}:80 # Message queue
+        - {{ uyuni_server_hostname }}:80 # Message queue
         labels:
           __metrics_path__: /rhn/metrics
       - targets:
-        - {{ grains['master'] }}:9187 # PostgresSQL
+        - {{ uyuni_server_hostname }}:9187 # PostgresSQL
         labels:
           role: postgres
 {%- endif %}
@@ -56,7 +56,7 @@ scrape_configs:
 {%- if salt['pillar.get']('prometheus:mgr:autodiscover_clients', False) and
        sd_username and sd_password %}
   # --------------------
-  # Auto discover clients of {{ grains['master'] }}
+  # Auto discover clients of {{ uyuni_server_hostname }}
   # --------------------
   - job_name: 'mgr-clients'
     uyuni_sd_configs:

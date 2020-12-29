@@ -1,10 +1,10 @@
 - targets:
-  - {{ grains['master'] }}:9100
-  - {{ grains['master'] }}:5556
-  - {{ grains['master'] }}:5557
-  - {{ grains['master'] }}:9800
+  - {{ uyuni_server_hostname }}:9100
+  - {{ uyuni_server_hostname }}:5556
+  - {{ uyuni_server_hostname }}:5557
+  - {{ uyuni_server_hostname }}:9800
   labels: {}
 - targets:
-  - {{ grains['master'] }}:9187
+  - {{ uyuni_server_hostname }}:9187
   labels:
     role: postgres
