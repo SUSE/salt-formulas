@@ -46,14 +46,14 @@ exporter_exporter:
   {% endif %}
 {% endif %}
 
-{% set node_exporter_enabled = salt['pillar.get']('node_exporter:enabled', True) %}
+{% set node_exporter_enabled = salt['pillar.get']('exporters:node_exporter:enabled', True) %}
 node_exporter:
 {% if node_exporter_enabled %}
-  {% set node_exporter_args = salt['pillar.get']('node_exporter:args') %}
+  {% set node_exporter_args = salt['pillar.get']('exporters:node_exporter:args') %}
   {% if node_exporter_args is none %}
     {% set node_exporter_args = '' %}
   {% endif %}
-  {% set node_exporter_address = salt['pillar.get']('node_exporter:address') %}
+  {% set node_exporter_address = salt['pillar.get']('exporters:node_exporter:address') %}
   pkg.installed:
     - name: {{ exporters.node_exporter_package }}
   file.managed:
@@ -102,14 +102,14 @@ node_exporter_proxy:
         - service: exporter_exporter
 {% endif %}
 
-{% set apache_exporter_enabled = salt['pillar.get']('apache_exporter:enabled', False) %}
+{% set apache_exporter_enabled = salt['pillar.get']('exporters:apache_exporter:enabled', False) %}
 apache_exporter:
 {% if apache_exporter_enabled %}
-  {% set apache_exporter_args = salt['pillar.get']('apache_exporter:args') %}
+  {% set apache_exporter_args = salt['pillar.get']('exporters:apache_exporter:args') %}
   {% if apache_exporter_args is none %}
     {% set apache_exporter_args = '' %}
   {% endif %}
-  {% set apache_exporter_address = salt['pillar.get']('apache_exporter:address') %}
+  {% set apache_exporter_address = salt['pillar.get']('exporters:apache_exporter:address') %}
   pkg.installed:
     - name: {{ exporters.apache_exporter_package }}
   file.managed:
@@ -158,14 +158,14 @@ apache_exporter_proxy:
       - service: exporter_exporter
 {% endif %}
 
-{% set postgres_exporter_enabled = salt['pillar.get']('postgres_exporter:enabled', False) %}
+{% set postgres_exporter_enabled = salt['pillar.get']('exporters:postgres_exporter:enabled', False) %}
 postgres_exporter:
 {% if postgres_exporter_enabled %}
-  {% set postgres_exporter_args = salt['pillar.get']('postgres_exporter:args') %}
+  {% set postgres_exporter_args = salt['pillar.get']('exporters:postgres_exporter:args') %}
   {% if postgres_exporter_args is none %}
     {% set postgres_exporter_args = '' %}
   {% endif %}
-  {% set postgres_exporter_address = salt['pillar.get']('postgres_exporter:address') %}
+  {% set postgres_exporter_address = salt['pillar.get']('exporters:postgres_exporter:address') %}
   pkg.installed:
     - name: {{ exporters.postgres_exporter_package }}
   file.managed:
