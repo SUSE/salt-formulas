@@ -1,16 +1,17 @@
 proxy_enabled: False
 proxy_port: 9999
 
-node_exporter:
-  enabled: True
-  address: ':9100'
-  args: '--collector.systemd'
+exporters:
+  node_exporter:
+    enabled: True
+    address: ':9100'
+    args: '--collector.systemd'
 
-apache_exporter:
-  enabled: False
-  address: ':9117'
+  apache_exporter:
+    enabled: False
+    address: ':9117'
 
-postgres_exporter:
-  enabled: False
-  address: ':9187'
-  data_source_name: postgresql://user:passwd@localhost:5432/database?sslmode=disable
+  postgres_exporter:
+    enabled: False
+    address: ':9187'
+    data_source_name: postgresql://user:passwd@localhost:5432/database?sslmode=disable

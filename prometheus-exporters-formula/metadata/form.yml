@@ -11,57 +11,61 @@ proxy_port:
   $disabled: '!formValues.proxy_enabled'
   $required: True
 
-node_exporter:
+exporters:
   $type: group
-  $help: Prometheus exporter for hardware and OS metrics.
+  $help: Prometheus exporters
 
-  enabled:
-    $type: boolean
-    $default: True
+  node_exporter:
+    $type: group
+    $help: Prometheus exporter for hardware and OS metrics.
 
-  address:
-    $type: text
-    $default: ':9100'
+    enabled:
+      $type: boolean
+      $default: True
 
-  args:
-    $name: "Arguments"
-    $type: text
-    $help: Please refer to the documentation for available options.
+    address:
+      $type: text
+      $default: ':9100'
 
-apache_exporter:
-  $type: group
-  $help: Prometheus exporter for apache mod_status statistics.
+    args:
+      $name: "Arguments"
+      $type: text
+      $help: Please refer to the documentation for available options.
 
-  enabled:
-    $type: boolean
-    $default: False
+  apache_exporter:
+    $type: group
+    $help: Prometheus exporter for apache mod_status statistics.
 
-  address:
-    $type: text
-    $default: ':9117'
+    enabled:
+      $type: boolean
+      $default: False
 
-  args:
-    $name: "Arguments"
-    $type: text
-    $help: Please refer to the documentation for available options.
+    address:
+      $type: text
+      $default: ':9117'
 
-postgres_exporter:
-  $type: group
-  $help: Prometheus exporter for PostgreSQL server metrics.
+    args:
+      $name: "Arguments"
+      $type: text
+      $help: Please refer to the documentation for available options.
 
-  enabled:
-    $type: boolean
-    $default: False
+  postgres_exporter:
+    $type: group
+    $help: Prometheus exporter for PostgreSQL server metrics.
 
-  address:
-    $type: text
-    $default: ':9187'
+    enabled:
+      $type: boolean
+      $default: False
 
-  data_source_name:
-    $type: text
-    $default: postgresql://user:passwd@localhost:5432/database?sslmode=disable
+    address:
+      $type: text
+      $default: ':9187'
 
-  args:
-    $name: "Arguments"
-    $type: text
-    $help: Please refer to the documentation for available options.
+    data_source_name:
+      $type: text
+      $default: postgresql://user:passwd@localhost:5432/database?sslmode=disable
+
+    args:
+      $name: "Arguments"
+      $type: text
+      $help: Please refer to the documentation for available options.
