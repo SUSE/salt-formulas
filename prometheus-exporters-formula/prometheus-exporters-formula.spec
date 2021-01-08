@@ -39,8 +39,14 @@ Salt formula for installing and configuring Prometheus exporters.
 %install
 mkdir -p %{buildroot}%{fdir}/states/%{fname}
 mkdir -p %{buildroot}%{fdir}/metadata/%{fname}
+mkdir -p %{buildroot}%{fdir}/scripts/%{fname}
 cp -R prometheus-exporters/* %{buildroot}%{fdir}/states/%{fname}
 cp -R metadata/* %{buildroot}%{fdir}/metadata/%{fname}
+cp -R scripts/* %{buildroot}%{fdir}/scripts/%{fname}
+chmod a+x %{buildroot}%{fdir}/scripts/%{fname}/*
+
+%post
+%{fdir}/scripts/%{fname}/migrate_formula_data.py
 
 %files
 %defattr(-,root,root)
@@ -49,7 +55,9 @@ cp -R metadata/* %{buildroot}%{fdir}/metadata/%{fname}
 %dir %{fdir}
 %dir %{fdir}/states
 %dir %{fdir}/metadata
+%dir %{fdir}/scripts
 %{fdir}/states/%{fname}
 %{fdir}/metadata/%{fname}
+%{fdir}/scripts/%{fname}
 
 %changelog
