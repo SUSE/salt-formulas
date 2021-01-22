@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jan 22 08:31:16 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.4.0
+- Add SLES 15 SP3 and openSUSE Leap 15.3 to supported versions
+
+-------------------------------------------------------------------
 Fri Oct  2 12:37:21 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.3.0
