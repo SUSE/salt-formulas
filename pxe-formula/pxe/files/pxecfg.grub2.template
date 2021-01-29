@@ -27,7 +27,7 @@
 
 default=0
 timeout=1
-if test "${grub_platform}" = "efi"; then
+if test "${grub_platform}" = "efi" -a ( "${grub_cpu}" = "x86_64" -o "${grub_cpu}" = "i386" ) ; then
 menuentry netboot {
         linuxefi ${prefix}/{{ kernel }} {{ salt['pillar.get']('pxe:default_kernel_parameters', '') }} {{ naming_config }} MINION_ID_PREFIX={{ salt['pillar.get']('pxe:branch_id', 'UnknownBranch') }}
 {{-            ' root=' + pillar['root'] if salt['pillar.get']('root') else '' }}
