@@ -27,7 +27,7 @@ config_file:
       - pkg: install_prometheus
       - pkg: install_alertmanager
     - defaults:
-        uyuni_server_hostname: {{ uyuni_server_hostname }}
+      uyuni_server_hostname: {{ uyuni_server_hostname }}
 
 {% if default_rules %}
 default_rule_files:
@@ -60,7 +60,7 @@ mgr_scrape_config_file:
       - pkg: install_prometheus
       - pkg: install_alertmanager
     - defaults:
-        uyuni_server_hostname: {{ uyuni_server_hostname }}
+      uyuni_server_hostname: {{ uyuni_server_hostname }}
 {%- endif %}
 
 prometheus_running:
