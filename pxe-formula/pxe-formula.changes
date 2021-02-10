@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 10 11:46:07 UTC 2021 - Vladimir Nadvornik <nadvornik@suse.com>
+
+- Add arm64 support
+
+-------------------------------------------------------------------
 Fri Jan 29 13:19:23 UTC 2021 - Vladimir Nadvornik <nadvornik@suse.com>
 
 - Use linuxefi only on x86

@@ -33,7 +33,14 @@
       'path_shim_efi':      '/usr/lib64/efi/shim.efi',
       'pathname_basecfg_efi': pxeroot + '/boot/grub.cfg',
       'boot_efi_dir':       pxeroot + '/boot/x86_64-efi',
-      'path_efi_dir':       '/usr/share/grub2/x86_64-efi'
+      'path_efi_dir':       '/usr/share/grub2/x86_64-efi',
+
+      'packages_arm64_efi':        ['grub2-arm64-efi'],
+      'pathname_defcfg_arm64_efi': pxeroot + '/boot/pxelinux.cfg/default.grub2_arm64.cfg',
+      'boot_grub_arm64_efi':       pxeroot + '/boot/grub-arm64.efi',
+      'path_grub_arm64_efi':       '/usr/share/grub2/arm64-efi/grub.efi',
+      'boot_arm64_efi_dir':        pxeroot + '/boot/arm64-efi',
+      'path_arm64_efi_dir':        '/usr/share/grub2/arm64-efi'
     }
   }, merge=salt['grains.filter_by']({
     'SLES-12': {

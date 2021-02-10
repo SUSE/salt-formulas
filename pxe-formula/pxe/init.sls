@@ -91,3 +91,40 @@ pxe_copy_efi_dir:
     - require:
       - file: srv_tftpboot_default_efi
 
+{%- if cfgmap.pathname_defcfg_arm64_efi is defined %}
+
+install_arm64_efi:
+  pkg.installed:
+    - pkgs: {{ cfgmap.packages_arm64_efi | json }}
+
+pxe_copy_grub_arm64_efi:
+  file.copy:
+    - name:   {{ cfgmap.boot_grub_arm64_efi }}
+    - source: {{ cfgmap.path_grub_arm64_efi }}
+    - require:
+      - file: srv_tftpboot_default_efi
+
+pxe_copy_arm64_efi_dir:
+  file.copy:
+    - name:   {{ cfgmap.boot_arm64_efi_dir }}
+    - source: {{ cfgmap.path_arm64_efi_dir }}
+    - require:
+      - file: srv_tftpboot_default_efi
+
+srv_tftpboot_default_arm64_efi:
+  file.managed:
+    - name:   {{ cfgmap.pathname_defcfg_arm64_efi }}
+    - source: salt://pxe/files/pxecfg.grub2.template
+    - user: root
+    - group: root
+    - mode: 644
+    - makedirs: True
+    - template: jinja
+    - context:
+      kernel: linux_arm64
+      initrd: initrd_arm64
+    - require:
+      - pkg: install_pxe
+
+{%- endif %}
+
