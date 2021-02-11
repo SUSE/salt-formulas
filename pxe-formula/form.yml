@@ -11,6 +11,23 @@ pxe:
      $type: text
      $default: 'initrd'
 
+  enable_arm64:
+     $name: 'Enable ARM64 UEFI Boot'
+     $type: boolean
+     $default: false
+
+  kernel_name_arm64:
+     $name: 'Kernel Filename for ARM64'
+     $type: text
+     $default: 'linux_arm64'
+     $visible: "this.parent.value.enable_arm64"
+
+  initrd_name_arm64:
+     $name: 'Initrd Filename for ARM64'
+     $type: text
+     $default: 'initrd_arm64'
+     $visible: "this.parent.value.enable_arm64"
+
   default_kernel_parameters:
      $name: 'Kernel Command Line Parameters'
      $type: text

@@ -91,7 +91,7 @@ pxe_copy_efi_dir:
     - require:
       - file: srv_tftpboot_default_efi
 
-{%- if cfgmap.pathname_defcfg_arm64_efi is defined %}
+{%- if salt['pillar.get']('pxe:enable_arm64', False) %}
 
 install_arm64_efi:
   pkg.installed:
@@ -121,8 +121,8 @@ srv_tftpboot_default_arm64_efi:
     - makedirs: True
     - template: jinja
     - context:
-      kernel: linux_arm64
-      initrd: initrd_arm64
+      kernel: {{ salt['pillar.get']('pxe:kernel_name_arm64', "linux_arm64") }}
+      initrd: {{ salt['pillar.get']('pxe:initrd_name_arm64', "initrd_arm64") }}
     - require:
       - pkg: install_pxe
 
