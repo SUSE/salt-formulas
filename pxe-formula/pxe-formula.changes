@@ -2,6 +2,7 @@
 Fri Jan 29 13:19:23 UTC 2021 - Vladimir Nadvornik <nadvornik@suse.com>
 
 - Use linuxefi only on x86
+- Update to version 0.1.1614170819.014d6e5
 
 -------------------------------------------------------------------
 Thu Oct  8 13:50:59 UTC 2020 - Vladimir Nadvornik <nadvornik@suse.com>
