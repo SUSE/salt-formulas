@@ -36,7 +36,7 @@ host {{ host }} {
   else {
   {%- endif %}
   {%- if 'filename_efi' in config %}
-   if option arch = 00:07 {
+   if option arch = 00:07 or option arch = 00:0b {
      filename "{{ config.filename_efi }}";
      {%- if 'filename' in config %}
    } else {

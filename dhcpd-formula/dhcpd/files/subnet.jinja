@@ -44,30 +44,50 @@ subnet {{ subnet }} netmask {{ config.netmask }} {
 {%- if 'domain_search' in config %}
   option domain-search "{{ config['domain_search']|join('","') }}";
 {%- endif %}
+
+{%- set els = '' %}
+{%- if 'filename_http_arm64' in config %}
+  if substring (option vendor-class-identifier, 0, 10) = "HTTPClient" and option arch = 00:13 {
+    option vendor-class-identifier "HTTPClient";
+    filename "{{ config.filename_http_arm64 }}";
+  }
+  {%- set els = 'els' %}
+{%- endif %}
 {%- if 'filename_http' in config %}
-  if substring (option vendor-class-identifier, 0, 10) = "HTTPClient" {
+  {{ els }}if substring (option vendor-class-identifier, 0, 10) = "HTTPClient" {
     option vendor-class-identifier "HTTPClient";
     filename "{{ config.filename_http }}";
   }
-  else {
-{%- endif %}
-{%- if 'filename_efi' in config %}
-   if option arch = 00:07 {
-     filename "{{ config.filename_efi }}";
-  {%- if 'filename' in config %}
-   } else {
-     filename "{{ config.filename }}";
-  {%- endif %}
-   }
-{%- elif 'filename' in config %}
-   filename "{{ config.filename }}";
+  {%- set els = 'els' %}
 {%- endif %}
 {%- if 'next_server' in config %}
-   next-server {{ config['next_server'] }};
-{%- endif %}
-{%- if 'filename_http' in config %}
+  {%- if 'filename_efi_arm64' in config %}
+  {{ els }}if option arch = 00:0b {
+    filename "{{ config.filename_efi_arm64 }}";
+    next-server {{ config['next_server'] }};
   }
+  {%- set els = 'els' %}
+  {%- endif %}
+  {%- if 'filename_efi' in config %}
+  {{ els }}if option arch = 00:07 {
+     filename "{{ config.filename_efi }}";
+     next-server {{ config['next_server'] }};
+  }
+  {%- set els = 'els' %}
+  {%- endif %}
+  {%- if 'filename' in config %}
+    {%- if els %}
+  else {
+    filename "{{ config.filename }}";
+    next-server {{ config['next_server'] }};
+  }
+    {%- else %}
+  filename "{{ config.filename }}";
+  next-server {{ config['next_server'] }};
+    {%- endif %}
+  {%- endif %}
 {%- endif %}
+
 {%- if 'default_lease_time' in config %}
   default-lease-time {{ config['default_lease_time'] }};
 {%- endif %}

@@ -86,6 +86,17 @@ dhcpd:
           $default:
           $help: Specify the URL of the initial boot file which is to be loaded by a client in EFI HTTP mode
           $optional: true
+        filename_efi_arm64:
+          $type: text
+          $visibleIf: .next_server != ''
+          $default: boot/grub-arm64.efi
+          $help: Specify the name of the initial boot file which is to be loaded by a client in EFI mode
+          $optional: true
+        filename_http_arm64:
+          $type: text
+          $default:
+          $help: Specify the URL of the initial boot file which is to be loaded by a client in EFI HTTP mode
+          $optional: true
         hosts:
           $type: edit-group
           $minItems: 0
