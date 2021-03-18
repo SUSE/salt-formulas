@@ -3,6 +3,7 @@ Fri Jan 29 08:59:21 UTC 2021 - Ondrej Holecek <oholecek@suse.com>
 
 - Update bind formula to newest upstream version
 - Fix apparmor conflict on Debian systems (bsc#1181461)
+- Update to version 0.1.1615805990.f15c8d9
 
 -------------------------------------------------------------------
 Tue Oct 20 11:21:05 UTC 2020 - Ondrej Holecek <oholecek@suse.com>
