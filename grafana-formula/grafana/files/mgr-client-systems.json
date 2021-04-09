@@ -288,7 +288,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "up{hostname=~\"$hostname\", exporter=\"node_exporter\"}",
+          "expr": "min(up{hostname=~\"$hostname\", exporter=\"node_exporter\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -621,7 +621,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "node_memory_MemTotal_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\"}",
+          "expr": "avg(node_memory_MemTotal_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -711,7 +711,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "node_load1{hostname=~\"$hostname\", exporter=\"node_exporter\"}",
+          "expr": "avg(node_load1{hostname=~\"$hostname\", exporter=\"node_exporter\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
