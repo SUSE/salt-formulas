@@ -182,7 +182,7 @@
         "tableColumn": "",
         "targets": [
           {
-            "expr": "up{instance=~\"$server:9100\"}",
+            "expr": "min(up{instance=~\"$server:9100\"})",
             "format": "time_series",
             "instant": true,
             "intervalFactor": 1,
@@ -399,7 +399,7 @@
         "tableColumn": "",
         "targets": [
           {
-            "expr": "node_memory_MemTotal_bytes{instance=~\"$server:9100\"}",
+            "expr": "avg(node_memory_MemTotal_bytes{instance=~\"$server:9100\"})",
             "format": "time_series",
             "instant": true,
             "intervalFactor": 1,
