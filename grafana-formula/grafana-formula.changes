@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Apr 19 15:48:08 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.2.3
+- Fix Grafana dashboards requiring single series (bsc#1184471)
+
+-------------------------------------------------------------------
 Fri Oct  2 12:37:21 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.2.2
