@@ -1,0 +1,5 @@
+tls_server_config:
+  cert_file: {{ salt['pillar.get']('tls:server_certificate') }}
+  key_file: {{ salt['pillar.get']('tls:server_key') }}
+  client_ca_file: {{ salt['pillar.get']('tls:ca_certificate', '/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT') }}
+  client_auth_type: RequireClientCert

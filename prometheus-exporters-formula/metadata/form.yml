@@ -11,6 +11,27 @@ proxy_port:
   $disabled: '!formValues.proxy_enabled'
   $required: True
 
+tls:
+  $type: group
+  $name: TLS
+  $help: TLS configuration. Please ensure the files are present on the minion and readable for the user `prometheus` before applying the highstate.
+
+  enabled:
+    $type: boolean
+    $default: False
+
+  ca_certificate:
+    $name: CA Certificate
+    $default: /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+
+  server_certificate:
+    $name: Server Certificate
+    $placeholder: /etc/ssl/server.crt
+
+  server_key:
+    $name: Server Key
+    $placeholder: /etc/ssl/server.key
+
 exporters:
   $type: group
   $help: Prometheus exporters

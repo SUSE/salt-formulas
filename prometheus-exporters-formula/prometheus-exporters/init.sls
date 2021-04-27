@@ -2,6 +2,22 @@
 
 {% set proxy_enabled = salt['pillar.get']('proxy_enabled') %}
 {% set proxy_supported = 'exporter_exporter_package' in exporters and exporters.exporter_exporter_package %}
+{% set tls_enabled = salt['pillar.get']('tls:enabled', False) %}
+{% set web_config_file = '/etc/prometheus/exporters/web.yml' %}
+
+{% if tls_enabled %}
+web_config:
+  file.managed:
+    - name: {{ web_config_file }}
+    - source: salt://prometheus-exporters/files/web.yml
+    - template: jinja
+    - makedirs: True
+    - user: prometheus
+    - group: prometheus
+    - mode: 644
+    - watch_in:
+      - service: node_exporter
+{% endif %}
 
 {% if proxy_supported and proxy_enabled and grains['os_family'] == 'Debian' %}
 exporter_exporter_conf_dir:
@@ -69,6 +85,10 @@ node_exporter:
   {% if node_exporter_address and '-web.listen-address' not in node_exporter_args %}
     - context:
         args: {{ node_exporter_args ~ ' --web.listen-address=' ~ node_exporter_address }}
+  {% endif %}
+  {% if tls_enabled %}
+    - context:
+        args: {{ node_exporter_args ~ ' --web.config=' ~ web_config_file }}
   {% endif %}
     - require:
       - pkg: node_exporter
