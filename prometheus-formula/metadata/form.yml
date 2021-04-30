@@ -49,6 +49,30 @@ prometheus:
       $visible: "this.parent.value.autodiscover_clients"
       $required: true
 
+    targets_tls:
+      $type: group
+      $name: Targets TLS
+      $help: TLS configuration for monitored targets. Please ensure the files are present before applying the highstate. Please update `Prometheus Exporters` formula accordingly.
+
+      enabled:
+        $type: boolean
+        $default: False
+
+      ca_certificate:
+        $name: CA Certificate
+        $default: /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+        $visible: this.parent.value.enabled == true
+
+      client_certificate:
+        $name: Client Certificate
+        $placeholder: /etc/ssl/client.crt
+        $visible: this.parent.value.enabled == true
+
+      client_key:
+        $name: Client Private Key
+        $placeholder: /etc/ssl/client.key
+        $visible: this.parent.value.enabled == true
+
   alerting:
     $type: group
     $disabled: "!formValues.prometheus.enabled"
