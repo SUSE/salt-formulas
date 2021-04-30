@@ -52,7 +52,9 @@ prometheus:
     targets_tls:
       $type: group
       $name: Targets TLS
-      $help: TLS configuration for monitored targets. Please ensure the files are present before applying the highstate. Please update `Prometheus Exporters` formula accordingly.
+      $help: >
+        TLS configuration for monitored targets. Please ensure the files are present before
+        applying the highstate. Please update `Prometheus Exporters` formula accordingly.
 
       enabled:
         $type: boolean
