@@ -53,6 +53,7 @@ scrape_configs:
 {%- endif %}
 {% set sd_username = salt['pillar.get']('prometheus:mgr:sd_username') %}
 {% set sd_password = salt['pillar.get']('prometheus:mgr:sd_password') %}
+{% set targets_tls = salt['pillar.get']('prometheus:mgr:targets_tls') %}
 {%- if salt['pillar.get']('prometheus:mgr:autodiscover_clients', False) and
        sd_username and sd_password %}
   # --------------------
@@ -63,6 +64,19 @@ scrape_configs:
       - host: https://{{ grains['master'] }}
         username: {{ sd_username }}
         password: {{ sd_password }}
+{% if targets_tls.enabled %}
+    scheme: https
+    tls_config:
+      ca_file: {{ targets_tls.ca_certificate }}
+      cert_file: {{ targets_tls.client_certificate }}
+      key_file: {{ targets_tls.client_key }}
+    relabel_configs:
+    - source_labels: [exporter]
+      regex: apache_exporter|postgres_exporter
+      target_label: __scheme__
+      replacement: http
+      action: replace
+{% endif %}
 {%- endif %}
 {%- for job, files in salt['pillar.get']('prometheus:scrape_configs', {}).items() %}
   - job_name: {{ job }}
