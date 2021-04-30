@@ -65,7 +65,6 @@ scrape_configs:
         username: {{ sd_username }}
         password: {{ sd_password }}
 {% if targets_tls.enabled %}
-    scheme: https
     tls_config:
       ca_file: {{ targets_tls.ca_certificate }}
       cert_file: {{ targets_tls.client_certificate }}
