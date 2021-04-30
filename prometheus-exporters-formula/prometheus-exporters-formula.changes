@@ -1,7 +1,8 @@
 -------------------------------------------------------------------
-Mon Apr 26 13:26:01 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
+Fri Apr 30 12:01:03 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 1.0.0
+- Add TLS configuration for Node Exporter
 - Move exporters configurations to dedicated group `prometheus_exporters`
 - Add formula data schema migration script
 - This version changes the formula data schema and is not backwards compatible.

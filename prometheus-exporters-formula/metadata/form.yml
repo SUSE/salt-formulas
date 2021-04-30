@@ -14,7 +14,10 @@ proxy_port:
 tls:
   $type: group
   $name: TLS
-  $help: TLS configuration. Please ensure the files are present on the minion and readable for the user `prometheus` before applying the highstate.
+  $help: >
+    TLS configuration. Please ensure the files are present on the minion and readable for
+    the user `prometheus` before applying the highstate. Please update Prometheus formula
+    configuration for targets accordingly.
 
   enabled:
     $type: boolean
@@ -23,14 +26,17 @@ tls:
   ca_certificate:
     $name: CA Certificate
     $default: /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+    $visible: this.parent.value.enabled == true
 
   server_certificate:
     $name: Server Certificate
     $placeholder: /etc/ssl/server.crt
+    $visible: this.parent.value.enabled == true
 
   server_key:
     $name: Server Key
     $placeholder: /etc/ssl/server.key
+    $visible: this.parent.value.enabled == true
 
 exporters:
   $type: group
