@@ -66,6 +66,7 @@ exporter_exporter:
 node_exporter:
 {% if node_exporter_enabled %}
   {% set node_exporter_args = salt['pillar.get']('exporters:node_exporter:args') %}
+  {% set node_exporter_address = salt['pillar.get']('exporters:node_exporter:address') %}
   {% if node_exporter_args is none %}
     {% set node_exporter_args = '' %}
   {% endif %}
@@ -75,7 +76,6 @@ node_exporter:
   {% if tls_enabled %}
     {% set node_exporter_args = node_exporter_args ~ ' --web.config=' ~ web_config_file %}
   {% endif %}
-  {% set node_exporter_address = salt['pillar.get']('exporters:node_exporter:address') %}
   pkg.installed:
     - name: {{ exporters.node_exporter_package }}
   file.managed:
