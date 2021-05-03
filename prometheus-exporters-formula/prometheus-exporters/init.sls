@@ -69,6 +69,12 @@ node_exporter:
   {% if node_exporter_args is none %}
     {% set node_exporter_args = '' %}
   {% endif %}
+  {% if node_exporter_address and '-web.listen-address' not in node_exporter_args %}
+    {% set node_exporter_args = node_exporter_args ~ ' --web.listen-address=' ~ node_exporter_address %}
+  {% endif %}
+  {% if tls_enabled %}
+    {% set node_exporter_args = node_exporter_args ~ ' --web.config=' ~ web_config_file %}
+  {% endif %}
   {% set node_exporter_address = salt['pillar.get']('exporters:node_exporter:address') %}
   pkg.installed:
     - name: {{ exporters.node_exporter_package }}
@@ -82,14 +88,6 @@ node_exporter:
     - mode: 644
     - defaults:
         args: {{ node_exporter_args }}
-  {% if node_exporter_address and '-web.listen-address' not in node_exporter_args %}
-    - context:
-        args: {{ node_exporter_args ~ ' --web.listen-address=' ~ node_exporter_address }}
-  {% endif %}
-  {% if tls_enabled %}
-    - context:
-        args: {{ node_exporter_args ~ ' --web.config=' ~ web_config_file }}
-  {% endif %}
     - require:
       - pkg: node_exporter
     - watch_in:
