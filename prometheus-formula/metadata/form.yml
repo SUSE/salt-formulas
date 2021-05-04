@@ -19,6 +19,38 @@ prometheus:
     $disabled: "!formValues.prometheus.enabled"
     $required: true
 
+  tls:
+    $type: group
+    $name: TLS
+    $help: >
+      TLS configuration. Please ensure the files are present on the minion and readable for
+      the user `prometheus` before applying the highstate. Please update Grafana formula
+      configuration accordingly.
+
+    enabled:
+      $type: boolean
+      $default: False
+
+    server_certificate:
+      $name: Server Certificate
+      $placeholder: /etc/ssl/server.crt
+      $visible: this.parent.value.enabled == true
+
+    server_key:
+      $name: Server Key
+      $placeholder: /etc/ssl/server.key
+      $visible: this.parent.value.enabled == true
+
+    username:
+      $name: User
+      $help: Prometheus server admin user
+      $visible: this.parent.value.enabled == true
+
+    password:
+      $name: Password Hash
+      $help: Prometheus server password hashed with bcrypt
+      $visible: this.parent.value.enabled == true
+
   mgr:
     $type: group
     $name: ${productName}
@@ -67,12 +99,12 @@ prometheus:
 
       client_certificate:
         $name: Client Certificate
-        $placeholder: /etc/ssl/client.crt
+        $placeholder: /etc/ssl/server.crt
         $visible: this.parent.value.enabled == true
 
       client_key:
         $name: Client Private Key
-        $placeholder: /etc/ssl/client.key
+        $placeholder: /etc/ssl/server.key
         $visible: this.parent.value.enabled == true
 
   alerting:

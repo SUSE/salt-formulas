@@ -1,0 +1,5 @@
+tls_server_config:
+  cert_file: {{ salt['pillar.get']('prometheus:tls:server_certificate') }}
+  key_file: {{ salt['pillar.get']('prometheus:tls:server_key') }}
+basic_auth_users:
+  {{ salt['pillar.get']('prometheus:tls:username') }}: {{ salt['pillar.get']('prometheus:tls:password') }}

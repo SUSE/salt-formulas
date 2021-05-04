@@ -20,9 +20,12 @@ alerting:
 {% endif %}
 
 rule_files:
+{% set tls_enabled = salt['pillar.get']('prometheus:tls:enabled', False) %}
 {% if salt['pillar.get']('prometheus:alerting:default_rules', False) %}
   - /etc/prometheus/rules/general-rules.yml
+{% if not tls_enabled %}
   - /etc/prometheus/rules/prometheus-rules.yml
+{% endif %}
 {% endif %}
 {%- for rule_file in salt['pillar.get']('prometheus:alerting:rule_files', []) %}
   - {{ rule_file }}
@@ -85,6 +88,8 @@ scrape_configs:
         - {{ file }}
 {% endfor %}
 {%- endfor %}
+
+{% if not tls_enabled %}
   # --------------------
   # Metamonitoring
   # --------------------
@@ -92,6 +97,8 @@ scrape_configs:
     static_configs:
       - targets:
         - {{ grains['fqdn'] }}:9090
+{% endif %}
+
 {% for job, config in salt['pillar.get']('prometheus:federation').items() %}
 {% if loop.first %}
   # --------------------
