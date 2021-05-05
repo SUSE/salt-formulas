@@ -3,13 +3,25 @@ apiVersion: 1
 
 datasources:
 {% for name, datasource in salt['pillar.get']('grafana:datasources:prometheus').items() %}
+{% if datasource.user and datasource.password %}
+  {% set basic_auth_enabled = true %}
+{% else %}
+  {% set basic_auth_enabled = false %}
+{% endif %}
+
 - name: {{ name }}
   type: prometheus
   access: proxy
   url: {{ datasource.url }}
-  basicAuth: False
+  basicAuth: {{ basic_auth_enabled }}
   isDefault: {{ loop.first }}
   editable: true
   jsonData:
     timeInterval: 5s
+{% if basic_auth_enabled %}
+  basicAuthUser: {{ datasource.user }}
+  secureJsonData:
+    basicAuthPassword: {{ datasource.password }}
+{% endif %}
+  version: 2
 {% endfor %}

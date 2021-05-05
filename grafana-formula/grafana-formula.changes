@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May  5 13:47:25 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.5.0
+- Add basic authentication for Prometheus datasource configuration
+
+-------------------------------------------------------------------
 Fri Apr 16 10:18:24 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.4.1
