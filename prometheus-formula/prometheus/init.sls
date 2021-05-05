@@ -107,7 +107,9 @@ prometheus_running:
 {%- endif %}
     - watch:
       - file: config_file
+{% if tls_enabled %}
       - file: prometheus_web_config
+{% endif %}
 {% if default_rules %}
       - file: default_rule_files
 {% endif %}
