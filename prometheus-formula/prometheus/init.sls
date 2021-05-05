@@ -107,6 +107,7 @@ prometheus_running:
 {%- endif %}
     - watch:
       - file: config_file
+      - file: /etc/systemd/system/prometheus.service.d/uyuni.conf
 {% if tls_enabled %}
       - file: prometheus_web_config
 {% endif %}
