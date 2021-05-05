@@ -1,8 +1,9 @@
 -------------------------------------------------------------------
-Fri Apr 30 13:41:23 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
+Tue May  4 18:58:17 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.4.0
 - Add TLS support for node exporter targets
+- Add TLS support for Prometheus server
 
 -------------------------------------------------------------------
 Fri Feb  5 12:50:31 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>

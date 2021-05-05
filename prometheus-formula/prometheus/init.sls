@@ -6,6 +6,8 @@
 {%- set alertmanager_service = salt['pillar.get']('prometheus:alerting:alertmanager_service', False) %}
 {%- set default_rules = salt['pillar.get']('prometheus:alerting:default_rules', False) %}
 {%- set uyuni_server_hostname = salt['pillar.get']('mgr_origin_server', grains['master'])%}
+{%- set tls_enabled = salt['pillar.get']('prometheus:tls:enabled', False) %}
+{%  set prometheus_web_config_file = '/etc/prometheus/web.yml' %}
 
 install_prometheus:
   pkg.installed:
@@ -28,6 +30,20 @@ config_file:
       - pkg: install_alertmanager
     - defaults:
       uyuni_server_hostname: {{ uyuni_server_hostname }}
+
+{% if tls_enabled %}
+prometheus_web_config:
+  file.managed:
+    - name: {{ prometheus_web_config_file }}
+    - source: salt://prometheus/files/web.yml
+    - user: root
+    - group: root
+    - mode: 644
+    - template: jinja
+    - require:
+      - pkg: install_prometheus
+      - pkg: install_alertmanager
+{% endif %}
 
 {% if default_rules %}
 default_rule_files:
@@ -64,6 +80,20 @@ mgr_scrape_config_file:
 {%- endif %}
 
 prometheus_running:
+  file.managed:
+    - name: /etc/systemd/system/prometheus.service.d/uyuni.conf
+    - source: salt://prometheus/files/prometheus-service.conf
+    - makedirs: True
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 644
+    - defaults:
+        args: ''
+{% if tls_enabled %}
+    - context:
+        args: {{ ' --web.config.file=' ~ prometheus_web_config_file }}
+{% endif %}
   service.running:
     - name: {{ prometheus.prometheus_service }}
     - enable: True
@@ -77,6 +107,10 @@ prometheus_running:
 {%- endif %}
     - watch:
       - file: config_file
+      - file: /etc/systemd/system/prometheus.service.d/uyuni.conf
+{% if tls_enabled %}
+      - file: prometheus_web_config
+{% endif %}
 {% if default_rules %}
       - file: default_rule_files
 {% endif %}
