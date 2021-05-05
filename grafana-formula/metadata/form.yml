@@ -43,6 +43,11 @@ grafana:
           $required: true
           $name: Prometheus URL
           $help: URL of a Prometheus instance
+        user:
+          $name: Prometheus server username
+        password:
+          $type: password
+          $name: Prometheus server password
 
   dashboards:
     $type: group
