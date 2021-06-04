@@ -6,6 +6,7 @@ from pathlib import Path
 
 pillar_paths = [Path('/srv/susemanager/formula_data/pillar'),
                 Path('/srv/susemanager/formula_data/group_pillar')]
+v05_keys = {'proxy_enabled', 'proxy_port'}
 v1_keys = {'node_exporter', 'apache_exporter', 'postgres_exporter'}
 
 
@@ -19,10 +20,21 @@ class Migration:
             self.data = json.load(formula_data)
 
     def identify_schema_version(self):
+        # schema 0.5 has no proxy support
+        if set(self.data.keys()) & v05_keys != v05_keys:
+            return 0.5
+        # schema 1 has exporter names as keys
         if set(self.data.keys()) & v1_keys:
             return 1
         else:
             return 0
+
+    # set default values for proxy configuration
+    def migrate_from_version_05(self):
+        if 'proxy_enabled' not in self.data:
+            self.data['proxy_enabled'] = False
+        if 'proxy_port' not in self.data:
+            self.data['proxy_port'] = 9999
 
     # move `v1_keys` objects to `exporters` dictionary
     def migrate_from_version_1(self):
@@ -37,7 +49,9 @@ class Migration:
         if schema_version > 0:
             shutil.copy2(self.filepath, self.filepath.with_suffix(
                 '.v{0}'.format(schema_version)))
-            if schema_version == 1:
+            if schema_version <= 0.5:
+                self.migrate_from_version_05()
+            if schema_version <= 1:
                 self.migrate_from_version_1()
             with open(self.filepath, 'w') as output:
                 json.dump(self.data, output)
