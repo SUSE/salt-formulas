@@ -25,6 +25,8 @@ License:        Apache-2.0
 Group:          System/Packages
 Url:            https://github.com/SUSE/salt-formulas
 Source:         prometheus-exporters-formula-%{version}.tar.gz
+BuildRequires:  python3
+Requires:       python3
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
