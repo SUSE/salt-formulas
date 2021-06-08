@@ -1,3 +1,9 @@
+- Move exporters configurations to dedicated group `prometheus_exporters`
+- Add formula data schema migration script
+- This version changes the formula data schema and is not backwards compatible.
+  Downgrading from this version will require reconfiguring the formula for all your
+  minions.
+
 -------------------------------------------------------------------
 Tue Oct 20 08:08:41 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
 
