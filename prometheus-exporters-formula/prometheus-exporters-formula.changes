@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun  9 10:49:02 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 1.0.1
 - Add support for older schema without proxy configuration
 
 -------------------------------------------------------------------
