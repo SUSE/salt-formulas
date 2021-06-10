@@ -1,4 +1,12 @@
-- Add support for older schema without proxy configuration
+-------------------------------------------------------------------
+Thu Jun 10 08:14:40 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.7.6
+- Move exporters configurations to dedicated group `prometheus_exporters`
+- Add formula data schema migration script
+- This version changes the formula data schema and is not backwards compatible.
+  Downgrading from this version will require reconfiguring the formula for all your
+  minions.
 
 -------------------------------------------------------------------
 Wed Oct 21 12:01:32 UTC 2020 - Witek Bedyk <witold.bedyk@suse.com>
