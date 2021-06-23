@@ -1,4 +1,4 @@
-{% set exporter_address = salt['pillar.get'](module ~ '_exporter:address') %}
+{% set exporter_address = salt['pillar.get']('exporters:' ~ module ~ '_exporter:address') %}
 {% set exporter_port = exporter_address.rsplit(':')[-1] %}
 {% set exporter_host = exporter_address.split(':')[0] %}
 
