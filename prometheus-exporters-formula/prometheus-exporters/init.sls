@@ -106,7 +106,7 @@ node_exporter:
 {% if node_exporter_enabled and proxy_enabled and proxy_supported %}
 node_exporter_proxy:
     file.managed:
-      - name: /etc/exporter_exporter.d/node.yaml
+      - name: /etc/exporter_exporter.d/node_exporter.yaml
       - source: salt://prometheus-exporters/files/exporter-proxy.yaml
       - template: jinja
       - context:
@@ -162,7 +162,7 @@ apache_exporter:
 {% if apache_exporter_enabled and proxy_enabled and proxy_supported %}
 apache_exporter_proxy:
   file.managed:
-    - name: /etc/exporter_exporter.d/apache.yaml
+    - name: /etc/exporter_exporter.d/apache_exporter.yaml
     - source: salt://prometheus-exporters/files/exporter-proxy.yaml
     - template: jinja
     - context:
@@ -218,7 +218,7 @@ postgres_exporter:
 {% if postgres_exporter_enabled and proxy_enabled and proxy_supported %}
 postgres_exporter_proxy:
   file.managed:
-    - name: /etc/exporter_exporter.d/postgres.yaml
+    - name: /etc/exporter_exporter.d/postgres_exporter.yaml
     - source: salt://prometheus-exporters/files/exporter-proxy.yaml
     - template: jinja
     - context:
