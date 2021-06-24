@@ -181,6 +181,7 @@ prometheus:
   scrape_configs:
     $type: edit-group
     $name: User defined scrape configurations
+    $help: User defined target definitions in format of file service discovery.
     $minItems: 0
     $itemName: File-based service discovery ${i}
     $disabled: "!formValues.prometheus.enabled"
@@ -189,10 +190,13 @@ prometheus:
       $key:
         $type: text
         $name: "Job name"
+        $help: "Unique job name identifier"
       files:
         $type: edit-group
+        $help: "Patterns for files from which target groups are extracted."
         $minItems: 1
         $prototype:
           $type: text
           $default: /etc/prometheus/my-scrape-config.yml
+          $help: "JSON or YAML file pattern"
           $required: true
