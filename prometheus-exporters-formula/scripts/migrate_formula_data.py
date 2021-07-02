@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
+from collections import MutableMapping
 import json
-import shutil
 from pathlib import Path
+import shutil
+
 
 pillar_paths = [Path('/srv/susemanager/formula_data/pillar'),
                 Path('/srv/susemanager/formula_data/group_pillar')]
@@ -42,8 +44,10 @@ class Migration:
         for exporter in v1_keys:
             exporters[exporter] = self.data.pop(exporter)
 
+    def fix_schema(self):
+        none_value_to_empty_string(self.data)
+
     def migrate(self):
-        self.parse()
         schema_version = self.identify_schema_version()
 
         if schema_version > 0:
@@ -53,8 +57,19 @@ class Migration:
                 self.migrate_from_version_05()
             if schema_version <= 1:
                 self.migrate_from_version_1()
-            with open(self.filepath, 'w') as output:
-                json.dump(self.data, output)
+
+    def dump(self):
+        with open(self.filepath, 'w') as output:
+            json.dump(self.data, output)
+
+
+def none_value_to_empty_string(data):
+    if isinstance(data, MutableMapping):
+        for k, v in data.items():
+            if v is None:
+                data[k] = ''
+            else:
+                none_value_to_empty_string(v)
 
 
 # Find all prometheus-exporters formula data files and migrate them to the
@@ -64,4 +79,9 @@ for pillar_path in pillar_paths:
         for formula_data_filename in pillar_path.iterdir():
             if formula_data_filename.name.endswith(
                     '_prometheus-exporters.json'):
-                Migration(pillar_path, formula_data_filename).migrate()
+                formula_migration = Migration(pillar_path,
+                                              formula_data_filename)
+                formula_migration.parse()
+                formula_migration.fix_schema()
+                formula_migration.migrate()
+                formula_migration.dump()
