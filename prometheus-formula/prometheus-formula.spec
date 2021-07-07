@@ -19,7 +19,7 @@
 %define fname prometheus
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           prometheus-formula
-Version:        0.4.0
+Version:        0.4.1
 Release:        0
 Summary:        Salt formula for installing and configuring Prometheus monitoring system
 License:        Apache-2.0
