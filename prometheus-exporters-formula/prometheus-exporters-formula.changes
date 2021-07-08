@@ -1,3 +1,5 @@
+- Fix null formula data dictionary values (bsc#1186025)
+
 -------------------------------------------------------------------
 Thu Jun 10 08:14:40 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
 
