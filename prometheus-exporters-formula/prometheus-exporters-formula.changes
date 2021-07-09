@@ -10,7 +10,7 @@ Wed Jun  9 11:19:45 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.9.1
 - Move exporters configurations to dedicated group `prometheus_exporters`
-- Add formula data schema migration script
+- Add formula data schema migration script (bsc#1186025)
 - This version changes the formula data schema and is not backwards compatible.
   Downgrading from this version will require reconfiguring the formula for all your
   minions.
