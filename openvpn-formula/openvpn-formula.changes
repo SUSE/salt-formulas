@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 16 07:36:14 UTC 2021 - Stefan Bluhm <stefan.bluhm@clacee.eu>
+
+- Changed package to noarch.
+
+-------------------------------------------------------------------
 Tue Aug 11 12:37:26 UTC 2020 - Alexander Graul <alexander.graul@suse.com>
 
 - Update to v0.1.1
