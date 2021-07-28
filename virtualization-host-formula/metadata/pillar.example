@@ -13,3 +13,9 @@ default_net:
   ipv6:
     gateway: 2001:db8:ca2:2::1
     prefix: 64
+tuning:
+  hugepages_size: 1GB
+  hugepages_count: 1900
+  disable_numa_balancing: True
+  disable_irq_balancing: True
+  disable_ksm: True

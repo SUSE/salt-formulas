@@ -11,6 +11,20 @@ virthost_packages:
     - require:
         - pkg: no_kernel_default_base
 
+tuned_service:
+  service.running:
+    - name: tuned
+    - enable: True
+    - require:
+      - pkg: virthost_packages
+
+tuned_profile:
+  cmd.run:
+    - name: tuned-adm profile virtual-host
+    - unless: 'tuned-adm active | grep virtual-host'
+    - require:
+      - service: tuned_service
+
 libvirtd_service:
   service.running:
     - name: libvirtd
@@ -139,3 +153,94 @@ default_virt_net_start:
     - require:
       - cmd: default-net_defined
 {% endif %}
+
+
+{# Update Kernel parameters #}
+hugepagesz_setting:
+  bootloader.kernel_param:
+    - name: hugepagesz
+    - value: {{ pillar.get("tuning", {})["hugepages_size"] }}
+
+default_hugepagesz_setting:
+  bootloader.kernel_param:
+    - name: default_hugepagesz
+    - value: {{ pillar.get("tuning", {})["hugepages_size"] }}
+
+hugepages_setting:
+  bootloader.kernel_param:
+    - name: hugepages
+    - value: {{ pillar.get("tuning", {})["hugepages_count"] }}
+
+{%- if pillar.get("tuning", {})["hugepages_size"] %}
+hugetlbfs_mount:
+  mount.mounted:
+    - device: hugetlbfs
+    - fstype: hugetlbfs
+    - name: /dev/hugepages
+    - persist: True
+{%- else %}
+hugetlbfs_mount:
+  mount.unmounted:
+    - name: /dev/hugepages
+    - persist: True
+{%- endif %}
+
+numa_balancing_persisted:
+  bootloader.kernel_param:
+    - name: numa_balancing
+{%- if pillar.get("tuning", {})["disable_numa_balancing"] %}
+    - value: "disable"
+{%- else %}
+    - value: null
+{%- endif %}
+
+{%- set numa_balancing_value = "0" if pillar.get("tuning", {})["disable_numa_balancing"] else "1" %}
+numa_balancing_disabled:
+  cmd.run:
+    - name: "echo {{ numa_balancing_value }} >/proc/sys/kernel/numa_balancing"
+    - unless: "test `cat /proc/sys/kernel/numa_balancing` -eq {{ numa_balancing_value }}"
+
+persist_numa_balancing:
+  sysctl.present:
+    - name: kernel.numa_balancing
+    - value: {{ numa_balancing_value }}
+
+{%- if pillar.get("tuning", {})["disable_irq_balancing"] %}
+irqbalance_stopped:
+  service.dead:
+    - name: irqbalance
+    - enable: False
+{%- else %}
+irqbalance_started:
+  service.running:
+    - name: irqbalance
+    - enable: True
+{%- endif %}
+
+{%- if pillar.get("tuning", {})["disable_ksm"] %}
+ksm_stopped:
+  service.dead:
+    - name: ksm
+    - enable: False
+
+ksm_disabled:
+  cmd.run:
+    - name: "echo 2 >/sys/kernel/mm/ksm/run"
+    - unless: "test `cat /sys/kernel/mm/ksm/run` -eq 2"
+    - require:
+      - service: ksm_stopped
+{%- else %}
+ksm_running:
+  cmd.run:
+    - name: systemctl enable --now ksm
+{%- endif %}
+
+grub_config_update:
+  cmd.run:
+    - name: 'grub2-mkconfig -o /boot/grub2/grub.cfg'
+    - onchanges:
+      - bootloader: hugepages_setting
+      - bootloader: numa_balancing_persisted
+{%- if pillar['hypervisor'] == 'Xen' %}
+      - bootloader: set_xen_default
+{%- endif %}

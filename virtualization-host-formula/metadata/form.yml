@@ -92,3 +92,35 @@ default_net:
     dhcp_end:
       $type: text
       $name: Last IP adress for DHCP
+
+tuning:
+    $name: Tuning
+    $type: group
+    $help: Virtual host performance tuning settings
+
+    hugepages_size:
+        $name: Memory huge pages size
+        $help: "The value depends on the CPU features: pse for 2M, pdpe1gb for 1G"
+        $type: text
+
+    hugepages_count:
+        $name: Number of huge pages
+        $help: The number of huge pages to preallocate.
+        $type: number
+
+    disable_numa_balancing:
+        $name: Disable NUMA balancing
+        $help: Improves virtual CPU performances when used when used with CPU pinning.
+        $type: boolean
+        $default: False
+
+    disable_irq_balancing:
+        $name: Disable IRQ balancing
+        $type: boolean
+        $default: False
+
+    disable_ksm:
+        $name: Disable Kernel Samepage Merging (KSM)
+        $help: Reduces performance overhead by not sharing memory across virtual machines
+        $type: boolean
+        $default: False
