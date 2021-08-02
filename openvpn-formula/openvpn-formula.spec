@@ -17,7 +17,7 @@
 
 
 Name:           openvpn-formula
-Version:        0.1.1
+Version:        0.1.2
 Release:        0
 BuildArch:      noarch
 Summary:        OpenVPN Salt Formula for Uyuni/SUSE Manager
