@@ -1,0 +1,11 @@
+devices:
+    $type: edit-group
+    $prototype:
+        $key:
+            $name: Device name
+            $placeholder: eth0
+            $type: text
+        $name: Count
+        $type: number
+        $default: 4
+    $help: Number of virtual interfaces for each SR-IOV capable device

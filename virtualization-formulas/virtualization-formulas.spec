@@ -44,6 +44,8 @@ install -D -t %{buildroot}/usr/share/susemanager/formulas/states/virtualization-
 install -D -t %{buildroot}/usr/share/susemanager/formulas/metadata/virtualization-host host/metadata/*
 install -D -t %{buildroot}/usr/share/susemanager/formulas/states/virtualization-guest guest/states/*
 install -D -t %{buildroot}/usr/share/susemanager/formulas/metadata/virtualization-guest guest/metadata/*
+install -D -t %{buildroot}/usr/share/susemanager/formulas/states/SR-IOV sriov/states/*
+install -D -t %{buildroot}/usr/share/susemanager/formulas/metadata/SR-IOV sriov/metadata/*
 
 install -D -t %{buildroot}/usr/share/susemanager/formulas/states/virtualization-host/_states host/src/states/*.py
 install -D host/virtualization-host-formula.conf %{buildroot}/etc/salt/master.d/virtualization-host-formula.conf

@@ -1,0 +1,3 @@
+devices:
+  eth0: 8
+  eth1: 4

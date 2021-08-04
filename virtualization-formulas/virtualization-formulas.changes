@@ -4,6 +4,7 @@ Wed Jul 28 10:02:32 UTC 2021 - Cédric Bosdonnat <cbosdonnat@suse.com>
 - Update to version 0.6
   - Add host tuning parameters
   - Add guest formula
+  - Add SR-IOV formula
 
 -------------------------------------------------------------------
 Thu Aug 27 08:45:01 UTC 2020 - Cédric Bosdonnat <cbosdonnat@suse.com>
