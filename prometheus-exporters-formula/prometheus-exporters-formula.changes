@@ -1,3 +1,5 @@
+- Fix formula data migration with missing exporter configuration (bsc#1188136)
+
 -------------------------------------------------------------------
 Thu Jul  8 14:48:48 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
 
