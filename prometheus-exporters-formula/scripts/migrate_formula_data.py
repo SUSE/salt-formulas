@@ -40,7 +40,8 @@ class Migration:
     def migrate_from_version_1(self):
         exporters = self.data['exporters'] = {}
         for exporter in v1_keys:
-            exporters[exporter] = self.data.pop(exporter)
+            if exporter in self.data:
+                exporters[exporter] = self.data.pop(exporter)
 
     def migrate(self):
         self.parse()
