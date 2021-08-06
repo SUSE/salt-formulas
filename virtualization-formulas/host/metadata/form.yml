@@ -1,4 +1,5 @@
 hypervisor:
+  $name: Hypervisor
   $type: select
   $values: ["KVM",
             "Xen"
@@ -16,6 +17,7 @@ default_net_enabled:
     $default: True
 
 default_pool:
+  $name: Default pool
   $type: group
   $help: Configure the default storage pool
   $visible: formValues.default_pool_enabled == true
@@ -28,11 +30,13 @@ default_pool:
     $required: formValues.default_pool_enabled == true
 
 default_net:
+  $name: Default net
   $type: group
   $help: Configure the default virtual network
   $visible: formValues.default_net_enabled == true
 
   mode:
+    $name: Mode
     $type: select
     $values: ["NAT", "Bridge"]
     $default: "Bridge"
@@ -46,6 +50,7 @@ default_net:
     $required: formValues.default_net.mode == 'Bridge'
 
   ipv4:
+    $name: IPv4
     $type: group
     $help: IPv4 settings
     $visible: formValues.default_net.mode == 'NAT'
@@ -71,6 +76,7 @@ default_net:
       $default: 192.168.122.254
 
   ipv6:
+    $name: IPv6
     $type: group
     $help: IPv6 settings
     $visible: formValues.default_net.mode == 'NAT'
