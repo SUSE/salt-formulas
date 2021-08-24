@@ -1,0 +1,5 @@
+tuning:
+  disable_irq_balancing: True
+  disable_ksm: True
+  cpu_passthrough: True
+
