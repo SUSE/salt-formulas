@@ -4,7 +4,7 @@ CPU_MITIGATIONS_VERSION=0.3
 PROMETHEUS_VERSION=0.4.1
 PROMETHEUS_EXPORTERS_VERSION=1.0.2
 GRAFANA_VERSION=0.5.0
-VIRTUALIZATION_HOST_VERSION=0.6
+VIRTUALIZATION_VERSION=0.6
 SYSTEM_LOCK_VERSION=0.1
 UYUNI_CONFIG_VERSION=0.1
 
@@ -23,8 +23,8 @@ prometheus-exporters:: clean
 grafana:: clean
 	git archive --format=tar.gz --prefix=grafana-formula-${GRAFANA_VERSION}/ HEAD:grafana-formula/ >grafana-formula-${GRAFANA_VERSION}.tar.gz
 
-virtualization-host:: clean
-	git archive --format=tar.gz --prefix=virtualization-host-formula-${VIRTUALIZATION_HOST_VERSION}/ HEAD:virtualization-host-formula/ >virtualization-host-formula-${VIRTUALIZATION_HOST_VERSION}.tar.gz
+virtualization:: clean
+	git archive --format=tar.gz --prefix=virtualization-formulas-${VIRTUALIZATION_VERSION}/ HEAD:virtualization-formulas/ >virtualization-formulas-${VIRTUALIZATION_VERSION}.tar.gz
 
 system-lock:: clean
 	git archive --format=tar.gz --prefix=system-lock-formula-${SYSTEM_LOCK_VERSION}/ HEAD:system-lock-formula/ >system-lock-formula-${SYSTEM_LOCK_VERSION}.tar.gz
