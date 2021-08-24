@@ -1,5 +1,5 @@
 #
-# spec file for package virtualization-host-formula 
+# spec file for package virtualization-formulas
 #
 # Copyright (c) 2020 SUSE LLC
 #
@@ -16,10 +16,10 @@
 #
 
 
-Name:           virtualization-host-formula
+Name:           virtualization-formulas
 Version:        0.6
 Release:        0
-Summary:        Virtualization Salt Formula for SUSE Manager
+Summary:        Virtualization Salt Formulas for SUSE Manager
 License:        Apache-2.0
 Group:          System/Management
 URL:            https://github.com/SUSE/salt-formulas 
@@ -28,12 +28,11 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 BuildRequires:  salt-master
 Requires:       salt-master
-
-# This would be better with a macro that just strips "-formula" from {name}
-%define fname virtualization-host
+Provides:       virtualization-host-formula = %version-%release
+Obsoletes:      virtualization-host-formula < %version-release
 
 %description
-Virtualization Salt Formula for SUSE Manager. Installs an hypervisor.
+Virtualization Salt Formula for SUSE Manager for both the hypervisor and the guest.
 
 %prep
 %setup -q
@@ -41,20 +40,17 @@ Virtualization Salt Formula for SUSE Manager. Installs an hypervisor.
 %build
 
 %install
-mkdir -p %{buildroot}/usr/share/susemanager/formulas/states/%{fname}
-mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata/%{fname}
-cp virtualization-host/*.sls %{buildroot}/usr/share/susemanager/formulas/states/%{fname}
-cp virtualization-host/*.jinja %{buildroot}/usr/share/susemanager/formulas/states/%{fname}
-cp -R virtualization-host/src/states %{buildroot}/usr/share/susemanager/formulas/states/%{fname}/_states
-cp -R metadata/* %{buildroot}/usr/share/susemanager/formulas/metadata/%{fname}
-mkdir -p %{buildroot}/etc/salt/master.d/
-cp %{name}.conf %{buildroot}/etc/salt/master.d/
+install -D -t %{buildroot}/usr/share/susemanager/formulas/states/virtualization-host host/states/*
+install -D -t %{buildroot}/usr/share/susemanager/formulas/metadata/virtualization-host host/metadata/*
+
+install -D -t %{buildroot}/usr/share/susemanager/formulas/states/virtualization-host/_states host/src/states/*.py
+install -D host/virtualization-host-formula.conf %{buildroot}/etc/salt/master.d/virtualization-host-formula.conf
 
 %files
 %defattr(-,root,root,-)
 %license LICENSE
 /usr/share/susemanager
-%config /etc/salt/master.d/%{name}.conf
+%config /etc/salt/master.d/virtualization-host-formula.conf
 
 %changelog
 
