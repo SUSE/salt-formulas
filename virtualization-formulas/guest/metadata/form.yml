@@ -1,0 +1,21 @@
+tuning:
+    $name: Tuning
+    $type: group
+    $help: Virtual machine performance tuning settings
+
+    disable_irq_balancing:
+        $name: Disable IRQ balancing
+        $type: boolean
+        $default: False
+
+    disable_ksm:
+        $name: Disable Kernel Samepage Merging (KSM)
+        $help: Reduces performance overhead by not sharing memory across virtual machines
+        $type: boolean
+        $default: False
+
+    cpu_passthrough:
+        $name: Optimizations for KVM passed through host CPU
+        $help: This flag requires the KVM hint-dedicated option to be set on the VM definition
+        $type: boolean
+        $default: False
