@@ -1,3 +1,4 @@
+- Add blackbox exporter
 - Open Prometheus ports (bsc#1191144)
 
 -------------------------------------------------------------------
