@@ -2,8 +2,10 @@
     'Suse': {
         'prometheus_package': 'golang-github-prometheus-prometheus',
         'alertmanager_package': 'golang-github-prometheus-alertmanager',
+        'blackbox_exporter_package': 'prometheus-blackbox_exporter',
         'prometheus_service': 'prometheus',
-        'alertmanager_service': 'prometheus-alertmanager'
+        'alertmanager_service': 'prometheus-alertmanager',
+        'blackbox_exporter_service': 'prometheus-blackbox_exporter',
+        'blackbox_exporter_service_config': '/etc/systemd/system/prometheus-blackbox_exporter.service.d/uyuni.conf'
     },
 }, default='Suse') %}
-
