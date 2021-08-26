@@ -19,3 +19,4 @@ tuning:
   disable_numa_balancing: True
   disable_irq_balancing: True
   disable_ksm: True
+iommu: True

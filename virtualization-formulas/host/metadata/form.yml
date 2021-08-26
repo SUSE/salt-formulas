@@ -130,3 +130,8 @@ tuning:
         $help: Reduces performance overhead by not sharing memory across virtual machines
         $type: boolean
         $default: False
+iommu:
+    $name: Enable IOMMU support (x86_64)
+    $help: Sets up IOMMU kernel options. Requires the option to be enabled on the BIOS level too and hardware supporting IOMMU.
+    $type: boolean
+    $default: False

@@ -1,4 +1,6 @@
 {% from "virtualization-host/map.jinja" import packages with context %}
+include:
+  - iommu
 
 # SLES JeOS doesn't ship the KVM and Xen modules
 no_kernel_default_base:
@@ -244,3 +246,4 @@ grub_config_update:
 {%- if pillar['hypervisor'] == 'Xen' %}
       - bootloader: set_xen_default
 {%- endif %}
+      - bootloader: intel_iommu_kernel_param
