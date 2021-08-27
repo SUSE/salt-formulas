@@ -1,3 +1,4 @@
+- Add Prometheus targets configuration for minions SSH probing
 - Add blackbox exporter
 - Open Prometheus ports (bsc#1191144)
 
