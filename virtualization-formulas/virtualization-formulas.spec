@@ -29,7 +29,7 @@ BuildArch:      noarch
 BuildRequires:  salt-master
 Requires:       salt-master
 Provides:       virtualization-host-formula = %version-%release
-Obsoletes:      virtualization-host-formula < %version-release
+Obsoletes:      virtualization-host-formula < %version-%release
 
 %description
 Virtualization Salt Formula for SUSE Manager for both the hypervisor and the guest.
