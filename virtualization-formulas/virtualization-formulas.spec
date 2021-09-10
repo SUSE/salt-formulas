@@ -17,7 +17,7 @@
 
 
 Name:           virtualization-formulas
-Version:        0.6
+Version:        0.6.1
 Release:        0
 Summary:        Virtualization Salt Formulas for SUSE Manager
 License:        Apache-2.0
