@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 10 09:24:41 UTC 2021 - Cédric Bosdonnat <cbosdonnat@suse.com>
+
+- Update to version 0.6.1
+  * host: install irqbalance package
+
+-------------------------------------------------------------------
 Wed Jul 28 10:02:32 UTC 2021 - Cédric Bosdonnat <cbosdonnat@suse.com>
 
 - Update to version 0.6
