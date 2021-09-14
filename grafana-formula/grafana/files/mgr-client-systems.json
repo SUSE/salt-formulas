@@ -16,12 +16,16 @@
   "editable": true,
   "gnetId": 704,
   "graphTooltip": 0,
-  "iteration": 1572724151661,
+  "iteration": 1631621168345,
   "links": [],
   "panels": [
     {
       "columns": [],
       "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 3,
@@ -31,7 +35,6 @@
       },
       "id": 125,
       "links": [],
-      "options": {},
       "pageSize": null,
       "scroll": true,
       "showHeader": true,
@@ -41,7 +44,9 @@
       },
       "styles": [
         {
+          "$$hashKey": "object:176",
           "alias": "",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -57,7 +62,9 @@
           "unit": "short"
         },
         {
+          "$$hashKey": "object:177",
           "alias": "",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -73,7 +80,9 @@
           "unit": "short"
         },
         {
+          "$$hashKey": "object:178",
           "alias": "",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -106,10 +115,11 @@
       ],
       "title": "Active Alerts",
       "transform": "table",
-      "type": "table"
+      "type": "table-old"
     },
     {
       "collapsed": false,
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -122,8 +132,8 @@
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         }
       },
       "title": "$hostname",
@@ -131,72 +141,72 @@
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(245, 54, 54, 0.9)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(50, 172, 45, 0.97)"
-      ],
-      "editable": true,
-      "error": false,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "$$hashKey": "object:240",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 2,
-        "w": 3,
+        "w": 2,
         "x": 0,
         "y": 4
       },
       "id": 12,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "options": {},
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.7",
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         }
       },
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
-      },
-      "tableColumn": "",
       "targets": [
         {
           "expr": "count(node_cpu_seconds_total{hostname=~\"$hostname\", exporter=\"node_exporter\",  mode=\"system\"})",
@@ -206,86 +216,88 @@
           "step": 14400
         }
       ],
-      "thresholds": "",
       "title": "Cores",
-      "type": "singlestat",
-      "valueFontSize": "50%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg"
+      "type": "stat"
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorPrefix": false,
-      "colorValue": true,
-      "colors": [
-        "#d44a3a",
-        "#299c46",
-        "#000000"
-      ],
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "$$hashKey": "object:369",
+              "id": 0,
+              "op": "=",
+              "text": "Down",
+              "type": 1,
+              "value": "0"
+            },
+            {
+              "$$hashKey": "object:370",
+              "id": 1,
+              "op": "=",
+              "text": "Up",
+              "type": 1,
+              "value": "1"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#d44a3a",
+                "value": null
+              },
+              {
+                "color": "#299c46",
+                "value": 1
+              },
+              {
+                "color": "#000000"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 2,
-        "w": 3,
-        "x": 3,
+        "w": 2,
+        "x": 2,
         "y": 4
       },
       "id": 112,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "options": {},
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.7",
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         }
       },
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": true
-      },
-      "tableColumn": "",
       "targets": [
         {
           "expr": "min(up{hostname=~\"$hostname\", exporter=\"node_exporter\"})",
@@ -296,24 +308,98 @@
           "refId": "A"
         }
       ],
-      "thresholds": "1",
       "title": "Status",
       "transparent": true,
-      "type": "singlestat",
-      "valueFontSize": "70%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "Down",
-          "value": "0"
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": null,
+      "description": "Requires blackbox exporter",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "$$hashKey": "object:369",
+              "id": 0,
+              "op": "=",
+              "text": "Down",
+              "type": 1,
+              "value": "0"
+            },
+            {
+              "$$hashKey": "object:370",
+              "id": 1,
+              "op": "=",
+              "text": "Up",
+              "type": 1,
+              "value": "1"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#d44a3a",
+                "value": null
+              },
+              {
+                "color": "#299c46",
+                "value": 1
+              },
+              {
+                "color": "#000000"
+              }
+            ]
+          },
+          "unit": "none"
         },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 2,
+        "x": 4,
+        "y": 4
+      },
+      "id": 126,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.7",
+      "targets": [
         {
-          "op": "=",
-          "text": "Up",
-          "value": "1"
+          "exemplar": true,
+          "expr": "min(probe_success{hostname=~\"$hostname\", job=\"blackbox\"})",
+          "format": "time_series",
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
-      "valueName": "current"
+      "title": "SSH",
+      "transparent": true,
+      "type": "stat"
     },
     {
       "alerting": {},
@@ -321,8 +407,15 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": null,
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 3,
       "fillGradient": 0,
       "grid": {},
@@ -332,6 +425,7 @@
         "x": 6,
         "y": 4
       },
+      "hiddenSeries": false,
       "id": 9,
       "legend": {
         "alignAsTable": false,
@@ -350,18 +444,19 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.5.7",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         }
       },
       "seriesOverrides": [],
@@ -429,6 +524,13 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -437,6 +539,7 @@
         "x": 12,
         "y": 4
       },
+      "hiddenSeries": false,
       "id": 94,
       "legend": {
         "avg": false,
@@ -452,18 +555,19 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.5.7",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         }
       },
       "seriesOverrides": [],
@@ -553,22 +657,38 @@
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(245, 54, 54, 0.9)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(50, 172, 45, 0.97)"
-      ],
-      "editable": true,
-      "error": false,
-      "format": "decbytes",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "$$hashKey": "object:282",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 2,
@@ -579,46 +699,30 @@
       "id": 13,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "options": {},
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.7",
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         }
       },
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
-      },
-      "tableColumn": "",
       "targets": [
         {
           "expr": "avg(node_memory_MemTotal_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\"})",
@@ -629,36 +733,41 @@
           "step": 7200
         }
       ],
-      "thresholds": "",
       "title": "Ram",
-      "type": "singlestat",
-      "valueFontSize": "50%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg"
+      "type": "stat"
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
-      ],
-      "decimals": 0,
-      "format": "percentunit",
-      "gauge": {
-        "maxValue": 1,
-        "minValue": 0,
-        "show": true,
-        "thresholdLabels": false,
-        "thresholdMarkers": false
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#299c46",
+                "value": null
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 0.8
+              },
+              {
+                "color": "#d44a3a",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -669,46 +778,28 @@
       "id": 108,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "options": {},
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false,
+        "text": {}
+      },
+      "pluginVersion": "7.5.7",
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         }
       },
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
-      },
-      "tableColumn": "",
       "targets": [
         {
           "expr": "avg(node_load1{hostname=~\"$hostname\", exporter=\"node_exporter\"})",
@@ -719,33 +810,44 @@
           "refId": "A"
         }
       ],
-      "thresholds": "0.8,1",
-      "title": "",
       "transparent": true,
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [],
-      "valueName": "current"
+      "type": "gauge"
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(245, 54, 54, 0.9)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(50, 172, 45, 0.97)"
-      ],
-      "decimals": 1,
-      "editable": true,
-      "error": false,
-      "format": "decbytes",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [
+            {
+              "$$hashKey": "object:324",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 2,
@@ -756,46 +858,30 @@
       "id": 97,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "options": {},
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.7",
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         }
       },
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
-      },
-      "tableColumn": "",
       "targets": [
         {
           "expr": "sum(node_filesystem_size_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\"})",
@@ -806,24 +892,21 @@
           "step": 7200
         }
       ],
-      "thresholds": "",
       "title": "Storage",
-      "type": "singlestat",
-      "valueFontSize": "50%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg"
+      "type": "stat"
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -832,6 +915,7 @@
         "x": 0,
         "y": 10
       },
+      "hiddenSeries": false,
       "id": 95,
       "legend": {
         "avg": false,
@@ -847,18 +931,19 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.5.7",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         }
       },
       "seriesOverrides": [],
@@ -933,6 +1018,13 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -941,6 +1033,7 @@
         "x": 6,
         "y": 10
       },
+      "hiddenSeries": false,
       "id": 23,
       "legend": {
         "alignAsTable": false,
@@ -959,18 +1052,19 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.5.7",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         }
       },
       "seriesOverrides": [],
@@ -1046,8 +1140,129 @@
       }
     },
     {
-      "columns": [],
-      "fontSize": "100%",
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "decimals": 2,
+          "displayName": "",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mountpoint"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "mount"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": null
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #A"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "free"
+              },
+              {
+                "id": "unit",
+                "value": "decbytes"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": null
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #B"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "total"
+              },
+              {
+                "id": "unit",
+                "value": "decbytes"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": null
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "device"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": null
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 6,
         "w": 12,
@@ -1056,101 +1271,17 @@
       },
       "id": 110,
       "links": [],
-      "options": {},
-      "pageSize": null,
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "7.5.7",
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "1984.mgr.suse.de",
-          "value": "1984.mgr.suse.de"
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         }
       },
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": true
-      },
-      "styles": [
-        {
-          "alias": "mount",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "mountpoint",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        },
-        {
-          "alias": "free",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Value #A",
-          "thresholds": [],
-          "type": "number",
-          "unit": "decbytes"
-        },
-        {
-          "alias": "total",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Value #B",
-          "thresholds": [],
-          "type": "number",
-          "unit": "decbytes"
-        },
-        {
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "device",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "pattern": "/.*/",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        }
-      ],
       "targets": [
         {
           "expr": "node_filesystem_avail_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\"}+0",
@@ -1170,12 +1301,36 @@
         }
       ],
       "title": "mount points",
-      "transform": "table",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "exporter": true,
+              "fstype": true,
+              "groups": true,
+              "hostname": true,
+              "instance": true,
+              "job": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
       "type": "table"
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 19,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [
     "prometheus"
@@ -1185,22 +1340,28 @@
       {
         "allValue": ".{0}",
         "current": {
-          "selected": true,
-          "tags": [],
-          "text": "",
+          "selected": false,
+          "text": [
+            "No group"
+          ],
           "value": [
-            ""
+            "No group"
           ]
         },
         "datasource": "Prometheus",
         "definition": "query_result(label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \"([^,]*).*\") or label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*),.*\") or  label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*)\"))",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Group",
         "multi": true,
         "name": "group",
         "options": [],
-        "query": "query_result(label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \"([^,]*).*\") or label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*),.*\") or  label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*)\"))",
+        "query": {
+          "query": "query_result(label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \"([^,]*).*\") or label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*),.*\") or  label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*)\"))",
+          "refId": "Prometheus-group-Variable-Query"
+        },
         "refresh": 1,
         "regex": "/.*grp=\\\"([^,]*)\\\".*/",
         "skipUrlSync": false,
@@ -1214,20 +1375,24 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "tags": [],
-          "text": "All",
-          "value": "$__all"
+          "selected": false,
+          "text": "minion.tf.local",
+          "value": "minion.tf.local"
         },
         "datasource": "Prometheus",
         "definition": "label_values(up{job='mgr-clients', groups=~'(.*,)?$group(,.*)?'} , hostname)",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Host",
         "multi": false,
         "name": "hostname",
         "options": [],
-        "query": "label_values(up{job='mgr-clients', groups=~'(.*,)?$group(,.*)?'} , hostname)",
+        "query": {
+          "query": "label_values(up{job='mgr-clients', groups=~'(.*,)?$group(,.*)?'} , hostname)",
+          "refId": "Prometheus-hostname-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1272,5 +1437,5 @@
   "timezone": "browser",
   "title": "Uyuni Client Systems",
   "uid": "KIko76Nik",
-  "version": 4
+  "version": 5
 }
