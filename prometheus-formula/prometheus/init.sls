@@ -11,6 +11,15 @@ install_prometheus:
   pkg.installed:
     - name: {{ prometheus.prometheus_package }}
 
+{% if grains['install_proxy_pattern'] %}
+firewall_prometheus:
+  firewalld.present:
+    - name: public
+    - prune_services: False
+    - services:
+      - prometheus
+{% endif %}
+
 install_alertmanager:
   pkg.installed:
     - name: {{ prometheus.alertmanager_package }}
@@ -151,6 +160,21 @@ blackbox_exporter:
   service.dead:
     - name: {{ prometheus.blackbox_exporter_service }}
     - enable: False
+{% endif %}
+
+{% if alertmanager_service and grains['install_proxy_pattern'] %}
+alertmanager_service:
+  firewalld.service:
+    - name: prometheus-alertmanager
+    - ports:
+      - 9093/tcp
+
+firewall_alertmanager:
+  firewalld.present:
+    - name: public
+    - prune_services: False
+    - services:
+      - prometheus-alertmanager
 {% endif %}
 
 {%- else %}
