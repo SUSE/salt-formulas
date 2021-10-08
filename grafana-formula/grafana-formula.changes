@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Sep 14 12:53:15 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.6.0
+  * Add SSH blackbox status check panel to clients dashboard
+  * Migrate deprecated panels in clients dashboard
+
+-------------------------------------------------------------------
 Wed May  5 13:47:25 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.5.0
