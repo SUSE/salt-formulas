@@ -142,3 +142,21 @@ prometheus:
           $default: /etc/prometheus/my-scrape-config.yml
           $help: "JSON or YAML file pattern"
           $required: true
+
+  blackbox_exporter:
+    $type: group
+    $help: Prometheus exporter for blackbox probing of endpoints.
+
+    enabled:
+      $type: boolean
+      $default: False
+
+    address:
+      $type: text
+      $default: ':9115'
+
+    args:
+      $name: "Arguments"
+      $type: text
+      $default: '--config.file /etc/prometheus/blackbox.yml'
+      $help: Please refer to the documentation for available options.

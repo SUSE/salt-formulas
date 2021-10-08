@@ -112,6 +112,47 @@ alertmanager_running:
     - enable: False
 {%- endif %}
 
+{% set blackbox_exporter_enabled = salt['pillar.get']('prometheus:blackbox_exporter:enabled', False) %}
+blackbox_exporter:
+{% if blackbox_exporter_enabled %}
+  {% set blackbox_exporter_args = salt['pillar.get']('prometheus:blackbox_exporter:args') %}
+  {% set blackbox_exporter_address = salt['pillar.get']('prometheus:blackbox_exporter:address') %}
+  {% if blackbox_exporter_args is none %}
+    {% set blackbox_exporter_args = '--config.file /etc/prometheus/blackbox.yml' %}
+  {% endif %}
+  {% if blackbox_exporter_address and '--web.listen-address' not in blackbox_exporter_args %}
+    {% set blackbox_exporter_args = blackbox_exporter_args ~ ' --web.listen-address=' ~ blackbox_exporter_address %}
+  {% endif %}
+  {% if tls_enabled %}
+    {% set blackbox_exporter_args = blackbox_exporter_args ~ ' --web.config.file=' ~ prometheus_web_config_file %}
+  {% endif %}
+  pkg.installed:
+    - name: {{ prometheus.blackbox_exporter_package }}
+  file.managed:
+    - name: {{ prometheus.blackbox_exporter_service_config }}
+    - source: {{ 'salt://prometheus/files/blackbox_exporter-service.conf' }}
+    - makedirs: True
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 644
+    - defaults:
+        args: {{ blackbox_exporter_args }}
+    - require:
+      - pkg: blackbox_exporter
+    - watch_in:
+      - service: blackbox_exporter
+  service.running:
+    - name: {{ prometheus.blackbox_exporter_service }}
+    - enable: True
+    - require:
+      - file: blackbox_exporter
+{% else %}
+  service.dead:
+    - name: {{ prometheus.blackbox_exporter_service }}
+    - enable: False
+{% endif %}
+
 {%- else %}
 # remove prometheus
 remove_prometheus:
