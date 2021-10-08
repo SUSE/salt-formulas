@@ -100,3 +100,28 @@ scrape_configs:
         - '{{ url }}'
 {% endfor %}
 {% endfor %}
+
+{% set blackbox_enabled = salt['pillar.get']('prometheus:blackbox_exporter:enabled', False) %}
+{% if blackbox_enabled and sd_username and sd_password %}
+  # --------------------
+  # Blackbox
+  # --------------------
+  - job_name: blackbox
+    metrics_path: /probe
+    params:
+      module: [ssh_banner]
+    uyuni_sd_configs:
+      - host: https://{{ grains['master'] }}
+        username: {{ sd_username }}
+        password: {{ sd_password }}
+    relabel_configs:
+     - source_labels: [hostname]
+       replacement: '${1}:22'
+       target_label: __param_target
+     - source_labels: [__param_target]
+       target_label: instance
+     - target_label: __address__
+       replacement: {{ grains['fqdn'] }}:9115
+     - target_label: exporter
+       replacement: ''
+{% endif %}
