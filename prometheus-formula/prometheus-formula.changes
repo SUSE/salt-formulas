@@ -2,9 +2,9 @@
 Tue Sep 14 14:09:08 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.5.0
-- Add Prometheus targets configuration for minions SSH probing
-- Add blackbox exporter
-- Open Prometheus ports (bsc#1191144)
+  * Add Prometheus targets configuration for minions SSH probing
+  * Add blackbox exporter
+  * Open Prometheus ports (bsc#1191144)
 
 -------------------------------------------------------------------
 Wed Jul  7 08:36:19 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
