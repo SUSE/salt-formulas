@@ -13,7 +13,8 @@ install_prometheus:
   pkg.installed:
     - name: {{ prometheus.prometheus_package }}
 
-{% if grains['install_proxy_pattern'] %}
+{% set firewall_active = salt['service.available']('firewalld') and salt['service.status']('firewalld') %}
+{% if firewall_active %}
 firewall_prometheus:
   firewalld.present:
     - name: public
@@ -155,7 +156,7 @@ alertmanager_running:
     - enable: False
 {%- endif %}
 
-{% if alertmanager_service and grains['install_proxy_pattern'] %}
+{% if alertmanager_service and firewall_active %}
 alertmanager_service:
   firewalld.service:
     - name: prometheus-alertmanager
