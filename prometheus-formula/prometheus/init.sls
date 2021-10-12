@@ -13,9 +13,8 @@ install_prometheus:
   pkg.installed:
     - name: {{ prometheus.prometheus_package }}
 
-{% set is_proxy = salt['file.file_exists']('/usr/sbin/configure-proxy.sh') %}
 {% set firewall_active = salt['service.available']('firewalld') and salt['service.status']('firewalld') %}
-{% if is_proxy and firewall_active %}
+{% if firewall_active %}
 firewall_prometheus:
   firewalld.present:
     - name: public
@@ -157,7 +156,7 @@ alertmanager_running:
     - enable: False
 {%- endif %}
 
-{% if alertmanager_service and is_proxy and firewall_active %}
+{% if alertmanager_service and firewall_active %}
 alertmanager_service:
   firewalld.service:
     - name: prometheus-alertmanager
