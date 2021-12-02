@@ -76,7 +76,11 @@ scrape_configs:
     relabel_configs:
       - source_labels: [__meta_uyuni_exporter]
         target_label: exporter
+      - source_labels: [__address__]
+        replacement: "No group"
+        target_label: groups
       - source_labels: [__meta_uyuni_groups]
+        regex: (.+)
         target_label: groups
       - source_labels: [__meta_uyuni_minion_hostname]
         target_label: hostname
