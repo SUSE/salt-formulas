@@ -1,3 +1,5 @@
+- Add support for new Uyuni SD in Prometheus>=2.31
+
 -------------------------------------------------------------------
 Tue Oct 12 14:05:13 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
 
