@@ -6,6 +6,8 @@
         'prometheus_service': 'prometheus',
         'alertmanager_service': 'prometheus-alertmanager',
         'blackbox_exporter_service': 'prometheus-blackbox_exporter',
-        'blackbox_exporter_service_config': '/etc/systemd/system/prometheus-blackbox_exporter.service.d/uyuni.conf'
+        'blackbox_exporter_service_config': '/etc/systemd/system/prometheus-blackbox_exporter.service.d/uyuni.conf',
+        'prometheus_config': 'salt://prometheus/files/prometheus.yml',
+        'prometheus_config_old': 'salt://prometheus/files/prometheus_old.yml'
     },
 }, default='Suse') %}
