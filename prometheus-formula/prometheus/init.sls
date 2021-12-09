@@ -25,10 +25,16 @@ install_alertmanager:
   pkg.installed:
     - name: {{ prometheus.alertmanager_package }}
 
+{% set prometheus_version = salt['pkg.version'](prometheus.prometheus_package) %}
+{% if salt['pkg.version_cmp'](prometheus_version, '2.31.0') >= 0 %}
+  {% set prometheus_config_template = prometheus.prometheus_config %}
+{% else %}
+  {% set prometheus_config_template = prometheus.prometheus_config_old %}
+{% endif %}
 config_file:
   file.managed:
     - name: /etc/prometheus/prometheus.yml
-    - source: salt://prometheus/files/prometheus.yml
+    - source: {{ prometheus_config_template }}
     - user: root
     - group: root
     - mode: 644
@@ -147,9 +153,6 @@ blackbox_exporter:
   {% endif %}
   {% if blackbox_exporter_address and '--web.listen-address' not in blackbox_exporter_args %}
     {% set blackbox_exporter_args = blackbox_exporter_args ~ ' --web.listen-address=' ~ blackbox_exporter_address %}
-  {% endif %}
-  {% if tls_enabled %}
-    {% set blackbox_exporter_args = blackbox_exporter_args ~ ' --web.config.file=' ~ prometheus_web_config_file %}
   {% endif %}
   pkg.installed:
     - name: {{ prometheus.blackbox_exporter_package }}
