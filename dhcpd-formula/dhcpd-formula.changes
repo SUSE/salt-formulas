@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan  6 14:40:03 UTC 2022 - Michael Calmer <mc@suse.com>
+
+- make routers option optional
+
+-------------------------------------------------------------------
 Wed Feb 10 11:46:42 UTC 2021 - Vladimir Nadvornik <nadvornik@suse.com>
 
 - Add arm64 support
