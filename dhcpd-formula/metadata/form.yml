@@ -59,7 +59,8 @@ dhcpd:
           $default: 192.168.1.255
         routers:
           $type: edit-group
-          $minItems: 1
+          $optional: true
+          $minItems: 0
           $prototype:
             $type: text
           $default:
