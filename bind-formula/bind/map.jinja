@@ -135,10 +135,13 @@
         'key_algorithm_field': '008',
         'key_size': '4096',
     }
-}, merge=salt['grains.filter_by']({
-}, grain='oscodename', merge=salt['grains.filter_by']({
+}, grain='os_family', merge=salt['grains.filter_by']({
     'Ubuntu': {
         'log_dir': '/var/log/named',
         'user': 'bind'
     },
-}, grain='os', merge=salt['pillar.get']('bind:lookup')))) %}
+}, grain='osrelease', merge=salt['grains.filter_by']({
+    '15.3': {
+        'chroot_dir': '/var/lib/named'
+   },
+}, merge=salt['pillar.get']('bind:lookup')))) %}
