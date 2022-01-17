@@ -50,3 +50,43 @@ NAMED_ARGS="{{ param|join(' ') }}"
 # Keysize of rndc.key
 #
 RNDC_KEYSIZE=512
+
+{% if salt['grains.get']('osrelease') == '15.3' -%}
+## Type: yesno
+## Default: yes
+## ServiceRestart: lwresd,named
+#
+# Shall the DNS server 'named' or the LightWeight RESolver Daemon, lwresd run
+# in the chroot jail /var/lib/named/?
+#
+# Each time you start one of the daemons with the init script, /etc/named.conf,
+# /etc/named.conf.include, /etc/rndc.key, and all files listed in
+# NAMED_CONF_INCLUDE_FILES will be copied relative to /var/lib/named/.
+#
+NAMED_RUN_CHROOTED="yes"
+
+## Type: string
+## Default: ""
+## ServiceReload: named
+#
+# All mentioned config files will be copied relativ to /var/lib/named/, when
+# 'named' is started in the chroot jail.
+#
+# /etc/named.conf and /etc/rndc.key are always copied.  Also all files from
+# include statements in named.conf.
+#
+# Filenames can be relative to /etc/named.d/.
+#
+# Please take care of the order if one file needs a setting of another.
+#
+# Example: "/etc/named-dhcpd.key ldap.dump rndc-access.conf"
+#
+NAMED_CONF_INCLUDE_FILES="{{ map.local_config }} {{ salt['pillar.get']('bind:config:includes', [])|join(' ') }}"
+
+# Programms to be executed each time the DNS server 'named' is started or
+# reloaded.
+#
+# Filenames can be relative to /usr/share/bind/.
+#
+NAMED_INITIALIZE_SCRIPTS="createNamedConfInclude"
+{% endif -%}
