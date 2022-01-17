@@ -1,7 +1,8 @@
 -------------------------------------------------------------------
 Mon Jan 17 10:18:00 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
 
-- Update defaults based on SLE15SP4 release
+- Update to version 0.1.1642432942.9359cc6
+  * Update defaults based on SLE15SP4 release
   * chroot option was replaced by systemd protections
 
 -------------------------------------------------------------------
