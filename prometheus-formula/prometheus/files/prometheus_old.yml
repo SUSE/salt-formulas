@@ -135,13 +135,13 @@ scrape_configs:
         username: {{ sd_username }}
         password: {{ sd_password }}
     relabel_configs:
-     - source_labels: [hostname]
-       replacement: '${1}:22'
-       target_label: __param_target
-     - source_labels: [__param_target]
-       target_label: instance
-     - target_label: __address__
-       replacement: {{ grains['fqdn'] }}:9115
-     - target_label: exporter
-       replacement: ''
+      - source_labels: [hostname]
+        replacement: '${1}:22'
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: {{ grains['fqdn'] }}:9115
+      - target_label: exporter
+        replacement: ''
 {% endif %}
