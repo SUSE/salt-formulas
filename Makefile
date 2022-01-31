@@ -6,7 +6,7 @@ PROMETHEUS_EXPORTERS_VERSION=1.0.3
 GRAFANA_VERSION=0.6.0
 VIRTUALIZATION_VERSION=0.6.1
 SYSTEM_LOCK_VERSION=0.1
-UYUNI_CONFIG_VERSION=0.1
+UYUNI_CONFIG_VERSION=0.2
 
 locale:: clean
 	git archive --format=tar.gz --prefix=locale-formula-${LOCALE_VERSION}/ HEAD:locale-formula/ >locale-formula-${LOCALE_VERSION}.tar.gz
