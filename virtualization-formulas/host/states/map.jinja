@@ -3,6 +3,7 @@
     {% set hypervisor_packages = [
         'patterns-server-%s_server'|format(pillar['hypervisor']|lower()),
         'python3-six',
+        'qemu-ksm'
        ]
     %}
   {% elif grains['osfullname'] == 'Leap' %}
