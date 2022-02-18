@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 18 14:15:21 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
+
+- Update to version 0.6.2
+  * Ensure qemu-ksm is installed on host
+
+-------------------------------------------------------------------
 Fri Sep 10 09:24:41 UTC 2021 - Cédric Bosdonnat <cbosdonnat@suse.com>
 
 - Update to version 0.6.1
