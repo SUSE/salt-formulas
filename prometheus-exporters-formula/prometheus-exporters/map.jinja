@@ -1,6 +1,6 @@
 {% set exporters = salt['grains.filter_by']({
     'Suse': {
-        'node_exporter_package': 'prometheus-node_exporter',
+        'node_exporter_package': 'golang-github-prometheus-node_exporter',
         'node_exporter_service': 'prometheus-node_exporter',
         'node_exporter_service_config': '/etc/sysconfig/prometheus-node_exporter',
         'apache_exporter_package': 'golang-github-lusitaniae-apache_exporter',
@@ -28,13 +28,13 @@
         'exporter_exporter_service_config': '/etc/systemd/system/prometheus-exporter-exporter.service.d/uyuni.conf',
     },
     'RedHat': {
-        'node_exporter_package': 'prometheus-node_exporter',
+        'node_exporter_package': 'golang-github-prometheus-node_exporter',
         'node_exporter_service': 'prometheus-node_exporter',
         'node_exporter_service_config': '/etc/sysconfig/prometheus-node_exporter',
         'apache_exporter_package': 'golang-github-lusitaniae-apache_exporter',
         'apache_exporter_service': 'prometheus-apache_exporter',
         'apache_exporter_service_config': '/etc/sysconfig/prometheus-apache_exporter',
-        'postgres_exporter_package': 'prometheus-postgres_exporter',
+        'postgres_exporter_package': 'golang-github-prometheus-postgres_exporter',
         'postgres_exporter_service': 'prometheus-postgres_exporter',
         'postgres_exporter_service_config': '/etc/sysconfig/prometheus-postgres_exporter',
     },
