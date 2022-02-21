@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 21 17:03:53 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.9.4
+  * Postgres exporter package was renamed for SLES/openSUSE
+
+-------------------------------------------------------------------
 Fri Sep 17 11:34:48 UTC 2021 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.9.3
