@@ -25,7 +25,10 @@ install_alertmanager:
   pkg.installed:
     - name: {{ prometheus.alertmanager_package }}
 
-{% set prometheus_version = salt['pkg.version'](prometheus.prometheus_package) %}
+{% set prometheus_version = salt['pkg.latest_version'](prometheus.prometheus_package) %}
+{% if not prometheus_version %}
+  {% set prometheus_version = salt['pkg.version'](prometheus.prometheus_package) %}
+{% endif %}
 {% if salt['pkg.version_cmp'](prometheus_version, '2.31.0') >= 0 %}
   {% set prometheus_config_template = prometheus.prometheus_config %}
 {% else %}
