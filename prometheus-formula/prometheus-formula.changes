@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 25 15:04:59 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.6.1
+  * Fix checking available package version (bsc#1196489)
+
+-------------------------------------------------------------------
 Tue Feb  8 13:46:50 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.6.0
