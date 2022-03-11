@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Mar 11 16:56:03 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.9.5
+  * Postgres exporter package was renamed for RedHat
+
+-------------------------------------------------------------------
 Mon Feb 21 17:03:53 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.9.4
