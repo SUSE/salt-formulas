@@ -1,5 +1,6 @@
 {% from "prometheus/map.jinja" import prometheus with context %}
 
+{%- if prometheus %}
 {%- if salt['pillar.get']('prometheus:enabled', False) %}
 # setup Prometheus
 {%- set monitor_server = salt['pillar.get']('prometheus:mgr:monitor_server', False) %}
@@ -237,4 +238,5 @@ remove_alertmanager:
       - pkg: remove_prometheus
       - pkg: remove_alertmanager
 
+{%- endif %}
 {%- endif %}
