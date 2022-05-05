@@ -10,4 +10,4 @@
         'prometheus_config': 'salt://prometheus/files/prometheus.yml',
         'prometheus_config_old': 'salt://prometheus/files/prometheus_old.yml'
     },
-}, default='Suse') %}
+}, merge=salt['pillar.get']('prometheus:lookup')) %}
