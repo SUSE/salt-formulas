@@ -45,6 +45,7 @@ cp -R metadata/* %{buildroot}%{fdir}/metadata/%{fname}
 
 %files
 %defattr(-,root,root)
+%doc README.md
 %license LICENSE
 %dir %{_datadir}/susemanager
 %dir %{fdir}
