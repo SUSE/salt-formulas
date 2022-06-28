@@ -1,0 +1,10 @@
+RHN_PARENT={{grains['master']}}
+HTTP_PROXY={{ salt['pillar.get']('configure-proxy:http_proxy') }}
+USE_EXISTING_CERTS=Y
+INSTALL_MONITORING={% if salt['pillar.get']('configure-proxy:install_monitoring') == true %}y{% else %}n{% endif %}
+POPULATE_CONFIG_CHANNEL=true
+RHN_USER={{ grains.get('server_username') | default('admin', true) }}
+ACTIVATE_SLP={% if salt['pillar.get']('configure-proxy:activate_slp') == true %}Y/n{% else %}y/N{% endif %}
+SERVER_KEY=/root/ssl-build/server.key
+SERVER_CERT=/root/ssl-build/server.crt
+CA_CERT=/root/ssl-build/ca.crt

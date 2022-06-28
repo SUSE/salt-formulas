@@ -1,0 +1,40 @@
+configure-proxy:
+  http_proxy:
+     $name: 'HTTP Proxy'
+     $type: text
+     $default: ''
+     
+  install_monitoring:
+     $name: 'Install Monitoring'
+     $type: boolean
+     $default: false
+            
+  populate_config_channel:
+     $name: 'Populate Config Channel'
+     $type: boolean
+     $default: True
+
+  activate_slp:
+     $name: 'Activate SLP'
+     $type: boolean
+     $default: True
+
+  $type: namespace
+  ssl:
+    $type: group
+    $help: Required SSL/TLS certificates and key file. You can generated then from Systems -> Proxy Configuration
+
+    ca_group:
+      $type: text
+      $name: CA Certificate
+      $help: Enter a path if CA certificate is on the proxy system or a HTTP(s)/FTP url
+
+    cert_group:
+      $type: text
+      $name: Server Certificate
+      $help: Enter a path if Server Certificate is on the proxy system or a HTTP(s)/FTP url
+
+    key_group:
+      $type: text
+      $name: Server Key
+      $help: Enter a path if Server Key is on the proxy system or a HTTP(s)/FTP url
