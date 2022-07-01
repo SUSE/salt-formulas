@@ -28,13 +28,16 @@ configure-proxy:
       $type: text
       $name: CA Certificate
       $help: Enter a path if CA certificate is on the proxy system or a HTTP(s)/FTP url
+      $required: true
 
     cert_group:
       $type: text
       $name: Server Certificate
       $help: Enter a path if Server Certificate is on the proxy system or a HTTP(s)/FTP url
+      $required: true
 
     key_group:
       $type: text
       $name: Server Key
       $help: Enter a path if Server Key is on the proxy system or a HTTP(s)/FTP url
+      $required: true
