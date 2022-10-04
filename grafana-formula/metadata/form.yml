@@ -14,7 +14,7 @@ grafana:
 
   admin_pass:
     $type: password
-    $name: Default admin password
+    $name: Initial admin password
     $required: true
     $disabled: "!formValues.grafana.enabled"
 
