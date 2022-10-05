@@ -4,18 +4,18 @@ grafana:
   enabled:
     $type: boolean
     $default: True
-    $help: disasbled grafana
+    $help: Enable/disable Grafana
 
   admin_user:
     $type: text
     $name: Default admin user
-    $required: true
+    $default: admin
     $disabled: "!formValues.grafana.enabled"
 
   admin_pass:
     $type: password
     $name: Initial admin password
-    $required: true
+    $default: admin
     $disabled: "!formValues.grafana.enabled"
 
   datasources:
