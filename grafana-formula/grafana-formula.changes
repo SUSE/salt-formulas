@@ -1,3 +1,6 @@
+  * Fix default password field description (bsc#1203698)
+  * Do not require default admin and password fields
+
 -------------------------------------------------------------------
 Fri Feb 11 13:53:07 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
 
