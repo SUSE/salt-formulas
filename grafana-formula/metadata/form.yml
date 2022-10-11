@@ -8,13 +8,13 @@ grafana:
 
   admin_user:
     $type: text
-    $name: Default admin user
+    $name: Default administrator user
     $default: admin
     $disabled: "!formValues.grafana.enabled"
 
   admin_pass:
     $type: password
-    $name: Initial admin password
+    $name: Initial administrator password
     $default: admin
     $disabled: "!formValues.grafana.enabled"
 
