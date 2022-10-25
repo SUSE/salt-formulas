@@ -96,6 +96,8 @@ scrape_configs:
         target_label: __metrics_path__
       - source_labels: [__meta_uyuni_proxy_module]
         target_label: __param_module
+      - source_labels: [__meta_uyuni_scheme]
+        target_label: __scheme__
 {% if targets_tls.enabled %}
       - source_labels: [__meta_uyuni_exporter]
         regex: apache_exporter|postgres_exporter
