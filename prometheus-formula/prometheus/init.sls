@@ -9,6 +9,7 @@
 {%- set uyuni_server_hostname = salt['pillar.get']('mgr_origin_server', grains['master'])%}
 {%- set tls_enabled = salt['pillar.get']('prometheus:tls:enabled', False) %}
 {%  set prometheus_web_config_file = '/etc/prometheus/web.yml' %}
+{%  set blackbox_exporter_web_config_file = '/etc/prometheus/exporters/blackbox-web.yml' %}
 
 install_prometheus:
   pkg.installed:
@@ -182,6 +183,20 @@ firewall_alertmanager:
 {% endif %}
 
 {% set blackbox_exporter_enabled = salt['pillar.get']('prometheus:blackbox_exporter:enabled', False) %}
+{% if blackbox_exporter_enabled and tls_enabled %}
+blackbox_exporter_web_config:
+  file.managed:
+    - name: {{ blackbox_exporter_web_config_file }}
+    - source: salt://prometheus/files/blackbox-web.yml
+    - template: jinja
+    - makedirs: True
+    - user: prometheus
+    - group: prometheus
+    - mode: 644
+    - watch_in:
+      - service: blackbox_exporter
+{% endif %}
+
 blackbox_exporter:
 {% if blackbox_exporter_enabled %}
   {% set blackbox_exporter_args = salt['pillar.get']('prometheus:blackbox_exporter:args') %}
@@ -193,7 +208,7 @@ blackbox_exporter:
     {% set blackbox_exporter_args = blackbox_exporter_args ~ ' --web.listen-address=' ~ blackbox_exporter_address %}
   {% endif %}
   {% if tls_enabled %}
-    {% set blackbox_exporter_args = blackbox_exporter_args ~ ' --web.config.file=' ~ prometheus_web_config_file %}
+    {% set blackbox_exporter_args = blackbox_exporter_args ~ ' --web.config.file=' ~ blackbox_exporter_web_config_file %}
   {% endif %}
   pkg.installed:
     - name: {{ prometheus.blackbox_exporter_package }}
