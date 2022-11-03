@@ -163,10 +163,11 @@ scrape_configs:
 {% if tls_enabled %}
 {% set tls_config = salt['pillar.get']('prometheus:tls') %}
 {% set ca_file = salt['pillar.get']('prometheus:blackbox_exporter:ca_certificate', '/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT') %}
+    scheme: https
     tls_config:
       ca_file: {{ ca_file }}
-      cert_file: {{ tls_config.client_certificate }}
-      key_file: {{ tls_config.client_key }}
+      cert_file: {{ tls_config.server_certificate }}
+      key_file: {{ tls_config.serer_key }}
 {% endif %}
     relabel_configs:
       - source_labels: [__meta_uyuni_minion_hostname]
