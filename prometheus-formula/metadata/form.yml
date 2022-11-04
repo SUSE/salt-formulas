@@ -218,3 +218,9 @@ prometheus:
       $type: text
       $default: '--config.file /etc/prometheus/blackbox.yml'
       $help: Please refer to the documentation for available options.
+
+    ca_certificate:
+      $name: CA Certificate
+      $default: /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+      $visible: formValues.prometheus.tls.enabled == true
+      $help: Please ensure the file is present on the minion and readable for the user `prometheus` before applying the highstate.
