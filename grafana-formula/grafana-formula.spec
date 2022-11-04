@@ -19,7 +19,7 @@
 %define fname grafana
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           grafana-formula
-Version:        0.7.0
+Version:        0.7.1
 Release:        0
 Summary:        Salt formula for installing and configuring Grafana
 License:        Apache-2.0
