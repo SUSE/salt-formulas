@@ -3,101 +3,64 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "description": "Uyuni Client Systems",
   "editable": true,
+  "fiscalYearStartMonth": 0,
   "gnetId": 704,
   "graphTooltip": 0,
-  "iteration": 1631621168345,
+  "iteration": 1670405614729,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "columns": [],
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
       },
-      "fontSize": "100%",
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 24,
         "x": 0,
         "y": 0
       },
       "id": 125,
       "links": [],
-      "pageSize": null,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": true
-      },
-      "styles": [
-        {
-          "$$hashKey": "object:176",
-          "alias": "",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Time",
-          "thresholds": [],
-          "type": "date",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:177",
-          "alias": "",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "__name__",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:178",
-          "alias": "",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Value",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
+      "options": {
+        "alertInstanceLabelFilter": "",
+        "alertName": "",
+        "dashboardAlerts": false,
+        "groupBy": [],
+        "groupMode": "default",
+        "maxItems": 20,
+        "sortOrder": 3,
+        "stateFilter": {
+          "error": true,
+          "firing": true,
+          "inactive": false,
+          "noData": false,
+          "normal": false,
+          "pending": true
         }
-      ],
+      },
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "annotations": false,
@@ -114,34 +77,40 @@
         }
       ],
       "title": "Active Alerts",
-      "transform": "table",
-      "type": "table-old"
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "alertlist"
     },
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 3
+        "y": 4
       },
       "id": 98,
       "panels": [],
       "repeat": "hostname",
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "minion.tf.local",
-          "value": "minion.tf.local"
-        }
-      },
       "title": "$hostname",
       "type": "row"
     },
     {
-      "cacheTimeout": null,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -149,12 +118,13 @@
           },
           "mappings": [
             {
-              "$$hashKey": "object:240",
-              "id": 0,
-              "op": "=",
-              "text": "N/A",
-              "type": 1,
-              "value": "null"
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
             }
           ],
           "thresholds": {
@@ -178,10 +148,9 @@
         "h": 2,
         "w": 2,
         "x": 0,
-        "y": 4
+        "y": 5
       },
       "id": 12,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -199,16 +168,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.7",
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "minion.tf.local",
-          "value": "minion.tf.local"
-        }
-      },
+      "pluginVersion": "8.5.15",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "RZkbiBF4z"
+          },
           "expr": "count(node_cpu_seconds_total{hostname=~\"$hostname\", exporter=\"node_exporter\",  mode=\"system\"})",
           "format": "time_series",
           "intervalFactor": 2,
@@ -217,11 +183,14 @@
         }
       ],
       "title": "Cores",
+      "transparent": true,
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -229,20 +198,15 @@
           },
           "mappings": [
             {
-              "$$hashKey": "object:369",
-              "id": 0,
-              "op": "=",
-              "text": "Down",
-              "type": 1,
-              "value": "0"
-            },
-            {
-              "$$hashKey": "object:370",
-              "id": 1,
-              "op": "=",
-              "text": "Up",
-              "type": 1,
-              "value": "1"
+              "options": {
+                "0": {
+                  "text": "Down"
+                },
+                "1": {
+                  "text": "Up"
+                }
+              },
+              "type": "value"
             }
           ],
           "thresholds": {
@@ -269,10 +233,9 @@
         "h": 2,
         "w": 2,
         "x": 2,
-        "y": 4
+        "y": 5
       },
       "id": 112,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -290,14 +253,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.7",
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "minion.tf.local",
-          "value": "minion.tf.local"
-        }
-      },
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "expr": "min(up{hostname=~\"$hostname\", exporter=\"node_exporter\"})",
@@ -313,8 +269,10 @@
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
+      },
       "description": "Requires blackbox exporter",
       "fieldConfig": {
         "defaults": {
@@ -323,20 +281,15 @@
           },
           "mappings": [
             {
-              "$$hashKey": "object:369",
-              "id": 0,
-              "op": "=",
-              "text": "Down",
-              "type": 1,
-              "value": "0"
-            },
-            {
-              "$$hashKey": "object:370",
-              "id": 1,
-              "op": "=",
-              "text": "Up",
-              "type": 1,
-              "value": "1"
+              "options": {
+                "0": {
+                  "text": "Down"
+                },
+                "1": {
+                  "text": "Up"
+                }
+              },
+              "type": "value"
             }
           ],
           "thresholds": {
@@ -363,10 +316,9 @@
         "h": 2,
         "w": 2,
         "x": 4,
-        "y": 4
+        "y": 5
       },
       "id": 126,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -384,7 +336,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "exemplar": true,
@@ -402,69 +354,90 @@
       "type": "stat"
     },
     {
-      "alerting": {},
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "editable": true,
-      "error": false,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
+      },
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 30,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
         },
         "overrides": []
       },
-      "fill": 3,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 6,
         "w": 6,
         "x": 6,
-        "y": 4
+        "y": 5
       },
-      "hiddenSeries": false,
       "id": 9,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": false,
-        "hideZero": true,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
-      },
-      "paceLength": 10,
-      "percentage": false,
-      "pluginVersion": "7.5.7",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "minion.tf.local",
-          "value": "minion.tf.local"
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
+      "pluginVersion": "8.5.15",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "RZkbiBF4z"
+          },
           "expr": "irate(node_cpu_seconds_total{hostname=~\"$hostname\", exporter=\"node_exporter\", mode !=\"idle\"}[5m])",
           "format": "time_series",
           "hide": false,
@@ -475,105 +448,89 @@
           "target": ""
         }
       ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
       "title": "CPU usage",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 2,
-        "value_type": "individual"
-      },
+      "transformations": [],
       "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": null,
-          "format": "percentunit",
-          "label": null,
-          "logBase": 1,
-          "max": "1",
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
+      },
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "percentunit"
         },
         "overrides": []
       },
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 4
+        "y": 5
       },
-      "hiddenSeries": false,
       "id": 94,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
-      },
-      "paceLength": 10,
-      "percentage": false,
-      "pluginVersion": "7.5.7",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "minion.tf.local",
-          "value": "minion.tf.local"
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
         }
       },
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "expr": "node_load1{hostname=~\"$hostname\", exporter=\"node_exporter\"}",
@@ -604,60 +561,15 @@
           "step": 600
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": false,
-          "line": true,
-          "op": "gt",
-          "value": 1
-        }
-      ],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
       "title": "System Load",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
       "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": null,
-          "format": "percentunit",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "timeseries"
     },
     {
-      "cacheTimeout": null,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -665,12 +577,13 @@
           },
           "mappings": [
             {
-              "$$hashKey": "object:282",
-              "id": 0,
-              "op": "=",
-              "text": "N/A",
-              "type": 1,
-              "value": "null"
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
             }
           ],
           "thresholds": {
@@ -694,10 +607,9 @@
         "h": 2,
         "w": 3,
         "x": 0,
-        "y": 6
+        "y": 7
       },
       "id": 13,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -715,14 +627,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.7",
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "minion.tf.local",
-          "value": "minion.tf.local"
-        }
-      },
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "expr": "avg(node_memory_MemTotal_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\"})",
@@ -734,11 +639,14 @@
         }
       ],
       "title": "Ram",
+      "transparent": true,
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -773,10 +681,9 @@
         "h": 4,
         "w": 3,
         "x": 3,
-        "y": 6
+        "y": 7
       },
       "id": 108,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -792,14 +699,7 @@
         "showThresholdMarkers": false,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "minion.tf.local",
-          "value": "minion.tf.local"
-        }
-      },
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "expr": "avg(node_load1{hostname=~\"$hostname\", exporter=\"node_exporter\"})",
@@ -814,8 +714,10 @@
       "type": "gauge"
     },
     {
-      "cacheTimeout": null,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -824,12 +726,13 @@
           "decimals": 1,
           "mappings": [
             {
-              "$$hashKey": "object:324",
-              "id": 0,
-              "op": "=",
-              "text": "N/A",
-              "type": 1,
-              "value": "null"
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
             }
           ],
           "thresholds": {
@@ -853,10 +756,9 @@
         "h": 2,
         "w": 3,
         "x": 0,
-        "y": 8
+        "y": 9
       },
       "id": 97,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -874,14 +776,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.7",
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "minion.tf.local",
-          "value": "minion.tf.local"
-        }
-      },
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "expr": "sum(node_filesystem_size_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\"})",
@@ -893,63 +788,88 @@
         }
       ],
       "title": "Storage",
+      "transparent": true,
       "type": "stat"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
+      },
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.85
+              }
+            ]
+          },
+          "unit": "percentunit"
         },
         "overrides": []
       },
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 6,
         "w": 6,
         "x": 0,
-        "y": 10
+        "y": 11
       },
-      "hiddenSeries": false,
       "id": 95,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
-      },
-      "paceLength": 10,
-      "percentage": false,
-      "pluginVersion": "7.5.7",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "minion.tf.local",
-          "value": "minion.tf.local"
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
         }
       },
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "expr": "1 - (node_memory_MemAvailable_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\"} / node_memory_MemTotal_bytes)",
@@ -960,117 +880,139 @@
           "step": 2400
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": false,
-          "op": "gt",
-          "value": 0.85
-        }
-      ],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
       "title": "Memory usage",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "percentunit",
-          "label": null,
-          "logBase": 1,
-          "max": "1",
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "transparent": true,
+      "type": "timeseries"
     },
     {
-      "aliasColors": {
-        "/dev/vda2": "#629E51",
-        "/dev/vdb1": "#629E51",
-        "/dev/vdb2": "#629E51"
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.85
+              },
+              {
+                "color": "red",
+                "value": 0.95
+              }
+            ]
+          },
+          "unit": "percentunit"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "/dev/vda2"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#629E51",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "/dev/vdb1"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#629E51",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "/dev/vdb2"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#629E51",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
-      "fill": 0,
-      "fillGradient": 0,
       "gridPos": {
         "h": 6,
         "w": 6,
         "x": 6,
-        "y": 10
+        "y": 11
       },
-      "hiddenSeries": false,
       "id": 23,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": false,
-        "hideEmpty": false,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
-      },
-      "paceLength": 10,
-      "percentage": false,
-      "pluginVersion": "7.5.7",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "minion.tf.local",
-          "value": "minion.tf.local"
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
         }
       },
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "expr": "1 - node_filesystem_avail_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\"} / node_filesystem_size_bytes",
@@ -1081,74 +1023,25 @@
           "step": 2400
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "warning",
-          "fill": true,
-          "fillColor": "rgba(255, 159, 0, 0.25)",
-          "line": false,
-          "op": "gt",
-          "value": 0.85
-        },
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "fillColor": "rgba(255, 4, 4, 0.5)",
-          "line": false,
-          "op": "gt",
-          "value": 0.95
-        }
-      ],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
       "title": "Disk space usage",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "percentunit",
-          "label": null,
-          "logBase": 1,
-          "max": "1",
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "none",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "transparent": true,
+      "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "RZkbiBF4z"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "custom": {
-            "align": null,
-            "filterable": false
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false,
+            "inspect": false
           },
           "decimals": 2,
           "displayName": "",
@@ -1188,8 +1081,7 @@
                 "value": 2
               },
               {
-                "id": "custom.align",
-                "value": null
+                "id": "custom.align"
               }
             ]
           },
@@ -1212,8 +1104,7 @@
                 "value": 2
               },
               {
-                "id": "custom.align",
-                "value": null
+                "id": "custom.align"
               }
             ]
           },
@@ -1236,8 +1127,7 @@
                 "value": 2
               },
               {
-                "id": "custom.align",
-                "value": null
+                "id": "custom.align"
               }
             ]
           },
@@ -1256,8 +1146,7 @@
                 "value": 2
               },
               {
-                "id": "custom.align",
-                "value": null
+                "id": "custom.align"
               }
             ]
           }
@@ -1267,21 +1156,21 @@
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 10
+        "y": 11
       },
       "id": 110,
       "links": [],
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "showHeader": true
       },
-      "pluginVersion": "7.5.7",
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "minion.tf.local",
-          "value": "minion.tf.local"
-        }
-      },
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "expr": "node_filesystem_avail_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\"}+0",
@@ -1326,21 +1215,21 @@
           }
         }
       ],
+      "transparent": true,
       "type": "table"
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 27,
+  "schemaVersion": 36,
   "style": "dark",
-  "tags": [
-    "prometheus"
-  ],
+  "tags": [],
   "templating": {
     "list": [
       {
+        "allFormat": "glob",
         "allValue": ".{0}",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "No group"
           ],
@@ -1348,10 +1237,11 @@
             "No group"
           ]
         },
-        "datasource": "Prometheus",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "RZkbiBF4z"
+        },
         "definition": "query_result(label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \"([^,]*).*\") or label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*),.*\") or  label_replace(up{job=\"mgr-clients\"}, \"grp\", \"$1\", \"groups\", \".*,([^,]*)\"))",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Group",
@@ -1366,23 +1256,21 @@
         "regex": "/.*grp=\\\"([^,]*)\\\".*/",
         "skipUrlSync": false,
         "sort": 0,
-        "tagValuesQuery": "apps.$group",
-        "tags": [],
-        "tagsQuery": "test",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
+        "allFormat": "glob",
         "current": {
           "selected": false,
           "text": "minion.tf.local",
           "value": "minion.tf.local"
         },
-        "datasource": "Prometheus",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "RZkbiBF4z"
+        },
         "definition": "label_values(up{job='mgr-clients', groups=~'(.*,)?$group(,.*)?'} , hostname)",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Host",
@@ -1397,9 +1285,6 @@
         "regex": "",
         "skipUrlSync": false,
         "sort": 2,
-        "tagValuesQuery": "apps.$tag",
-        "tags": [],
-        "tagsQuery": "label_values(up{job='mgr-clients', groups=~'(.*,)?$group(,.*)?'} , hostname)",
         "type": "query",
         "useTags": false
       }
@@ -1437,5 +1322,6 @@
   "timezone": "browser",
   "title": "Uyuni Client Systems",
   "uid": "KIko76Nik",
-  "version": 5
+  "version": 6,
+  "weekStart": ""
 }
