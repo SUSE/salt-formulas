@@ -1,4 +1,6 @@
-  * Update dashboards
+  * Update dashboards to use new JSON schema
+  * Fix PostgreSQL dashboard queries
+  * Migrate deprecated panels to their current replacements
 
 -------------------------------------------------------------------
 Fri Nov  4 13:55:22 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
