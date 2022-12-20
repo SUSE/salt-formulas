@@ -6,6 +6,11 @@
 
 {%- if supported %}
 {%- if salt['pillar.get']('grafana:enabled', False) %}
+{%- if grains['is_uyuni'] %}
+  {% set product_name = 'Uyuni' %}
+{%- else %}
+  {% set product_name = 'SUSE Manager' %}
+{%- endif %}
 # setup and enable service
 /etc/grafana/grafana.ini:
   file.managed:
@@ -27,8 +32,11 @@
 {%- if salt['pillar.get']('grafana:dashboards:add_uyuni_dashboard', False) %}
 /etc/grafana/provisioning/dashboards/mgr-server.json:
   file.managed:
-    - source: "salt://grafana/files/mgr-server.json"
+    - source: "salt://grafana/files/mgr-server.json.jinja"
     - makedirs: True
+    - template: jinja
+    - defaults:
+      product_name: {{ product_name }}
 {%- else %}
 /etc/grafana/provisioning/dashboards/mgr-server.json:
   file.absent
@@ -37,8 +45,11 @@
 {%- if salt['pillar.get']('grafana:dashboards:add_uyuni_clients_dashboard', False) %}
 /etc/grafana/provisioning/dashboards/mgr-client-systems.json:
   file.managed:
-    - source: "salt://grafana/files/mgr-client-systems.json"
+    - source: "salt://grafana/files/mgr-client-systems.json.jinja"
     - makedirs: True
+    - template: jinja
+    - defaults:
+      product_name: {{ product_name }}
 {%- else %}
 /etc/grafana/provisioning/dashboards/mgr-client-systems.json:
   file.absent
