@@ -1,3 +1,4 @@
+  * Set dashboard names depending on project
   * Update dashboards to use new JSON schema
   * Fix PostgreSQL dashboard queries
   * Migrate deprecated panels to their current replacements
