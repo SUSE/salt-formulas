@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Jan  9 11:35:25 UTC 2023 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.8.0
   * Set dashboard names depending on project
   * Update dashboards to use new JSON schema
   * Fix PostgreSQL dashboard queries
