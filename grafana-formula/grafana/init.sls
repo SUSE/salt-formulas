@@ -6,7 +6,7 @@
 
 {%- if supported %}
 {%- if salt['pillar.get']('grafana:enabled', False) %}
-{%- if grains['is_uyuni'] %}
+{%- if salt['pillar.get']('mgr_server_is_uyuni', True) %}
   {% set product_name = 'Uyuni' %}
 {%- else %}
   {% set product_name = 'SUSE Manager' %}
