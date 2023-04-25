@@ -3,9 +3,9 @@
 {%- set selected = salt['pillar.get']('mitigations:name', 'Auto') %}
 
 # check for supported os version
-{%- set supported_vers = ['42.3', '12.3', '12.4', '12.5', '15.0', '15.1', '15.2', '15.3', '15.4'] %}
+{%- set supported_vers = ['42.3', '12.3', '12.4', '12.5'] %}
 
-{%- set supported = (grains['os_family'] == 'Suse' and grains['osrelease'] in supported_vers) %}
+{%- set supported = (grains['os_family'] == 'Suse' and (grains['osrelease'] in supported_vers or grains['osmajorrelease'] >= 15)) %}
 
 {% if supported %}
 # Change the mitigations parameters for the kernel
