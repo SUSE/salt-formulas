@@ -22,4 +22,9 @@
     - mode: 644
     - template: jinja
 
+pxe_entries:{{ mac.lower().replace(':', '-') }}:
+  grains.present:
+    - value: {{ salt['pillar.get']('boot_image', 'default') }}
+    - force: True
+
 {% endfor %}
