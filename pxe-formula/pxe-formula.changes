@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr 27 13:52:24 UTC 2023 - Vladimir Nadvornik <nadvornik@suse.cz>
+
+- Store pxe configuration in grains
+
+-------------------------------------------------------------------
 Wed Feb 10 11:46:07 UTC 2021 - Vladimir Nadvornik <nadvornik@suse.com>
 
 - Add arm64 support
