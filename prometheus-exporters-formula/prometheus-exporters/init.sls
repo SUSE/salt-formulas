@@ -123,6 +123,10 @@ node_exporter_proxy:
 {% set apache_exporter_enabled = salt['pillar.get']('exporters:apache_exporter:enabled', False) %}
 apache_exporter:
 {% if apache_exporter_enabled %}
+  {% set apache_exporter_version = salt['pkg.latest_version'](exporters.apache_exporter_package) %}
+  {% if not apache_exporter_version %}
+    {% set apache_exporter_version = salt['pkg.version'](exporters.apache_exporter_package) %}
+  {% endif %}
   {% set apache_exporter_args = salt['pillar.get']('exporters:apache_exporter:args') %}
   {% if apache_exporter_args is none %}
     {% set apache_exporter_args = '' %}
@@ -140,9 +144,16 @@ apache_exporter:
     - mode: 644
     - defaults:
         args: {{ apache_exporter_args }}
-  {% if apache_exporter_address and '-telemetry.address' not in apache_exporter_args %}
+  {% if salt['pkg.version_cmp'](apache_exporter_version, '1.0.0') >= 0 %}
+    {% if apache_exporter_address and '--web.listen-address' not in apache_exporter_args %}
+    - context:
+        args: {{ apache_exporter_args ~ ' --web.listen-address=' ~ apache_exporter_address }}
+    {% endif %}
+  {% else %}
+    {% if apache_exporter_address and '-telemetry.address' not in apache_exporter_args %}
     - context:
         args: {{ apache_exporter_args ~ ' --telemetry.address=' ~ apache_exporter_address }}
+    {% endif %}
   {% endif %}
     - require:
       - pkg: apache_exporter
