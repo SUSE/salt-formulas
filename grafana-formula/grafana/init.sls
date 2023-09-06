@@ -2,7 +2,11 @@
 {%- set supported_vers = ['42.3', '12.3', '12.4', '12.5', '15.0', '15.1', '15.2', '15.3', '15.4', '15.5'] %}
 
 # check if supported
-{%- set supported = (grains['os_family'] == 'Suse' and grains['osrelease'] in supported_vers) %}
+{%- if (grains['os_family'] == 'Suse' and grains['osrelease'] in supported_vers) %}
+  {%- if not (salt['pkg.version']('patterns-uyuni_proxy') or salt['pkg.version']('patterns-suma_proxy')) %}
+    {%- set supported = True %}
+  {%- endif %}
+{%- endif %}
 
 {%- if supported %}
 {%- if salt['pillar.get']('grafana:enabled', False) %}
