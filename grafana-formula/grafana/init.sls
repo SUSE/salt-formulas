@@ -5,6 +5,10 @@
 {%- if (grains['os_family'] == 'Suse' and grains['osrelease'] in supported_vers) %}
   {%- if not (salt['pkg.version']('patterns-uyuni_proxy') or salt['pkg.version']('patterns-suma_proxy') or salt['pkg.version']('patterns-suma_retail') or salt['pkg.version']('patterns-uyuni_retail')) %}
     {%- set supported = True %}
+  {%- else %}
+    os_not_supported:
+      test.fail_without_changes:
+        - name: "OS not supported!"
   {%- endif %}
 {%- endif %}
 
