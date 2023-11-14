@@ -32,5 +32,9 @@ system-lock:: clean
 uyuni-config:: clean
 	git archive --format=tar.gz --prefix=uyuni-config-formula-${UYUNI_CONFIG_VERSION}/ HEAD:uyuni-config-formula/ >uyuni-config-formula-${UYUNI_CONFIG_VERSION}.tar.gz
 
+configure-proxy:: clean
+	git archive --format=tar.gz --prefix=configure-proxy-formula-${UYUNI_CONFIG_VERSION}/ HEAD:configure-proxy-formula/ >configure-proxy-formula-${UYUNI_CONFIG_VERSION}.tar.gz
+
+
 clean::
 	find . -name "*~" | xargs rm -f
