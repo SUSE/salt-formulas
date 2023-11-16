@@ -1,6 +1,12 @@
   * Replace legacy message queue metrics with Salt queue metrics
 
 -------------------------------------------------------------------
+Tue Nov 14 19:43:00 UTC 2023 - Oscar Barrios <obarrios@suse.com>
+
+- Version 0.9.1
+  * Grafana formula should not be supported in a Proxy/Retail
+
+-------------------------------------------------------------------
 Wed Sep 20 07:44:30 UTC 2023 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.9.0
