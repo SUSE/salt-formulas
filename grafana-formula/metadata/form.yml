@@ -18,6 +18,36 @@ grafana:
     $default: admin
     $disabled: "!formValues.grafana.enabled"
 
+  tls:
+    $type: group
+    $name: TLS
+    $help: >
+      TLS configuration. Please ensure the files are present on the minion and readable for
+      the user `grafana` before applying the highstate.
+
+    enabled:
+      $type: boolean
+      $default: False
+
+    server_certificate:
+      $name: Server Certificate
+      $placeholder: /etc/grafana/grafana.crt
+      $visible: "formValues.grafana.tls.enabled"
+      $required: "formValues.grafana.tls.enabled"
+
+    server_key:
+      $name: Server Key
+      $placeholder: /etc/grafana/grafana.key
+      $visible: "formValues.grafana.tls.enabled"
+      $required: "formValues.grafana.tls.enabled"
+
+    port:
+      $type: text
+      $default: 3000
+      $name: Port
+      $help: Grafana Web UI port
+      $visible: "formValues.grafana.tls.enabled"
+
   datasources:
     $type: group
     $disabled: "!formValues.grafana.enabled"
