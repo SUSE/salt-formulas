@@ -81,6 +81,15 @@ prometheus:
       $visible: "this.parent.value.autodiscover_clients"
       $required: true
 
+    sd_groups:
+      $type: edit-group
+      $name: Monitored groups
+      $min_items: 0
+      $help: Limit autodiscovery to named groups. Empty list includes all clients.
+      $visible: "this.parent.value.autodiscover_clients"
+      $prototype:
+        $type: text
+
     targets_tls:
       $type: group
       $name: Targets TLS
