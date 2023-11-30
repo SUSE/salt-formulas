@@ -176,6 +176,11 @@ scrape_configs:
       key_file: {{ tls_config.server_key }}
 {% endif %}
     relabel_configs:
+{% if sd_groups %}
+      - source_labels: [__meta_uyuni_groups]
+        regex: .*,?({{ sd_groups|join('|') }}),?.*
+        action: keep
+{% endif %}
       - source_labels: [__meta_uyuni_minion_hostname]
         target_label: hostname
       - source_labels: [__meta_uyuni_primary_fqdn]
