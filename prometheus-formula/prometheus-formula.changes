@@ -1,3 +1,5 @@
+  * Fix PrometheusNotIngestingSamples false positive alerts
+
 -------------------------------------------------------------------
 Thu Nov  3 11:53:07 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
 
