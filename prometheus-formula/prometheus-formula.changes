@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Dec 19 09:32:35 UTC 2023 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.7.1
+  * Fix PrometheusNotIngestingSamples false positive alerts
+    (bsc#1216550)
+
+-------------------------------------------------------------------
 Thu Nov  3 11:53:07 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.7.0
