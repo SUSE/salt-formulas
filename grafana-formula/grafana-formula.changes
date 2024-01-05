@@ -1,3 +1,5 @@
+  * Replace legacy message queue metrics with Salt queue metrics
+
 -------------------------------------------------------------------
 Wed Sep 20 07:44:30 UTC 2023 - Witek Bedyk <witold.bedyk@suse.com>
 
