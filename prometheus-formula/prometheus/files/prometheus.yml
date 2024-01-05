@@ -56,6 +56,7 @@ scrape_configs:
 {%- endif %}
 {% set sd_username = salt['pillar.get']('prometheus:mgr:sd_username') %}
 {% set sd_password = salt['pillar.get']('prometheus:mgr:sd_password') %}
+{% set sd_groups = salt['pillar.get']('prometheus:mgr:sd_groups') %}
 {% set targets_tls = salt['pillar.get']('prometheus:mgr:targets_tls') %}
 {%- if salt['pillar.get']('prometheus:mgr:autodiscover_clients', False) and
        sd_username and sd_password %}
@@ -74,6 +75,11 @@ scrape_configs:
       key_file: {{ targets_tls.client_key }}
 {% endif %}
     relabel_configs:
+{% if sd_groups %}
+      - source_labels: [__meta_uyuni_groups]
+        regex: .*,?({{ sd_groups|join('|') }}),?.*
+        action: keep
+{% endif %}
       - source_labels: [__meta_uyuni_exporter]
         target_label: exporter
       - source_labels: [__address__]
@@ -170,6 +176,11 @@ scrape_configs:
       key_file: {{ tls_config.server_key }}
 {% endif %}
     relabel_configs:
+{% if sd_groups %}
+      - source_labels: [__meta_uyuni_groups]
+        regex: .*,?({{ sd_groups|join('|') }}),?.*
+        action: keep
+{% endif %}
       - source_labels: [__meta_uyuni_minion_hostname]
         target_label: hostname
       - source_labels: [__meta_uyuni_primary_fqdn]
