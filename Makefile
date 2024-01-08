@@ -7,6 +7,7 @@ GRAFANA_VERSION=0.9.0
 VIRTUALIZATION_VERSION=0.6.2
 SYSTEM_LOCK_VERSION=0.1
 UYUNI_CONFIG_VERSION=0.2
+LIBERATE_VERSION=0.1
 
 locale:: clean
 	git archive --format=tar.gz --prefix=locale-formula-${LOCALE_VERSION}/ HEAD:locale-formula/ >locale-formula-${LOCALE_VERSION}.tar.gz
@@ -31,6 +32,9 @@ system-lock:: clean
 
 uyuni-config:: clean
 	git archive --format=tar.gz --prefix=uyuni-config-formula-${UYUNI_CONFIG_VERSION}/ HEAD:uyuni-config-formula/ >uyuni-config-formula-${UYUNI_CONFIG_VERSION}.tar.gz
+
+liberate:: clean
+	git archive --format=tar.gz --prefix=liberate-formula-${LIBERATE_VERSION}/ HEAD:liberate-formula/ >liberate-formula-${LIBERATE_VERSION}.tar.gz
 
 clean::
 	find . -name "*~" | xargs rm -f

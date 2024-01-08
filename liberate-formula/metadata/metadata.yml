@@ -1,0 +1,3 @@
+description:
+  This Salt Formula helps convert systems from an EL clone (RHEL, CentOS, Rocky, Alma, Oracle Linux) to SUSE Liberty Linux 
+group: suse_liberate
