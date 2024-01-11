@@ -1,3 +1,4 @@
+  * Fix federation endpoint
   * Add remote write configuration
   * Add group filtering for service discovery relabeling
     configuration

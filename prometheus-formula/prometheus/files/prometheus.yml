@@ -139,7 +139,7 @@ scrape_configs:
 {% endif %}
   - job_name: {{ job }}
     honor_labels: true
-    metrics_path: '/{{ job }}'
+    metrics_path: '/federate'
     params:
       'match[]':
         - '{job="prometheus"}'
