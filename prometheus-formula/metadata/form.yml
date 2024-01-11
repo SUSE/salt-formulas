@@ -210,6 +210,60 @@ prometheus:
           $help: "JSON or YAML file pattern"
           $required: true
 
+  remote_write:
+    $type: group
+    $help: >
+      Integrate with remote storage systems supporting Prometheus remote write
+      protocol.
+
+    enabled:
+      $type: boolean
+      $default: False
+
+    is_receiver:
+      $name: Enable remote write receiver
+      $type: boolean
+      $default: false
+      $help: >
+        Enable API endpoint /api/v1/write accepting remote write requests.
+        Compatible systems will be able to push metrics to this instance. It is
+        recommended to use together with TLS configuration to prevent
+        unathorized data ingestion.
+
+    url:
+      $name: Remote Write URL
+      $type: text
+      $help: The URL of the remote endpoint to send samples to.
+      $match: (https?:\/\/(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*))*
+      $visible: this.parent.value.enabled == true
+
+    tls:
+      $type: group
+      $name: Remote Storage TLS
+      $visible: this.parent.value.enabled == true
+      $help: >
+        TLS configuration for remote write API. Please ensure the files are present before
+        applying the highstate.
+
+      enabled:
+        $type: boolean
+        $default: False
+
+      ca_certificate:
+        $name: CA Certificate
+        $default: /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+        $visible: this.parent.value.enabled == true
+
+      remote_certificate:
+        $name: Client Certificate
+        $placeholder: /etc/ssl/server.crt
+        $visible: this.parent.value.enabled == true
+
+      remote_key:
+        $name: Client Private Key
+        $placeholder: /etc/ssl/server.key
+        $visible: this.parent.value.enabled == true
+
   blackbox_exporter:
     $type: group
     $help: Prometheus exporter for blackbox probing of endpoints.
