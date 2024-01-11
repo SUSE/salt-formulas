@@ -198,3 +198,15 @@ scrape_configs:
       - target_label: exporter
         replacement: ''
 {% endif %}
+
+{% set remote_write = salt['pillar.get']('prometheus:remote_write') %}
+{% if remote_write.enabled %}
+remote_write:
+  - url: {{ remote_write.url }}
+{% if remote_write.tls.enabled %}
+    tls_config:
+      ca_file: {{ remote_write.tls.ca_certificate }}
+      cert_file: {{  remote_write.tls.remote_certificate}}
+      key_file: {{ remote_write.tls.remote_key }}
+{% endif %}
+{% endif %}

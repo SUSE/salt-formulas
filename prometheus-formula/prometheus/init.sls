@@ -8,6 +8,7 @@
 {%- set default_rules = salt['pillar.get']('prometheus:alerting:default_rules', False) %}
 {%- set uyuni_server_hostname = salt['pillar.get']('mgr_origin_server', grains['master'])%}
 {%- set tls_enabled = salt['pillar.get']('prometheus:tls:enabled', False) %}
+{%- set remote_write_receiver_enabled = salt['pillar.get']('prometheus:remote_write:is_receiver', False) %}
 {%  set prometheus_web_config_file = '/etc/prometheus/web.yml' %}
 {%  set blackbox_exporter_web_config_file = '/etc/prometheus/exporters/blackbox-web.yml' %}
 
@@ -111,9 +112,13 @@ prometheus_running:
     - mode: 644
     - defaults:
         args: ''
-{% if tls_enabled %}
+        enable_receiver: ''
     - context:
+{% if tls_enabled %}
         args: {{ ' --web.config.file=' ~ prometheus_web_config_file }}
+{% endif %}
+{% if remote_write_receiver_enabled %}
+        enable_receiver: {{ ' --web.enable-remote-write-receiver' }}
 {% endif %}
   service.running:
     - name: {{ prometheus.prometheus_service }}
