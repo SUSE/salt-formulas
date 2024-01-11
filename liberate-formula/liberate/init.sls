@@ -55,6 +55,11 @@ install_package_9:
     - name: sll-release
     - refresh: True
 
+install_logos_9:
+  pkg.installed:
+    - name: sll-logos
+    - refresh: True
+
 {% if reinstallPackages %}
 re_install_from_SLL:
   cmd.run:
@@ -103,6 +108,11 @@ install_package_8:
     - name: sles_es-release
     - refresh: True
 
+install_logos_8:
+  pkg.installed:
+    - name: sles_es-logos
+    - refresh: True
+
 {% if reinstallPackages %}
 re_install_from_SLL:
   cmd.run:
@@ -140,6 +150,11 @@ remove_release_package:
 install_package_7:
   pkg.installed:
     - name: sles_es-release-server
+    - refresh: True
+
+install_logos_7:
+  pkg.installed:
+    - name: sles_es-logos
     - refresh: True
 
 {% if reinstallPackages %}
