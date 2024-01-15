@@ -62,8 +62,8 @@ The Liberate Formula is available as an RPM (See 'Install formula' steps above).
      - Select the `Liberate` and click on the `Save` button. 
        - A new tab called `Liberate` will apear.
        - You can switch to the `Liberate` tab and find the `Reinstall all packages after conversion` option
-         - Please select this option if you want to reinstall all the packages during conversion to ensure they have SUSE signatures and you do not keep any previous package. If you do so, remember to click on the `Save Formula` button.
-         - If you prefer to not alter the state of your system during the migration leave this box deselected. You will beable to perform the reinstallation afterwards.
+         - Please keep this option selected if you want to reinstall all the packages during conversion, to ensure they have SUSE signatures and you do not keep any previous package.
+         - If you prefer to not alter the state of your system during the migration, please uncheck this box. If you do so, remember to click on the `Save Formula` button. You will be able to perform the reinstallation afterwards.
 
 We have now a System Group that has assigned the `Liberate` formula. This formula will only apply once to convert the system to SUSE Liberty Linux, even if you run it multiple times. Now it's time to assign it to the Activation Key
 

@@ -5,4 +5,4 @@ liberate:
      $name: 'Reinstall all packages after conversion'
      $type: boolean
      $help: 'If you want all the packages in your SLL system to have signatures from SUSE, please enable this option'
-     $default: false
+     $default: true
