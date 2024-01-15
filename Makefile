@@ -7,7 +7,7 @@ GRAFANA_VERSION=0.10.0
 VIRTUALIZATION_VERSION=0.6.2
 SYSTEM_LOCK_VERSION=0.1
 UYUNI_CONFIG_VERSION=0.2
-LIBERATE_VERSION=0.1
+LIBERATE_VERSION=0.1.0
 
 locale:: clean
 	git archive --format=tar.gz --prefix=locale-formula-${LOCALE_VERSION}/ HEAD:locale-formula/ >locale-formula-${LOCALE_VERSION}.tar.gz
