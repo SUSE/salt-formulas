@@ -19,7 +19,7 @@
 %define fdir  %{_datadir}/susemanager/formulas
 
 Name:           liberate-formula
-Version:        0.1
+Version:        0.1.0
 Release:        0
 Summary:        Formula to liberate servers and convert them to SLL
 License:        GPL-3.0
