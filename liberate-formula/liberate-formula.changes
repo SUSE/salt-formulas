@@ -1,14 +1,16 @@
 -------------------------------------------------------------------
 Mon Jan 15 11:00:00 UTC 2023 - Thomas Florio <thomas.florio@suse.com>
 
-- Integrate into salt-formulas project
-- Make sure the formula is idempotent and do not alter the system
-  after the migration
+- Version 0.1.0
+  * Integrate into salt-formulas project
+  * Make sure the formula is idempotent and do not alter the system
+    after the migration
 
 -------------------------------------------------------------------
 Thu Nov  9 16:46:44 UTC 2023 - Ricardo Mateus <rmateus@suse.com>
 
-- Version with support for all flavors 
+- Version 0.0.2
+  * Support for all flavors 
 
 -------------------------------------------------------------------
 Wed Nov 8 16:51:29 UTC 2023 - Miguel Pérez Colino <miguel.perez@suse.com>
