@@ -1,7 +1,7 @@
 #
 # spec file for package liberate-formula
 #
-# Copyright (c) 2023 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,6 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 %define fname liberate
 %define fdir  %{_datadir}/susemanager/formulas
 
@@ -22,7 +23,7 @@ Name:           liberate-formula
 Version:        0.1.0
 Release:        0
 Summary:        Formula to liberate servers and convert them to SLL
-License:        GPL-3.0
+License:        Apache-2.0
 Group:          System/Packages
 Source:         liberate-formula-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
