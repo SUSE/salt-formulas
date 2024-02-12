@@ -1,6 +1,6 @@
 # Liberate formula
 
-This formula converts your systems from EL clones, Like CentOS 7 or even RHEL 9, to SUSE Liberty Linux. This method is meant to perform the conversion during the minion onboarding on [Uyuni](https://www.uyuni-project.org/) / [SUSE Manager](https://www.suse.com/products/suse-manager/), which is a tool for system management, patching deployment and automation.
+This formula converts your systems from EL clones, Llike CentOS 7 or even RHEL 9, to SUSE Liberty Linux. This method is meant to perform the conversion during the minion onboarding on [Uyuni](https://www.uyuni-project.org/) / [SUSE Manager](https://www.suse.com/products/suse-manager/), which is a tool for system management, patching deployment and automation.
 
 This is the result of the Hackweek 23 project 
 [Use Uyuni to migrate EL linux to SLL](https://hackweek.opensuse.org/23/projects/use-uyuni-to-migrate-el-linux-to-sll).
@@ -8,7 +8,7 @@ This is the result of the Hackweek 23 project
 ## Quickstart
 
 ### Install the formula
-We will be installing the formula from an RPM created in the Open Build Service
+We will be installing the formula from an RPM created in the Open Build Service.
 
 - Install formula
   - `zypper in liberate-formula`
@@ -37,7 +37,7 @@ Now it's time to start basic configuration to have all the software channels for
   - Then in the new Activation Key, add the following content:
     - `Description`: with some text describing the activation key
     - `Key`: With the identifier for the key, for example `sll9-default` for your EL9 systems
-      - Note: Keys will have a nimeric prefix depending on the organization, so that there are unique
+      - Note: Keys will have a numeric prefix depending on the organization, so that they are unique
     - `Usage`: Leave blank
     - `Base Channel`: Select one base channel. Depending on your EL version the base channel will be:
         - EL7: `RHEL x86_64 Server 7`
@@ -60,7 +60,7 @@ The Liberate Formula is available as an RPM (See 'Install formula' steps above).
      - `Description`: Systems to be converted to SUSE Liberty Linux
    - Once in the `liberate` System Group page you can go to the tab `Formulas`
      - Select the `Liberate` and click on the `Save` button. 
-       - A new tab called `Liberate` will apear.
+       - A new tab called `Liberate` will appear.
        - You can switch to the `Liberate` tab and find the `Reinstall all packages after conversion` option
          - Please keep this option selected if you want to reinstall all the packages during conversion, to ensure they have SUSE signatures and you do not keep any previous package.
          - If you prefer to not alter the state of your system during the migration, please uncheck this box. If you do so, remember to click on the `Save Formula` button. You will be able to perform the reinstallation afterwards.
