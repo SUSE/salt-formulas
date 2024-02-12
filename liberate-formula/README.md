@@ -1,6 +1,6 @@
 # Liberate formula
 
-This formula converts your systems from EL clones, Llike CentOS 7 or even RHEL 9, to SUSE Liberty Linux. This method is meant to perform the conversion during the minion onboarding on [Uyuni](https://www.uyuni-project.org/) / [SUSE Manager](https://www.suse.com/products/suse-manager/), which is a tool for system management, patching deployment and automation.
+This formula converts your systems from EL clones, like CentOS 7 or even RHEL 9, to SUSE Liberty Linux. This method is meant to perform the conversion during the minion onboarding on [Uyuni](https://www.uyuni-project.org/) / [SUSE Manager](https://www.suse.com/products/suse-manager/), which is a tool for system management, patching deployment and automation.
 
 This is the result of the Hackweek 23 project 
 [Use Uyuni to migrate EL linux to SLL](https://hackweek.opensuse.org/23/projects/use-uyuni-to-migrate-el-linux-to-sll).
