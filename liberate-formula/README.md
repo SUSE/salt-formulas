@@ -8,7 +8,6 @@ This is the result of the Hackweek 23 project
 ## Quickstart
 
 ### Install the formula
-We will be installing the formula from an RPM created in the Open Build Service.
 
 - Install formula
   - `zypper in liberate-formula`
