@@ -2,6 +2,7 @@
 
 {%- if prometheus %}
 {%- if salt['pillar.get']('prometheus:enabled', False) %}
+{%- set alertmanager_enabled = salt['pillar.get']('prometheus:alerting:alertmanager_service', False) %}
 # setup Prometheus
 {%- set monitor_server = salt['pillar.get']('prometheus:mgr:monitor_server', False) %}
 {%- set alertmanager_service = salt['pillar.get']('prometheus:alerting:alertmanager_service', False) %}
@@ -12,9 +13,32 @@
 {%  set prometheus_web_config_file = '/etc/prometheus/web.yml' %}
 {%  set blackbox_exporter_web_config_file = '/etc/prometheus/exporters/blackbox-web.yml' %}
 
+
+{% set podman_version = salt['pkg.latest_version']('podman') %}
+{% if not podman_version %}
+  {% set podman_version = salt['pkg.version']('podman') %}
+{% endif %}
+{% set use_podman = salt['pkg.version_cmp'](podman_version, '4.4.0') >= 0 %}
+{% if use_podman %}
+install_podman:
+  pkg.installed:
+    - name: podman
+
+include:
+  - prometheus/uninstall_packages
+
+{% else %}
 install_prometheus:
   pkg.installed:
     - name: {{ prometheus.prometheus_package }}
+
+{%- if alertmanager_enabled %}
+install_alertmanager:
+  pkg.installed:
+    - name: {{ prometheus.alertmanager_package }}
+{% endif %}
+{% endif %}
+
 
 {% set firewall_active = salt['service.available']('firewalld') and salt['service.status']('firewalld') %}
 {% if firewall_active %}
@@ -26,15 +50,11 @@ firewall_prometheus:
       - prometheus
 {% endif %}
 
-install_alertmanager:
-  pkg.installed:
-    - name: {{ prometheus.alertmanager_package }}
-
 {% set prometheus_version = salt['pkg.latest_version'](prometheus.prometheus_package) %}
 {% if not prometheus_version %}
   {% set prometheus_version = salt['pkg.version'](prometheus.prometheus_package) %}
 {% endif %}
-{% if salt['pkg.version_cmp'](prometheus_version, '2.31.0') >= 0 %}
+{% if salt['pkg.version_cmp'](prometheus_version, '2.31.0') >= 0 or use_podman %}
   {% set prometheus_config_template = prometheus.prometheus_config %}
 {% else %}
   {% set prometheus_config_template = prometheus.prometheus_config_old %}
@@ -47,9 +67,6 @@ config_file:
     - group: root
     - mode: 644
     - template: jinja
-    - require:
-      - pkg: install_prometheus
-      - pkg: install_alertmanager
     - defaults:
       uyuni_server_hostname: {{ uyuni_server_hostname }}
 
@@ -62,9 +79,6 @@ prometheus_web_config:
     - group: root
     - mode: 644
     - template: jinja
-    - require:
-      - pkg: install_prometheus
-      - pkg: install_alertmanager
 {% endif %}
 
 {% if default_rules %}
@@ -79,9 +93,6 @@ default_rule_files:
     - group: root
     - mode: 644
     - makedirs: True
-    - require:
-      - pkg: install_prometheus
-      - pkg: install_alertmanager
 {% endif %}
 
 {%- if monitor_server %}
@@ -94,13 +105,41 @@ mgr_scrape_config_file:
     - mode: 644
     - makedirs: True
     - template: jinja
-    - require:
-      - pkg: install_prometheus
-      - pkg: install_alertmanager
     - defaults:
       uyuni_server_hostname: {{ uyuni_server_hostname }}
 {%- endif %}
 
+{%- if use_podman %}
+prometheus_container_running:
+  file.managed:
+    - names:
+      - /etc/containers/systemd/prometheus.container:
+        - source: salt://prometheus/files/containers/prometheus.container
+      - /etc/containers/systemd/prometheus.volume:
+        - source: salt://prometheus/files/containers/prometheus.volume
+    - user: root
+    - group: root
+    - mode: 644
+    - template: jinja
+    - defaults:
+      web_config_file: {{ prometheus_web_config_file }}
+      enable_receiver: {{ remote_write_receiver_enabled }}      
+  module.run:
+    - name: service.systemctl_reload
+  service.running:
+    - name: {{ prometheus.prometheus_service }}
+    - enable: true
+    - watch:
+      - file: /etc/containers/systemd/prometheus.*
+      - file: config_file
+{% if tls_enabled %}
+      - file: prometheus_web_config
+{% endif %}
+{% if default_rules %}
+      - file: default_rule_files
+{% endif %}
+
+{% else %}
 prometheus_running:
   file.managed:
     - name: /etc/systemd/system/prometheus.service.d/uyuni.conf
@@ -143,7 +182,55 @@ prometheus_running:
 {%- if monitor_server %}
       - file: mgr_scrape_config_file
 {%- endif %}
+{% endif %}
 
+{% if alertmanager_enabled %}
+alertmanager_config_file:
+  file.managed:
+    - name: /etc/prometheus/alertmanager.yml
+    - source: salt://prometheus/files/alertmanager.yml
+    - user: root
+    - group: root
+    - mode: 644
+
+{%- if use_podman %}
+alertmanager_container_running:
+{% if alertmanager_service %}
+  file.managed:
+    - names:
+      - /etc/containers/systemd/alertmanager.container:
+        - source: salt://prometheus/files/containers/alertmanager.container
+      - /etc/containers/systemd/alertmanager.volume:
+        - source: salt://prometheus/files/containers/alertmanager.volume
+    - user: root
+    - group: root
+    - mode: 644
+    - template: jinja
+    - defaults:
+      web_config_file: {{ prometheus_web_config_file }}
+  module.run:
+    - name: service.systemctl_reload
+  service.running:
+    - name: alertmanager
+    - enable: true
+    - watch:
+      - file: /etc/containers/systemd/alertmanager.*
+{% if tls_enabled %}
+      - file: prometheus_web_config
+{%- endif %}
+{% else %}
+  service.dead:
+    - name: alertmanager
+    - enable: False
+  file.absent:
+    - names:
+      - /etc/containers/systemd/alertmanager.container
+      - /etc/containers/systemd/alertmanager.volume
+  module.run:
+    - name: service.systemctl_reload
+{% endif %}
+
+{%- else %}
 alertmanager_running:
 {% if alertmanager_service %}
   file.managed:
@@ -171,8 +258,9 @@ alertmanager_running:
     - name: {{ prometheus.alertmanager_service }}
     - enable: False
 {%- endif %}
+{% endif %}
 
-{% if alertmanager_service and firewall_active %}
+{% if firewall_active %}
 alertmanager_service:
   firewalld.service:
     - name: prometheus-alertmanager
@@ -186,9 +274,19 @@ firewall_alertmanager:
     - services:
       - prometheus-alertmanager
 {% endif %}
+{% endif %}
 
 {% set blackbox_exporter_enabled = salt['pillar.get']('prometheus:blackbox_exporter:enabled', False) %}
-{% if blackbox_exporter_enabled and tls_enabled %}
+{%- if blackbox_exporter_enabled %}
+blackbox_exporter_config_file:
+  file.managed:
+    - name: /etc/prometheus/blackbox.yml
+    - source: salt://prometheus/files/blackbox.yml
+    - user: root
+    - group: root
+    - mode: 644
+
+{% if tls_enabled %}
 blackbox_exporter_web_config:
   file.managed:
     - name: {{ blackbox_exporter_web_config_file }}
@@ -201,7 +299,41 @@ blackbox_exporter_web_config:
     - watch_in:
       - service: blackbox_exporter
 {% endif %}
+{% endif %}
 
+{%- if use_podman %}
+blackbox_exporter_container:
+{%- if blackbox_exporter_enabled %}
+  file.managed:
+    - name: /etc/containers/systemd/blackbox_exporter.container
+    - source: salt://prometheus/files/containers/blackbox_exporter.container
+    - user: root
+    - group: root
+    - mode: 644
+    - template: jinja
+    - defaults:
+      web_config_file: {{ blackbox_exporter_web_config_file }}
+  module.run:
+    - name: service.systemctl_reload
+  service.running:
+    - name: blackbox_exporter
+    - enable: true
+    - watch:
+      - file: /etc/containers/systemd/blackbox_exporter.container
+{% if tls_enabled %}
+      - file: {{ blackbox_exporter_web_config_file }}
+{%- endif %}
+{% else %}
+  service.dead:
+    - name: blackbox_exporter
+    - enable: False
+  file.absent:
+    - name: /etc/containers/systemd/blackbox_exporter.container
+  module.run:
+    - name: service.systemctl_reload
+{% endif %}
+
+{% else %}
 blackbox_exporter:
 {% if blackbox_exporter_enabled %}
   {% set blackbox_exporter_args = salt['pillar.get']('prometheus:blackbox_exporter:args') %}
@@ -241,16 +373,12 @@ blackbox_exporter:
     - name: {{ prometheus.blackbox_exporter_service }}
     - enable: False
 {% endif %}
+{% endif %}
 
 {%- else %}
 # remove prometheus
-remove_prometheus:
-  pkg.removed:
-    - name: {{ prometheus.prometheus_package }}
-
-remove_alertmanager:
-  pkg.removed:
-    - name: {{ prometheus.alertmanager_package }}
+include:
+  - prometheus/uninstall_packages
 
 /etc/prometheus:
   file.absent:

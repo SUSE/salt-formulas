@@ -1,0 +1,25 @@
+{%- set tls_enabled = salt['pillar.get']('prometheus:tls:enabled', False) %}
+{%- set args = salt['pillar.get']('prometheus:blackbox_exporter:args').split(' ') %}
+{%- set entrypoint = ['/usr/bin/blackbox_exporter'] %}
+{%- if args %}
+{%- do entrypoint.extend(args) %}
+{%- endif -%}
+{%- if tls_enabled %}
+{%- do entrypoint.append('--web.config.file=' ~ web_config_file) %}
+{%- endif -%}
+
+[Unit]
+Description=Blackbox Exporter Container
+
+[Container]
+Label=app=blackbox_exporter
+ContainerName=blackbox_exporter
+Image=registry.opensuse.org/devel/bci/sle-15-sp6/containerfile/suse/blackbox_exporter:0.24.0
+Volume=/etc/prometheus:/etc/prometheus:ro
+{% if entrypoint|length > 1 -%}
+PodmanArgs=--entrypoint '{{ entrypoint|tojson }}'
+{%- endif %}
+PublishPort=9115:9115
+
+[Install]
+WantedBy=multi-user.target default.target

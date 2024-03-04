@@ -126,6 +126,13 @@ prometheus:
       $name: Enable local Alertmanager service
       $help: Install and start local Alertmanager without clustering
 
+    alertmanager_config:
+      $name: Alertmanager configuration
+      $type: text
+      $default: /etc/prometheus/alertmanager.yml
+      $help: Please refer to the documentation for available options.
+      $visible: this.parent.value.alertmanager_service == true
+
     use_local_alertmanager:
       $type: boolean
       $name: Use local Alertmanager

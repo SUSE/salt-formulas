@@ -1,0 +1,25 @@
+{%- set tls_enabled = salt['pillar.get']('prometheus:tls:enabled', False) %}
+{%- set entrypoint = ['/usr/bin/prometheus'] %}
+{%- if tls_enabled %}
+{% do entrypoint.append('--web.config.file=' ~ web_config_file) %}
+{%- endif -%}
+{% if enable_receiver %}
+{% do entrypoint.append('--web.enable-remote-write-receiver') %}
+{% endif -%}
+[Unit]
+Description=Prometheus Container
+
+[Container]
+Label=app=prometheus
+ContainerName=prometheus
+Image=registry.opensuse.org/devel/bci/sle-15-sp6/containerfile/suse/prometheus:2.37.6
+Volume=/etc/prometheus:/etc/prometheus:ro
+Volume=/etc/pki/trust/anchors:/etc/pki/tls/certs:ro
+Volume=prometheus.volume:/var/lib/prometheus
+PublishPort=9090:9090
+{% if entrypoint|length > 1 -%}
+PodmanArgs=--entrypoint '{ entrypoint|tojson }}'
+{%- endif %}
+
+[Install]
+WantedBy=multi-user.target default.target
