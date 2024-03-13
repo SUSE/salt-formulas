@@ -18,7 +18,7 @@ Volume=/etc/pki/trust/anchors:/etc/pki/tls/certs:ro
 Volume=prometheus.volume:/var/lib/prometheus
 PublishPort=9090:9090
 {% if entrypoint|length > 1 -%}
-PodmanArgs=--entrypoint '{ entrypoint|tojson }}'
+PodmanArgs=--entrypoint '{{ entrypoint|tojson }}'
 {%- endif %}
 
 [Install]
