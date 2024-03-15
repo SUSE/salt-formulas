@@ -1,0 +1,13 @@
+[Unit]
+Description=Grafana Container
+
+[Container]
+Label=app=grafana
+ContainerName=grafana
+Image=registry.opensuse.org/devel/bci/sle-15-sp6/containerfile/suse/grafana:9.5.8
+Volume=/etc/grafana:/etc/grafana:ro
+Volume=grafana.volume:/var/lib/grafana
+PublishPort=3000:3000
+
+[Install]
+WantedBy=multi-user.target default.target

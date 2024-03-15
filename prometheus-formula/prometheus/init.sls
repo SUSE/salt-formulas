@@ -20,7 +20,7 @@
 {% endif %}
 {% set use_podman = salt['pkg.version_cmp'](podman_version, '4.4.0') >= 0 %}
 {% if use_podman %}
-install_podman:
+install_podman_for_prometheus:
   pkg.installed:
     - name: podman
 
@@ -138,7 +138,6 @@ prometheus_container_running:
 {% if default_rules %}
       - file: default_rule_files
 {% endif %}
-
 {% else %}
 prometheus_running:
   file.managed:
@@ -383,8 +382,7 @@ include:
 /etc/prometheus:
   file.absent:
     - require:
-      - pkg: remove_prometheus
-      - pkg: remove_alertmanager
+      - remove_prometheus_packages
 
 {%- endif %}
 {%- endif %}

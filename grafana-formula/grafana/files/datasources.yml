@@ -12,7 +12,7 @@ datasources:
 - name: {{ name }}
   type: prometheus
   access: proxy
-  url: {{ datasource.url }}
+  url: {{ datasource.url|replace('localhost', grains['fqdn']) }}
   basicAuth: {{ basic_auth_enabled }}
   isDefault: {{ loop.first }}
   editable: true
