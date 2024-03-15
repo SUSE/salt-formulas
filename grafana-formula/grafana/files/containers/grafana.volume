@@ -1,0 +1,5 @@
+[Unit]
+Description=Grafana Container Volume
+
+[Volume]
+Label=app=grafana

@@ -1,10 +1,14 @@
 - targets:
-  - {{ uyuni_server_hostname }}:9100
-  - {{ uyuni_server_hostname }}:5556
-  - {{ uyuni_server_hostname }}:5557
-  - {{ uyuni_server_hostname }}:9800
+  - {{ uyuni_server_hostname }}:9100 # Node exporter
+  - {{ uyuni_server_hostname }}:5556 # Tomcat JMX
+  - {{ uyuni_server_hostname }}:5557 # Taskomatic JMX
+  - {{ uyuni_server_hostname }}:9800 # Uyuni exporter
   labels: {}
 - targets:
-  - {{ uyuni_server_hostname }}:9187
+  - {{ uyuni_server_hostname }}:80 # Message queue
+  labels:
+    __metrics_path__: /rhn/metrics
+- targets:
+  - {{ uyuni_server_hostname }}:9187 # PostgreSQL
   labels:
     role: postgres

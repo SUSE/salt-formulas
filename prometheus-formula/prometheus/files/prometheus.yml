@@ -15,7 +15,7 @@ alerting:
       - {{ alertmanager }}
 {% endfor %}
 {% elif local_alertmanager %}
-      - localhost:9093
+      - {{ grains['fqdn'] }}:9093
 {% endif %}
 {% endif %}
 
@@ -38,22 +38,11 @@ scrape_configs:
   # Monitor {{ uyuni_server_hostname }}
   # --------------------
   - job_name: 'mgr-server'
-    static_configs:
-      - targets:
-        - {{ uyuni_server_hostname }}:9100 # Node exporter
-        - {{ uyuni_server_hostname }}:5556 # Tomcat JMX
-        - {{ uyuni_server_hostname }}:5557 # Taskomatic JMX
-        - {{ uyuni_server_hostname }}:9800 # Uyuni server exporter
-        labels: {}
-      - targets:
-        - {{ uyuni_server_hostname }}:80 # Message queue
-        labels:
-          __metrics_path__: /rhn/metrics
-      - targets:
-        - {{ uyuni_server_hostname }}:9187 # PostgresSQL
-        labels:
-          role: postgres
+    file_sd_configs:
+      - files:
+          - mgr-scrape-config/mgr-server.yml
 {%- endif %}
+
 {% set sd_username = salt['pillar.get']('prometheus:mgr:sd_username') %}
 {% set sd_password = salt['pillar.get']('prometheus:mgr:sd_password') %}
 {% set sd_groups = salt['pillar.get']('prometheus:mgr:sd_groups') %}
@@ -128,7 +117,7 @@ scrape_configs:
   - job_name: prometheus
     static_configs:
       - targets:
-        - {{ grains['fqdn'] }}:9090
+        - localhost:9090
 {% endif %}
 
 {% for job, config in salt['pillar.get']('prometheus:federation').items() %}

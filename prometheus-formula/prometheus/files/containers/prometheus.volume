@@ -1,0 +1,5 @@
+[Unit]
+Description=Prometheus Container Volume
+
+[Volume]
+Label=app=prometheus

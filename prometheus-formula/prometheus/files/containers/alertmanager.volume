@@ -1,0 +1,5 @@
+[Unit]
+Description=Alertmanager Container Volume
+
+[Volume]
+Label=app=alertmanager

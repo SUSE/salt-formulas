@@ -1,0 +1,26 @@
+{%- set tls_enabled = salt['pillar.get']('prometheus:tls:enabled', False) %}
+{% set config = salt['pillar.get']('prometheus:alerting:alertmanager_config') %}
+{%- set entrypoint = ['/usr/bin/prometheus-alertmanager'] %}
+{%- if config %}
+{% do entrypoint.append('--config.file=' ~ config) %}
+{% endif -%}
+{%- if tls_enabled %}
+{% do entrypoint.append('--web.config.file=' ~ web_config_file) %}
+{%- endif -%}
+
+[Unit]
+Description=Alertmanager Container
+
+[Container]
+Label=app=alertmanager
+ContainerName=alertmanager
+Image=registry.opensuse.org/devel/bci/sle-15-sp6/containerfile/suse/alertmanager:0.26.0
+Volume=/etc/prometheus:/etc/prometheus:ro
+Volume=alertmanager.volume:/var/lib/prometheus/alertmanager
+{% if entrypoint|length > 1 -%}
+PodmanArgs=--entrypoint '{{ entrypoint|tojson }}'
+{%- endif %}
+PublishPort=9093:9093
+
+[Install]
+WantedBy=multi-user.target default.target
