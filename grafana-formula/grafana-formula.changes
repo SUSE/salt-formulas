@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 18 10:28:16 UTC 2024 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.10.1
+  * Fix "Disk space usage" panel for btrfs filesystems
+
+-------------------------------------------------------------------
 Mon Jan 15 13:32:04 UTC 2024 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.10.0
