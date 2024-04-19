@@ -43,6 +43,7 @@ cp -R grafana/* %{buildroot}%{fdir}/states/%{fname}
 cp -R metadata/* %{buildroot}%{fdir}/metadata/%{fname}
 
 %files
+%defattr(-,root,root)
 %license LICENSE
 %dir %{_datadir}/susemanager
 %dir %{fdir}
