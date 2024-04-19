@@ -1114,16 +1114,31 @@
       "pluginVersion": "8.5.15",
       "targets": [
         {
-          "expr": "1 - node_filesystem_avail_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\"} / node_filesystem_size_bytes",
+          "expr": "1 - node_filesystem_avail_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\", fstype!=\"btrfs\"} / node_filesystem_size_bytes",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{device}}",
+          "legendFormat": "{{mountpoint}}",
           "refId": "A",
           "step": 2400,
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           }
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "1 -  max by (device) (node_filesystem_avail_bytes{hostname=~\"$hostname\", exporter=\"node_exporter\", fstype=\"btrfs\"} / node_filesystem_size_bytes)",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 2,
+          "legendFormat": "{{device}}",
+          "range": true,
+          "refId": "B",
+          "step": 2400
         }
       ],
       "title": "Disk space usage",
@@ -1440,6 +1455,6 @@
 {% endraw %}
   "title": "{{ product_name }} Client Systems",
   "uid": "KIko76Nik",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }

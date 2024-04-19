@@ -1174,7 +1174,7 @@
       "pluginVersion": "8.5.15",
       "targets": [
         {
-          "expr": "label_replace(1 - node_filesystem_avail_bytes{instance=~\"$server:9100\", fstype=~\"vfat|btrfs|xfs|ext\\\\d\"} / node_filesystem_size_bytes, \"shortdev\", \"$1\", \"device\", \"/dev/(.*)\")   ",
+          "expr": "label_replace(1 - node_filesystem_avail_bytes{instance=~\"$server:9100\", fstype=~\"vfat|xfs|ext\\\\d\"} / node_filesystem_size_bytes, \"shortdev\", \"$1\", \"device\", \"/dev/(.*)\")",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{shortdev}}",
@@ -1184,7 +1184,21 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           }
-        }
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "label_replace(1 - max by (device) (node_filesystem_avail_bytes{instance=~\"$server:9100\", fstype=\"btrfs\"} / node_filesystem_size_bytes), \"shortdev\", \"$1\", \"device\", \"/dev/(.*)\")   ",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 2,
+          "legendFormat": "{{shortdev}}",
+          "range": true,
+          "refId": "B",
+          "step": 2400
       ],
       "title": "Disk space usage",
       "transparent": true,
@@ -2773,6 +2787,6 @@
 {% endraw %}
   "title": "{{ product_name }} Server",
   "uid": "2p2qPSUik",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }

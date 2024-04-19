@@ -1,7 +1,7 @@
 #
 # spec file for package grafana-formula
 #
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -19,14 +19,13 @@
 %define fname grafana
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           grafana-formula
-Version:        0.10.0
+Version:        0.10.1
 Release:        0
 Summary:        Salt formula for installing and configuring Grafana
 License:        Apache-2.0
 Group:          System/Packages
-Url:            https://github.com/SUSE/salt-formulas
+URL:            https://github.com/SUSE/salt-formulas
 Source:         grafana-formula-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 %description
