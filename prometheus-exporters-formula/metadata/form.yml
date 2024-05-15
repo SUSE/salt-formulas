@@ -88,9 +88,22 @@ exporters:
       $type: text
       $default: ':9187'
 
-    data_source_name:
+    data_source_hostname:
       $type: text
-      $default: postgresql://user:passwd@localhost:5432/database?sslmode=disable
+      $default: localhost
+
+    data_source_port:
+      $type: number
+      $default: 5432
+
+    data_source_database:
+      $type: text
+
+    data_source_user:
+      $type: text
+
+    data_source_password:
+      $type: password
 
     args:
       $name: "Arguments"

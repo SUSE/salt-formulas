@@ -198,8 +198,13 @@ postgres_exporter:
   pkg.installed:
     - name: {{ exporters.postgres_exporter_package }}
   file.managed:
-    - name: {{ exporters.postgres_exporter_service_config }}
-    - source: {{ 'salt://prometheus-exporters/files/postgres-exporter-config.' ~ salt['grains.get']('os_family') }}
+    - names:
+      - {{ exporters.postgres_exporter_service_config }}:
+        - source: {{ 'salt://prometheus-exporters/files/postgres-exporter-config.' ~ salt['grains.get']('os_family') }}
+      - {{ exporters.postgres_exporter_password_file }}:
+        - source: salt://prometheus-exporters/files/postgres-exporter-password
+        - user: prometheus
+        - mode: 600
     - makedirs: True
     - template: jinja
     - user: root
@@ -207,6 +212,9 @@ postgres_exporter:
     - mode: 644
     - defaults:
         args: {{ postgres_exporter_args }}
+  {%- if exporters.postgres_exporter_password_file %}
+        password_file: {{ exporters.postgres_exporter_password_file }}
+  {%- endif %}
   {% if postgres_exporter_address and '-web.listen-address' not in postgres_exporter_args %}
     - context:
         args: {{ postgres_exporter_args ~' --web.listen-address=' ~ postgres_exporter_address }}
@@ -215,6 +223,11 @@ postgres_exporter:
       - pkg: postgres_exporter
     - watch_in:
       - service: postgres_exporter
+  module.run:
+    - name: service.systemctl_reload
+    - onchanges_any:
+      - file: {{ exporters.postgres_exporter_service_config }}
+      - file: {{ exporters.postgres_exporter_password_file }}
   service.running:
     - name: {{ exporters.postgres_exporter_service }}
     - enable: True

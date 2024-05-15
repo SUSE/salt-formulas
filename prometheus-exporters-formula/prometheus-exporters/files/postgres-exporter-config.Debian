@@ -1,18 +1,10 @@
-# Connection string for the PostgreSQL database. You need to either connect as
-# superuser, or create a user with enough rights, as described in
-# /usr/share/doc/prometheus-postgres-exporter/README.Debian
-
-# DATA_SOURCE_NAME='postgresql://login:password@hostname:port/'
-# DATA_SOURCE_NAME='user=prometheus host=/run/postgresql dbname=postgres'
-DATA_SOURCE_NAME="{{ salt['pillar.get']('postgres_exporter:data_source_name', 'postgresql://user:passwd@localhost:5432/database?sslmode=disable') }}"
-
-# Set the command-line arguments to pass to the server.
-ARGS={{ args }}
-
-# Available flags:
-#  --web.listen-address=":9187"  Address to listen on for web interface and telemetry.
-#  --web.telemetry-path="/metrics"
-#                                Path under which to expose metrics.
-#  --extend.query-path=""        Path to custom queries to run.
-#  --log.level="info"            Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]
-#  --log.format="logger:stderr"  Set the log target and format. Example: "logger:syslog?appname=bob&local=7" or "logger:stdout?json=true"
+{%- set host = salt['pillar.get']('exporters:postgres_exporter:data_source_hostname', 'localhost') %}
+{%- set port = salt['pillar.get']('exporters:postgres_exporter:data_source_port', 5432) %}
+{%- set db = salt['pillar.get']('exporters:postgres_exporter:data_source_database') %}
+{%- set user = salt['pillar.get']('exporters:postgres_exporter:data_source_user') %}
+[Service]
+EnvironmentFile=
+Environment="DATA_SOURCE_URI={{ host }}:{{ port }}/{{ db }}?sslmode=disable"
+Environment="DATA_SOURCE_USER={{ user }}"
+Environment="DATA_SOURCE_PASS_FILE={{ password_file }}"
+Environment="POSTGRES_EXPORTER_PARAMS={{ args }}"
