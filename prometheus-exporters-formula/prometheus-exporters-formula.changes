@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu May 16 15:01:10 UTC 2024 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 1.4.0
+  * Fix parsing PostgreSQL password with special characters
+  * Add form fields for PostgreSQL data source
+
+-------------------------------------------------------------------
 Mon Aug 14 14:42:20 UTC 2023 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 1.3.0
