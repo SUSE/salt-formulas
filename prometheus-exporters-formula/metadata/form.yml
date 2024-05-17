@@ -89,8 +89,25 @@ exporters:
       $default: ':9187'
 
     data_source_name:
+      $name: "Data Source Name (legacy)"
       $type: text
       $default: postgresql://user:passwd@localhost:5432/database?sslmode=disable
+      $help: This is a legacy configuration option kept for compatibility reasons. Can be removed in future versions.
+
+    data_source_hostname:
+      $type: text
+
+    data_source_port:
+      $type: number
+
+    data_source_database:
+      $type: text
+
+    data_source_user:
+      $type: text
+
+    data_source_password:
+      $type: password
 
     args:
       $name: "Arguments"
