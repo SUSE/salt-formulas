@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May 21 11:53:25 UTC 2024 - Oscar Barrios <obarrios@suse.com>
+
+- Version 0.10.2
+  * Fix typo in mgr-server Grafana dashboard 
+
+-------------------------------------------------------------------
 Thu Apr 18 10:28:16 UTC 2024 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.10.1
