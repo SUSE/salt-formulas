@@ -1,3 +1,6 @@
+  * Fix PostgreSQL exporter drop-in directory name on Debian
+    (bsc#1226605)
+
 -------------------------------------------------------------------
 Thu May 16 15:01:10 UTC 2024 - Witek Bedyk <witold.bedyk@suse.com>
 
