@@ -1,4 +1,4 @@
-  * Fix PostgeSQL exporter drop-in directory name on Debian
+  * Fix PostgreSQL exporter drop-in directory name on Debian
     (bsc#1226605)
 
 -------------------------------------------------------------------
