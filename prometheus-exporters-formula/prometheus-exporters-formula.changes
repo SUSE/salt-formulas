@@ -1,3 +1,5 @@
+
+  * Fix flag name for web config file for TLS support (bsc#1226035)
   * Fix PostgreSQL exporter drop-in directory name on Debian
     (bsc#1226605)
 
