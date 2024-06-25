@@ -74,7 +74,15 @@ node_exporter:
     {% set node_exporter_args = node_exporter_args ~ ' --web.listen-address=' ~ node_exporter_address %}
   {% endif %}
   {% if tls_enabled %}
-    {% set node_exporter_args = node_exporter_args ~ ' --web.config=' ~ web_config_file %}
+    {% set node_exporter_version = salt['pkg.version'](exporters.node_exporter_package) %}
+    {% if not node_exporter_version %}
+      {% set node_exporter_version = salt['pkg.latest_version'](exporters.node_exporter_package) %}
+    {% endif %}
+    {% if salt['pkg.version_cmp'](node_exporter_version, '1.5.0') >= 0 %}
+        {% set node_exporter_args = node_exporter_args ~ ' --web.config.file=' ~ web_config_file %}
+    {% else %}
+        {% set node_exporter_args = node_exporter_args ~ ' --web.config=' ~ web_config_file %}
+    {% endif %}
   {% endif %}
   pkg.installed:
     - name: {{ exporters.node_exporter_package }}
