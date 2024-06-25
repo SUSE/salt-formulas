@@ -1,5 +1,8 @@
+-------------------------------------------------------------------
+Tue Jun 25 13:19:00 UTC 2024 - Witek Bedyk <witold.bedyk@suse.com>
 
-  * Fix flag name for web config file for TLS support (bsc#1226035)
+- Version 1.4.1
+  * Fix Node Exporter flag name for TLS support (bsc#1226035)
   * Fix PostgreSQL exporter drop-in directory name on Debian
     (bsc#1226605)
 
