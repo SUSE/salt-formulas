@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 31 11:19:29 UTC 2024 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.11.0
+  * Add SLES 15 SP6 to supported versions (bsc#1228286)
+
+-------------------------------------------------------------------
 Thu May 21 11:53:25 UTC 2024 - Oscar Barrios <obarrios@suse.com>
 
 - Version 0.10.2
