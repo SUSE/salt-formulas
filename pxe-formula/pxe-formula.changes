@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep  4 11:57:34 UTC 2024 - Ondrej Holecek <oholecek@suse.com>
+
+- Add MAC based terminal naming option (jsc#SUMA-314)
+
+-------------------------------------------------------------------
 Thu Apr 27 13:52:24 UTC 2023 - Vladimir Nadvornik <nadvornik@suse.cz>
 
 - Store pxe configuration in grains
