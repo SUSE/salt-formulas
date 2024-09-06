@@ -8,6 +8,7 @@ VIRTUALIZATION_VERSION=0.6.2
 SYSTEM_LOCK_VERSION=0.1
 UYUNI_CONFIG_VERSION=0.2
 LIBERATE_VERSION=0.1.0
+PXE_VERSION=0.2.0
 
 locale:: clean
 	git archive --format=tar.gz --prefix=locale-formula-${LOCALE_VERSION}/ HEAD:locale-formula/ >locale-formula-${LOCALE_VERSION}.tar.gz
@@ -35,6 +36,9 @@ uyuni-config:: clean
 
 liberate:: clean
 	git archive --format=tar.gz --prefix=liberate-formula-${LIBERATE_VERSION}/ HEAD:liberate-formula/ >liberate-formula-${LIBERATE_VERSION}.tar.gz
+
+pxe:: clean
+	git archive --format=tar.gz --prefix=pxe-formula-${PXE_VERSION}/ HEAD:pxe-formula/ >pxe-formula-${PXE_VERSION}.tar.gz
 
 clean::
 	find . -name "*~" | xargs rm -f
