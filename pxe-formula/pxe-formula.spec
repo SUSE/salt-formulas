@@ -16,7 +16,7 @@
 #
 
 Name:           pxe-formula
-Version:        0.1
+Version:        0.2.0
 Release:        0
 Summary:        Formula for atftpd server on POS branchserver
 License:        GPL-2.0
