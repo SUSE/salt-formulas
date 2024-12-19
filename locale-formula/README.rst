@@ -7,7 +7,7 @@ Formula to configure locales.
 .. note::
 
     See the full `Salt Formulas installation and usage instructions
-    <http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
+    <https://docs.saltproject.io/en/latest/topics/development/conventions/formulas.html>`_.
 
 Available states
 ================
