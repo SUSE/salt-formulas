@@ -1,0 +1,42 @@
+-------------------------------------------------------------------
+Thu Dec 19 12:17:27 UTC 2024 - Marina Latini <marina.latini@suse.com>
+
+- Update to version 0.4.0
+  * Refresh spec file
+
+-------------------------------------------------------------------
+Thu Sep 15 11:37:18 UTC 2022 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Update to version 0.3
+  * Remove .map.gz from kb_map dictionary (bsc#1203406)
+
+-------------------------------------------------------------------
+Thu May 11 13:58:06 CEST 2017 - mc@suse.de
+
+- remove documentation links which point to developer-only wiki
+  (bsc#1033341)
+
+-------------------------------------------------------------------
+Fri Mar  3 13:21:29 UTC 2017 - mseidl@suse.de
+
+- (bsc#1027642) Changed ids to avoid conflicts
+
+-------------------------------------------------------------------
+Tue Feb  7 10:19:08 UTC 2017 - mseidl@suse.de
+
+- Add missing group spec file
+
+-------------------------------------------------------------------
+Sun Feb  5 14:31:20 UTC 2017 - mseidl@suse.de
+
+- Updated files with gpl header + copying file
+
+-------------------------------------------------------------------
+Fri Feb  3 11:52:44 UTC 2017 - mseidl@suse.de
+
+- Fixed spec file and changed file layout in src
+
+-------------------------------------------------------------------
+Fri Feb  3 09:18:07 UTC 2017 - mseidl@suse.de
+
+- Initial commit
