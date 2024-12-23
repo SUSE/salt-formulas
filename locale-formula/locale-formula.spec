@@ -30,7 +30,8 @@ BuildArch:      noarch
 
 %description
 Salt Formula for SUSE Multi-Linux Manager and Uyuni.
-It configures the locale - langauge, keyboard and timezone.
+It configures the locale settings for langauge, keyboard and
+timezone.
 
 
 %prep
