@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 14 10:40:01 UTC 2025 - Ondrej Holecek <oholecek@suse.com>
+
+- Fix license snippets in source to be correctly GPL-2.0+
+
+-------------------------------------------------------------------
 Wed Dec  2 17:04:29 UTC 2020 - Ondrej Holecek <oholecek@suse.com>
 
 - Add IP or empty string match for network address field

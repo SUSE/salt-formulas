@@ -21,7 +21,7 @@ Name:           tftpd-formula
 Version:        0.1
 Release:        0
 Summary:        Formula for tftpd server on POS branchserver
-License:        GPL-2.0-only
+License:        GPL-2.0-or-later
 Group:          System/Packages
 URL:            https://github.com/SUSE/salt-formulas
 Source:         tftpd-formula-%{version}.tar.xz

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 14 10:38:56 UTC 2025 - Ondrej Holecek <oholecek@suse.com>
+
+- Fix license snippets in source to be correctly GPL-2.0+
+
+-------------------------------------------------------------------
 Wed Sep  4 11:57:34 UTC 2024 - Ondrej Holecek <oholecek@suse.com>
 
 - Update to version 0.2.0

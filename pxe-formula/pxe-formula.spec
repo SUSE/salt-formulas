@@ -21,7 +21,7 @@ Name:           pxe-formula
 Version:        0.2.0
 Release:        0
 Summary:        Formula for atftpd server on POS branchserver
-License:        GPL-2.0-only
+License:        GPL-2.0-or-later
 Group:          System/Packages
 URL:            https://github.com/SUSE/salt-formulas
 Source:         pxe-formula-%{version}.tar.xz
