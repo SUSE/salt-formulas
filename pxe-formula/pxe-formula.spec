@@ -17,14 +17,14 @@
 
 
 %define fname pxe
-Name:           pxe-formula
-Version:        0.2.0
+Name:           %{fname}-formula
+Version:        0.3.0
 Release:        0
-Summary:        Formula for atftpd server on POS branchserver
+Summary:        Formula for PXE boot server files on Retail branchserver
 License:        GPL-2.0-or-later
 Group:          System/Packages
 URL:            https://github.com/SUSE/salt-formulas
-Source:         pxe-formula-%{version}.tar.xz
+Source:         %{fname}-formula-%{version}.tar.gz
 BuildArch:      noarch
 
 %description
