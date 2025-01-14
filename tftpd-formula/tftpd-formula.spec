@@ -1,7 +1,7 @@
 #
 # spec file for package tftpd-formula
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,16 +15,17 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
+%define fname tftpd
 Name:           tftpd-formula
 Version:        0.1
 Release:        0
 Summary:        Formula for tftpd server on POS branchserver
-License:        GPL-2.0
+License:        GPL-2.0-only
 Group:          System/Packages
+URL:            https://github.com/SUSE/salt-formulas
 Source:         tftpd-formula-%{version}.tar.xz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-%define fname tftpd
 
 %description
 Formula for install, setup and uninstall of tftpd server on POS branchserver
@@ -35,15 +36,14 @@ Formula for install, setup and uninstall of tftpd server on POS branchserver
 %build
 
 %install
-mkdir -p %{buildroot}/usr/share/susemanager/formulas/states/%{fname}/files
-mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata/%{fname}
-cp -R %{fname}/* %{buildroot}/usr/share/susemanager/formulas/states/%{fname}
-cp form.yml %{buildroot}/usr/share/susemanager/formulas/metadata/%{fname}
-cp metadata.yml %{buildroot}/usr/share/susemanager/formulas/metadata/%{fname}
+mkdir -p %{buildroot}%{_datadir}/susemanager/formulas/states/%{fname}/files
+mkdir -p %{buildroot}%{_datadir}/susemanager/formulas/metadata/%{fname}
+cp -R %{fname}/* %{buildroot}%{_datadir}/susemanager/formulas/states/%{fname}
+cp form.yml %{buildroot}%{_datadir}/susemanager/formulas/metadata/%{fname}
+cp metadata.yml %{buildroot}%{_datadir}/susemanager/formulas/metadata/%{fname}
 
 
 %files
-%defattr(-,root,root,-)
-/usr/share/susemanager
+%{_datadir}/susemanager
 
 %changelog
