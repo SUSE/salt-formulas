@@ -1,9 +1,0 @@
-## Path:           Applications/ApacheExporter
-## Description:    Prometheus exporter for apache metrics
-## Type:           string()
-## Default:        ""
-## ServiceRestart: prometheus-apache_exporter
-#
-# Arguments for running prometheus-apache_exporter
-#
-ARGS={{ args }}
