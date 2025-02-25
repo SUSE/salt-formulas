@@ -1191,13 +1191,13 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "label_replace(1 - max by (device) (node_filesystem_avail_bytes{instance=~\"$server:9100\", fstype=\"btrfs\"} / node_filesystem_size_bytes), \"shortdev\", \"$1\", \"device\", \"/dev/(.*)\")   ",
+          "expr": "(1 - ((node_filesystem_avail_bytes{instance=~\"$server:9100\", fstype=~'xfs|ext\\\\d'} ) / node_filesystem_size_bytes{instance=~\"$server:9100\", fstype=~'xfs|ext\\\\d'} )) OR (1 - ((node_filesystem_avail_bytes{instance=~\"$server:9100\", fstype='btrfs', mountpoint='/'} ) / node_filesystem_size_bytes{instance=~\"$server:9100\", fstype='btrfs', mountpoint='/'} ))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "{{shortdev}}",
+          "legendFormat": "{{mountpoint}}",
           "range": true,
-          "refId": "B",
+          "refId": "A",
           "step": 2400
         }
       ],
@@ -2687,7 +2687,7 @@
   "refresh": "5s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [],
+  "tags": ["SUSE Multi-Linux Manager"],
   "templating": {
     "list": [
       {
