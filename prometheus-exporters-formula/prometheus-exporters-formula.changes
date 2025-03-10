@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Aug 22 13:49:43 UTC 2024 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 1.5.0
+  * Set Environment= instead of EnvironmentFile= in systemd
+    configuration files
+
+-------------------------------------------------------------------
 Tue Jun 25 13:19:00 UTC 2024 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 1.4.1

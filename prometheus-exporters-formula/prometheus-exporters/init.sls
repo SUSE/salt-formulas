@@ -88,7 +88,7 @@ node_exporter:
     - name: {{ exporters.node_exporter_package }}
   file.managed:
     - name: {{ exporters.node_exporter_service_config }}
-    - source: {{ 'salt://prometheus-exporters/files/node-exporter-config.' ~ salt['grains.get']('os_family') }}
+    - source: salt://prometheus-exporters/files/node-exporter-systemd.config
     - makedirs: True
     - template: jinja
     - user: root
@@ -144,7 +144,7 @@ apache_exporter:
     - name: {{ exporters.apache_exporter_package }}
   file.managed:
     - name: {{ exporters.apache_exporter_service_config }}
-    - source: {{ 'salt://prometheus-exporters/files/apache-exporter-config.' ~ salt['grains.get']('os_family') }}
+    - source: salt://prometheus-exporters/files/apache-exporter-systemd.config
     - makedirs: True
     - template: jinja
     - user: root
@@ -167,6 +167,10 @@ apache_exporter:
       - pkg: apache_exporter
     - watch_in:
       - service: apache_exporter
+  module.run:
+    - name: service.systemctl_reload
+    - onchanges:
+      - file: {{ exporters.apache_exporter_service_config }}
   service.running:
     - name: {{ exporters.apache_exporter_service }}
     - enable: True
@@ -208,7 +212,7 @@ postgres_exporter:
   file.managed:
     - names:
       - {{ exporters.postgres_exporter_service_config }}:
-        - source: {{ 'salt://prometheus-exporters/files/postgres-exporter-config.' ~ salt['grains.get']('os_family') }}
+        - source: salt://prometheus-exporters/files/postgres-exporter-systemd.config
       - {{ exporters.postgres_exporter_password_file }}:
         - source: salt://prometheus-exporters/files/postgres-exporter-password
         - user: prometheus
