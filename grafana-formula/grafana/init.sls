@@ -17,7 +17,7 @@
 {%- if salt['pillar.get']('mgr_server_is_uyuni', True) %}
   {% set product_name = 'Uyuni' %}
 {%- else %}
-  {% set product_name = 'SUSE Manager' %}
+  {% set product_name = 'SUSE Multi-Linux Manager' %}
 {%- endif %}
 # setup and enable service
 /etc/grafana/grafana.ini:
