@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May  2 10:52:10 UTC 2025 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.12.0
+  * Migrate from deprecated Graph panels to new timeseries panels
+  * Update dashboard names after product rename (bsc#1242043)
+
+-------------------------------------------------------------------
 Wed Jul 31 11:19:29 UTC 2024 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 0.11.0
