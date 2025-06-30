@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Thu Jun 26 11:26:48 UTC 2025 - Witek Bedyk <witold.bedyk@suse.com>
 
-- Version 0.11.1
+- Version 4.3.0
   * Add SLES 15 SP7 to supported versions (bsc#1245368)
   * Migrate from deprecated Graph panels to new timeseries panels
 
