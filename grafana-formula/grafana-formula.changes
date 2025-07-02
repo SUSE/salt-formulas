@@ -2,7 +2,10 @@
 Thu Jun 26 11:26:48 UTC 2025 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 5.0.0
-  * Add SLES 15 SP7 to supported versions (bsc#1245368)
+  * Add SUSE Linux Enterprise Server 15 SP7 to the supported
+    versions (bsc#1245368)
+  * Drop old unsupported SUSE versions from the supported versions
+    list
 
 -------------------------------------------------------------------
 Fri May  2 10:52:10 UTC 2025 - Witek Bedyk <witold.bedyk@suse.com>
