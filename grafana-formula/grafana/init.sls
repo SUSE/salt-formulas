@@ -1,6 +1,5 @@
 # check for supported os version
-{%- set supported_vers = ['42.3', '12.3', '12.4', '12.5', '15.0', '15.1',
-                          '15.2', '15.3', '15.4', '15.5', '15.6', '15.7'] %}
+{%- set supported_vers = ['12.5', '15.3', '15.4', '15.5', '15.6', '15.7'] %}
 
 # check if supported
 {%- set supported = False %}

@@ -1,7 +1,7 @@
 #
 # spec file for package grafana-formula
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -19,7 +19,7 @@
 %define fname grafana
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           grafana-formula
-Version:        0.12.1
+Version:        5.1.0
 Release:        0
 Summary:        Salt formula for installing and configuring Grafana
 License:        Apache-2.0
@@ -43,7 +43,6 @@ cp -R grafana/* %{buildroot}%{fdir}/states/%{fname}
 cp -R metadata/* %{buildroot}%{fdir}/metadata/%{fname}
 
 %files
-%defattr(-,root,root)
 %license LICENSE
 %dir %{_datadir}/susemanager
 %dir %{fdir}
