@@ -1,5 +1,25 @@
 {% from "prometheus/map.jinja" import prometheus with context %}
 
+# check for supported os version
+{%- set supported_vers = ['12.5', '15.3', '15.4', '15.5', '15.6', '15.7'] %}
+
+# check if supported
+{%- if (grains['os_family'] == 'Suse' and grains['osrelease'] in supported_vers)
+    and not (salt['pkg.version']('patterns-uyuni_proxy') or
+             salt['pkg.version']('patterns-suma_proxy') or
+             salt['pkg.version']('patterns-suma_retail') or
+             salt['pkg.version']('patterns-uyuni_retail')) %}
+    {%- set supported = True %}
+{%- else %}
+    {%- set supported = False %}
+{%- endif %}
+
+{%- if not supported %}
+  os_not_supported:
+    test.fail_without_changes:
+      - name: "OS not supported!"
+{%- else %}
+
 {%- if prometheus %}
 {%- if salt['pillar.get']('prometheus:enabled', False) %}
 # setup Prometheus
@@ -258,5 +278,6 @@ remove_alertmanager:
       - pkg: remove_prometheus
       - pkg: remove_alertmanager
 
+{%- endif %}
 {%- endif %}
 {%- endif %}
