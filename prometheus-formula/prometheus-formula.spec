@@ -1,7 +1,7 @@
 #
 # spec file for package prometheus-formula
 #
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -19,14 +19,13 @@
 %define fname prometheus
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           prometheus-formula
-Version:        0.8.0
+Version:        0.9.0
 Release:        0
 Summary:        Salt formula for installing and configuring Prometheus monitoring system
 License:        Apache-2.0
 Group:          System/Packages
-Url:            https://github.com/SUSE/salt-formulas
+URL:            https://github.com/SUSE/salt-formulas
 Source:         prometheus-formula-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 %description
@@ -44,7 +43,6 @@ cp -R prometheus/* %{buildroot}%{fdir}/states/%{fname}
 cp -R metadata/* %{buildroot}%{fdir}/metadata/%{fname}
 
 %files
-%defattr(-,root,root)
 %doc README.md
 %license LICENSE
 %dir %{_datadir}/susemanager
