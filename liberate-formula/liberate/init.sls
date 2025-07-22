@@ -5,7 +5,7 @@
 
 {% set release = grains.get('osmajorrelease', None)|int() %}
 {% set osName = grains.get('os', None) %}
-{% set reinstallPackages = salt['pillar.get']('liberate:reinstall_packages', true) %}
+{% set reinstallPackages = salt['pillar.get']('liberate:reinstall_packages', false) %}
 
 {% set liberated = false %}
 {% set liberationDate = salt['system.get_system_date']() %}
