@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 23 08:07:55 UTC 2025 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 1.4.2
+  * Allow only node exporter on transactional systems (bsc#1244542)
+
+-------------------------------------------------------------------
 Tue Jun 25 13:19:00 UTC 2024 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 1.4.1
