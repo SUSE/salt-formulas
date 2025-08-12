@@ -158,11 +158,24 @@ install_logos_7:
     - refresh: True
 
 {% if reinstallPackages %}
+fix_anaconda:
+  cmd.run:
+    - name: "yum -y upgrade anaconda-core"
+    - onlyif: rpm -q anaconda-core
+
+fix_libreport_plugin_bugzilla:
+  cmd.run:
+    - name: "yum -y reinstall 'libreport-plugin-bugzilla' --obsoletes >> /var/log/yum_sles_es_migration.log"
+    - onlyif: rpm -q libreport-plugin-bugzilla
+    - require:
+      - cmd: fix_anaconda
+
 re_install_from_SLL:
   cmd.run:
-    - name: "yum -x 'venv-salt-minion' -x 'salt-minion' reinstall '*' -y >> /var/log/yum_sles_es_migration.log"
+    - name: "yum -x 'venv-salt-minion' -x 'salt-minion' -x 'libreport-plugin-bugzilla' -y  reinstall `rpm -qa` --obsoletes >> /var/log/yum_sles_es_migration.log"
     - require:
       - pkg: install_package_7
+      - cmd: fix_libreport_plugin_bugzilla
 {% endif %}
 
 {% set liberated = true %}
