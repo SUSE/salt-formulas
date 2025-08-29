@@ -1,0 +1,132 @@
+{#
+    Main Kea DHCPv4 configuration file.
+    This template orchestrates the entire configuration generation.
+#}
+{%- set netmask_to_prefix = {
+    '255.255.255.255': 32, '255.255.255.254': 31, '255.255.255.252': 30,
+    '255.255.255.248': 29, '255.255.255.240': 28, '255.255.255.224': 27,
+    '255.255.255.192': 26, '255.255.255.128': 25, '255.255.255.0': 24,
+    '255.255.254.0': 23, '255.255.252.0': 22, '255.255.248.0': 21,
+    '255.255.240.0': 20, '255.255.224.0': 19, '255.255.192.0': 18,
+    '255.255.128.0': 17, '255.255.0.0': 16, '255.254.0.0': 15,
+    '255.252.0.0': 14, '255.248.0.0': 13, '255.240.0.0': 12,
+    '255.224.0.0': 11, '255.192.0.0': 10, '255.128.0.0': 9,
+    '255.0.0.0': 8, '254.0.0.0': 7, '252.0.0.0': 6, '248.0.0.0': 5,
+    '240.0.0.0': 4, '224.0.0.0': 3, '192.0.0.0': 2, '128.0.0.0': 1,
+    '0.0.0.0': 0
+} -%}
+{
+"Dhcp4": {
+    "interfaces-config": {
+        "interfaces": {{ salt['pillar.get']('dhcpd:listen_interfaces', ['*']) | tojson }}
+    },
+    "lease-database": {
+        "type": "memfile",
+        "lfc-interval": 3600
+    },
+    "authoritative": {{ salt['pillar.get']('dhcpd:authoritative', false) | tojson }},
+    "valid-lifetime": {{ salt['pillar.get']('dhcpd:default_lease_time', 600) }},
+    "max-valid-lifetime": {{ salt['pillar.get']('dhcpd:max_lease_time', 3600) }},
+
+    // Kea applies options from the LAST class a client matches.
+    // Order classes from least specific to most specific to replicate if/elsif logic.
+    "client-classes": [
+
+        {
+            "name": "BIOS",
+            "test": "option[93].hex == 0x0000"
+        },
+        {
+            "name": "EFI_x64",
+            "test": "option[93].hex == 0x0007"
+        },
+        {
+            "name": "EFI_ARM64",
+            "test": "option[93].hex == 0x000b"
+        },
+        {
+            "name": "HTTPClient",
+            "test": "substring(option[60].hex, 0, 10) == 'HTTPClient'"
+        },
+        {
+            "name": "HTTPClient_ARM64",
+            "test": "substring(option[60].hex, 0, 10) == 'HTTPClient' and option[93].hex == 0x000d"
+        }
+    ],
+
+    // Global DHCP options
+    "option-data": [
+        {%- set global_options = [] %}
+        {%- if salt['pillar.get']('dhcpd:domain_name', False) %}
+            {%- do global_options.append({ "name": "domain-name", "data": salt['pillar.get']('dhcpd:domain_name') }) %}
+        {%- endif %}
+
+        {%- set dns_servers = [] %}
+        {%- for server in salt['pillar.get']('dhcpd:domain_name_servers', []) %}
+            {%- if server | ipv4 %}
+                {# Already an IP, keep it #}
+                {%- do dns_servers.append(server) %}
+            {%- else %}
+                {# Assume hostname, resolve via dnsutil.A (takes first A record) #}
+                {%- set resolved = salt['dnsutil.A'](server) %}
+                {%- if resolved %}
+                    {%- do dns_servers.append(resolved[0]) %}
+                {%- endif %}
+            {%- endif %}
+        {%- endfor %}
+
+        {%- if dns_servers %}
+            {%- do global_options.append({
+                "name": "domain-name-servers",
+                "data": dns_servers | join(',')
+            }) %}
+        {%- endif %}
+
+        {%- if salt['pillar.get']('dhcpd:routers', False) %}
+            {%- do global_options.append({ "name": "routers", "data": salt['pillar.get']('dhcpd:routers') | join(',') }) %}
+        {%- endif %}
+        // Add other global options here...
+        {%- for option in global_options %}
+        {
+            "name": "{{ option.name }}",
+            "data": "{{ option.data }}"
+        }{% if not loop.last %},{% endif %}
+        {%- endfor %}
+    ],
+
+    {%- set subnet_id = 1 %}
+    "subnet4": [
+        // Render subnets not in a shared network
+        {%- set standalone_subnets = salt['pillar.get']('dhcpd:subnets', {}) %}
+        {%- for subnet, config in standalone_subnets.items() %}
+        {%- include 'dhcpd/files/kea-subnet.jinja' with context %}
+        {% if not loop.last or salt['pillar.get']('dhcpd:shared_networks', {}) %},{% endif %}
+        {%- set subnet_id = subnet_id + 1 %}
+        {%- endfor %}
+    ],
+
+    "shared-networks": [
+        {%- for shared_network, sn_config in salt['pillar.get']('dhcpd:shared_networks', {}).items() %}
+        {
+            "name": "{{ shared_network }}",
+            "subnet4": [
+                {%- for subnet, config in sn_config.get('subnets', {}).items() %}
+                {%- include 'dhcpd/files/kea-subnet.jinja' with context %}
+                {% if not loop.last %},{% endif %}
+                {%- endfor %}
+            ]
+        }{% if not loop.last %},{% endif %}
+        {%- endfor %}
+    ],
+
+    "reservations": [
+        // Render global host reservations (from dhcpd:hosts)
+        {%- set global_hosts = salt['pillar.get']('dhcpd:hosts', {}) %}
+        {%- for host, config in global_hosts.items() %}
+        {%- set is_global_reservation = true %}
+        {%- include 'dhcpd/files/kea-host.jinja' with context %}
+        {% if not loop.last %},{% endif %}
+        {%- endfor %}
+    ]
+}
+}

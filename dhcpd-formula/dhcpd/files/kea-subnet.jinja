@@ -1,0 +1,107 @@
+{#
+    Kea subnet configuration.
+    This template is included for each subnet defined in the pillar.
+    It translates ISC dhcpd subnet and pool settings to Kea's JSON format.
+#}
+{
+    {%- if 'comment' in config %}
+    // {{ config['comment'].replace('\n', ' ') }}
+    {%- endif %}
+    "subnet": "{{ subnet }}/{{ netmask_to_prefix.get(config.netmask, 24) }}",
+    "id": {{ subnet_id }},
+
+    "pools": [
+        {%- if 'range' in config %}
+        { "pool": "{{ config.range[0] }} - {{ config.range[1] }}" }
+        {%- endif %}
+        {%- for pool in config.get('pools', []) %}
+        {% if 'range' in config or not loop.first %},{% endif %}
+        {
+            "pool": "{{ pool.range[0] }} - {{ pool.range[1] }}"
+            {# Note: Pool-level 'allow'/'deny' is handled differently in Kea.
+               'allow' can be mapped to a client-class for the pool. 'deny' is not supported per-pool. #}
+            {%- if 'allow' in pool %}
+            ,"client-class": "{{ pool.allow }}"
+            {%- endif %}
+        }
+        {%- endfor %}
+    ],
+
+    {% if 'next_server' in config -%}
+    "next-server": "{{ config.next_server }}",
+    {%- endif %}
+    "valid-lifetime": {{ config.get('default_lease_time', salt['pillar.get']('dhcpd:default_lease_time', 600)) }},
+    "max-valid-lifetime": {{ config.get('max_lease_time', salt['pillar.get']('dhcpd:max_lease_time', 3600)) }},
+
+    "option-data": [
+        {%- set subnet_options = [] %}
+        {%- if 'routers' in config %}
+            {%- do subnet_options.append({"name": "routers", "data": config.routers if config.routers is string else config.routers|join(',')}) %}
+        {%- endif %}
+        {%- if 'domain_name' in config %}
+            {%- do subnet_options.append({"name": "domain-name", "data": config.domain_name}) %}
+        {%- endif %}
+        {%- if 'domain_name_servers' in config %}
+            {%- set dns_servers = [] %}
+            {%- for server in config.domain_name_servers %}
+                {%- if server | ipv4 %}
+                    {# Already an IP, keep it #}
+                    {%- do dns_servers.append(server) %}
+                {%- else %}
+                    {# Assume hostname, resolve via dnsutil.A (takes first A record) #}
+                    {%- set resolved = salt['dnsutil.A'](server) %}
+                    {%- if resolved %}
+                        {%- do dns_servers.append(resolved[0]) %}
+                    {%- endif %}
+                {%- endif %}
+            {%- endfor %}
+            {%- if dns_servers %}
+                {%- do subnet_options.append({
+                    "name": "domain-name-servers",
+                    "data": dns_servers | join(',')
+                }) %}
+            {%- endif %}
+        {%- endif %}
+
+        {# Add other simple options here... #}
+
+        {# Class-based options for boot files #}
+        {%- if 'filename' in config %}
+            {%- do subnet_options.append({"name": "boot-file-name", "data": config.filename, "client-classes": ["BIOS"]}) %}
+        {%- endif %}
+        {%- if 'filename_efi' in config %}
+            {%- do subnet_options.append({"name": "boot-file-name", "data": config.filename_efi, "client-classes": ["EFI_x64"] }) %}
+        {%- endif %}
+        {%- if 'filename_efi_arm64' in config %}
+            {%- do subnet_options.append({"name": "boot-file-name", "data": config.filename_efi_arm64, "client-classes": ["EFI_ARM64"] }) %}
+        {%- endif %}
+        {%- if 'filename_http' in config %}
+            {%- do subnet_options.append({"name": "boot-file-name", "data": config.filename_http, "client-classes": ["HTTPClient"] }) %}
+        {%- endif %}
+        {%- if 'filename_http_arm64' in config %}
+            {%- do subnet_options.append({"name": "boot-file-name", "data": config.filename_http_arm64, "client-classes": ["HTTPClient_ARM64"] }) %}
+        {%- endif %}
+
+        {# Render collected options #}
+        {%- for option in subnet_options %}
+        {
+            "name": "{{ option.name }}",
+            "data": "{{ option.data }}"
+            {%- if option.get('client-classes') %}
+            , "client-classes": {{ option['client-classes'] | tojson }}
+            {%- endif %}
+            {%- if option.get('always-send') %}
+            , "always-send": {{ option['always-send'] | tojson }}
+            {%- endif %}
+        }{% if not loop.last %},{% endif %}
+        {%- endfor %}
+    ],
+
+    // Per-subnet host reservations
+    "reservations": [
+        {%- for host, config in config.get('hosts', {}).items() %}
+        {%- include 'dhcpd/files/kea-host.jinja' with context %}
+        {% if not loop.last %},{% endif %}
+        {%- endfor %}
+    ]
+}

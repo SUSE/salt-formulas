@@ -27,4 +27,20 @@
         'config': '/etc/dhcpd.conf',
         'service_config': '/etc/sysconfig/dhcpd',
     },
-}, merge=salt['pillar.get']('dhcpd:lookup')) %}
+}, merge=salt['grains.filter_by']({
+    'SL-Micro': {
+        'server': 'kea',
+        'service': 'kea-container',
+        'config': '/etc/kea/kea-dhcp4.conf',
+        'image': 'registry.opensuse.org/opensuse/kea:3.0',
+        'container': True,
+    },
+    'openSUSE Leap Micro': {
+        'server': 'kea',
+        'service': 'kea-container',
+        'config': '/etc/kea/kea-dhcp4.conf',
+        'image': 'registry.opensuse.org/opensuse/kea:latest',
+        'kea_3_0': True,
+        'container': True,
+    }
+}, grain='osfullname', merge=salt['pillar.get']('dhcpd:lookup'))) %}

@@ -3,6 +3,43 @@
 include:
   - dhcpd
 
+{% if dhcpd.server == "kea" %}
+
+kea-dhcp4.conf:
+  file.managed:
+    - name: {{ dhcpd.config }}
+    - source: salt://dhcpd/files/kea-dhcp4.conf.jinja
+    - template: jinja
+    - makedirs: True
+    - user: root
+{% if 'BSD' in salt['grains.get']('os') %}
+    - group: wheel
+{% else %}
+    - group: root
+{% endif %}
+    - mode: 644
+{%- if not grains.get('transactional') %}
+    - watch_in:
+      - service: {{ dhcpd.service }}
+{% endif %}
+
+kea_service_config:
+  file.managed:
+    - name: /etc/systemd/system/{{ dhcpd.service }}.service
+    - source: salt://dhcpd/files/kea-container.service.jinja
+    - template: jinja
+    - context:
+        dhcpd: {{ dhcpd }}
+    - user: root
+{% if 'BSD' in salt['grains.get']('os') %}
+    - group: wheel
+{% else %}
+    - group: root
+{% endif %}
+    - mode: 644
+
+{% else %}
+
 dhcpd.conf:
   file.managed:
     - name: {{ dhcpd.config }}
@@ -30,6 +67,8 @@ dhcpd.conf:
     - require:
       - pkg: dhcpd
 
+
+
 {% if dhcpd.service_config is defined %}
 
 service_config:
@@ -48,4 +87,5 @@ service_config:
     - watch_in:
       - service: dhcpd
 
+{% endif %}
 {% endif %}
