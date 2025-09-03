@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Sep  3 09:26:44 UTC 2025 - Michael Calmer <mc@suse.com>
+
+- On re-install packages take care the the whole bootchain get
+  updated to have the same secure boot signatures for all
+  packages (bsc#1248419)
+
+-------------------------------------------------------------------
 Mon Aug 18 12:57:35 UTC 2025 - Michael Calmer <mc@suse.com>
 
 - Version 0.1.1

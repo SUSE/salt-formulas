@@ -66,6 +66,27 @@ re_install_from_SLL:
     - name: "dnf -x 'venv-salt-minion' reinstall '*' -y >> /var/log/dnf_sll_migration.log"
     - require:
       - pkg: install_package_9
+
+update_boot_chain_shim:
+  cmd.run:
+    - name: "dnf -y upgrade shim-x86 >> /var/log/dnf_sll_migration.log"
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - require:
+      - cmd: re_install_from_SLL
+
+update_boot_chain_grub:
+  cmd.run:
+    - name: "dnf -y upgrade grub2-common >> /var/log/dnf_sll_migration.log"
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)" -a "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - require:
+      - cmd: re_install_from_SLL
+
+update_boot_chain_kernel:
+  cmd.run:
+    - name: "dnf -y upgrade kernel >> /var/log/dnf_sll_migration.log"
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)"
+    - require:
+      - cmd: re_install_from_SLL
 {% endif %}
 
 {% set liberated = true %}
@@ -119,6 +140,27 @@ re_install_from_SLL:
     - name: "yum -x 'venv-salt-minion' -x 'salt-minion' reinstall '*' -y >> /var/log/dnf_sles_es_migration.log"
     - require:
       - pkg: install_package_8
+
+update_boot_chain_shim:
+  cmd.run:
+    - name: "yum -y upgrade shim-x86 >> /var/log/dnf_sles_es_migration.log"
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - require:
+      - cmd: re_install_from_SLL
+
+update_boot_chain_grub:
+  cmd.run:
+    - name: "yum -y upgrade grub2-common >> /var/log/dnf_sles_es_migration.log"
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)" -a "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - require:
+      - cmd: re_install_from_SLL
+
+update_boot_chain_kernel:
+  cmd.run:
+    - name: "yum -y upgrade kernel >> /var/log/dnf_sles_es_migration.log"
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)"
+    - require:
+      - cmd: re_install_from_SLL
 {% endif %}
 
 {% set liberated = true %}
@@ -176,6 +218,54 @@ re_install_from_SLL:
     - require:
       - pkg: install_package_7
       - cmd: fix_libreport_plugin_bugzilla
+
+update_boot_chain_shim64:
+  cmd.run:
+    - name: "yum -y upgrade shim-x86 >> /var/log/yum_sles_es_migration.log"
+    - onlyif: rpm -q shim-x64
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - require:
+      - cmd: re_install_from_SLL
+
+update_boot_chain_grub64:
+  cmd.run:
+    - name: "yum -y upgrade grub2-common >> /var/log/yum_sles_es_migration.log"
+    - onlyif: rpm -q shim-x64
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)" -a "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - require:
+      - cmd: re_install_from_SLL
+
+update_boot_chain_kernel64:
+  cmd.run:
+    - name: "yum -y upgrade kernel >> /var/log/yum_sles_es_migration.log"
+    - onlyif: rpm -q shim-x64
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)"
+    - require:
+      - cmd: re_install_from_SLL
+
+update_boot_chain_shim32:
+  cmd.run:
+    - name: "yum -y upgrade shim-ia32 >> /var/log/yum_sles_es_migration.log"
+    - onlyif: rpm -q shim-ia32
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' shim-ia32)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' shim-ia32)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - require:
+      - cmd: re_install_from_SLL
+
+update_boot_chain_grub32:
+  cmd.run:
+    - name: "yum -y upgrade grub2-common >> /var/log/yum_sles_es_migration.log"
+    - onlyif: rpm -q shim-ia32
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' shim-ia32)" -a "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - require:
+      - cmd: re_install_from_SLL
+
+update_boot_chain_kernel32:
+  cmd.run:
+    - name: "yum -y upgrade kernel >> /var/log/yum_sles_es_migration.log"
+    - onlyif: rpm -q shim-ia32
+    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' shim-ia32)"
+    - require:
+      - cmd: re_install_from_SLL
 {% endif %}
 
 {% set liberated = true %}
