@@ -30,13 +30,6 @@
         {%- if 'filename' in config %}
             {%- do host_options.append({"name": "boot-file-name", "data": config.filename}) %}
         {%- endif %}
-        {%- if 'filename_efi' in config %}
-            {%- do host_options.append({"name": "boot-file-name", "data": config.filename_efi, "client-class": "EFI_x64"}) %}
-            {%- do host_options.append({"name": "boot-file-name", "data": config.filename_efi, "client-class": "EFI_ARM64"}) %}
-        {%- endif %}
-        {%- if 'filename_http' in config %}
-            {%- do host_options.append({"name": "boot-file-name", "data": config.filename_http, "client-class": "HTTPClient"}) %}
-        {%- endif %}
         {# Render collected host options #}
         {%- for option in host_options %}
         {

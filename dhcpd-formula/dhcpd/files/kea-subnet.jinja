@@ -65,6 +65,7 @@
 
         {# Add other simple options here... #}
 
+        {%- if dhcpd.kea_3_0 %}
         {# Class-based options for boot files #}
         {%- if 'filename' in config %}
             {%- do subnet_options.append({"name": "boot-file-name", "data": config.filename, "client-classes": ["BIOS"]}) %}
@@ -80,6 +81,7 @@
         {%- endif %}
         {%- if 'filename_http_arm64' in config %}
             {%- do subnet_options.append({"name": "boot-file-name", "data": config.filename_http_arm64, "client-classes": ["HTTPClient_ARM64"] }) %}
+        {%- endif %}
         {%- endif %}
 
         {# Render collected options #}
