@@ -143,7 +143,7 @@ re_install_from_SLL:
 
 update_boot_chain_shim:
   cmd.run:
-    - name: "yum -y upgrade shim-x86 >> /var/log/dnf_sles_es_migration.log"
+    - name: "yum -y upgrade shim-x64 >> /var/log/dnf_sles_es_migration.log"
     - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
     - require:
       - cmd: re_install_from_SLL
