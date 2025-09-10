@@ -13,6 +13,8 @@
 {% set isLiberty = salt['file.search']('/etc/os-release', 'SUSE Liberty Linux') %}
 {% set isSleES = salt['file.search']('/etc/os-release', 'SLES Expanded Support') %}
 
+{% set suseVendor = '_|-SUSE LLC <https://www.suse.com/>-|_' %}
+
 # EL 9
 {% if release == 9 %}
 {% if not isLiberty %}
@@ -70,21 +72,21 @@ re_install_from_SLL:
 update_boot_chain_shim:
   cmd.run:
     - name: "dnf -y upgrade shim-x64 >> /var/log/dnf_sll_migration.log"
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - unless: /usr/bin/rpm -q --qf '_|-%{VENDOR}-|_' shim-x64 | /usr/bin/grep -q "{{ suseVendor }}"
     - require:
       - cmd: re_install_from_SLL
 
 update_boot_chain_grub:
   cmd.run:
     - name: "dnf -y upgrade grub2-common >> /var/log/dnf_sll_migration.log"
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)" -a "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - unless: /usr/bin/rpm -q --qf '_|-%{VENDOR}-|_' grub2-common | /usr/bin/grep -q "{{ suseVendor }}"
     - require:
       - cmd: re_install_from_SLL
 
 update_boot_chain_kernel:
   cmd.run:
     - name: "dnf -y upgrade kernel >> /var/log/dnf_sll_migration.log"
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)"
+    - unless: /usr/bin/rpm -q --qf '_|-%{VENDOR}-|_' kernel | /usr/bin/grep -q "{{ suseVendor }}"
     - require:
       - cmd: re_install_from_SLL
 {% endif %}
@@ -144,21 +146,21 @@ re_install_from_SLL:
 update_boot_chain_shim:
   cmd.run:
     - name: "yum -y upgrade shim-x64 >> /var/log/dnf_sles_es_migration.log"
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - unless: /usr/bin/rpm -q --qf '_|-%{VENDOR}-|_' shim-x64 | /usr/bin/grep -q "{{ suseVendor }}"
     - require:
       - cmd: re_install_from_SLL
 
 update_boot_chain_grub:
   cmd.run:
     - name: "yum -y upgrade grub2-common >> /var/log/dnf_sles_es_migration.log"
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)" -a "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - unless: /usr/bin/rpm -q --qf '_|-%{VENDOR}-|_' grub2-common | /usr/bin/grep -q "{{ suseVendor }}"
     - require:
       - cmd: re_install_from_SLL
 
 update_boot_chain_kernel:
   cmd.run:
     - name: "yum -y upgrade kernel >> /var/log/dnf_sles_es_migration.log"
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)"
+    - unless: /usr/bin/rpm -q --qf '_|-%{VENDOR}-|_' kernel | /usr/bin/grep -q "{{ suseVendor }}"
     - require:
       - cmd: re_install_from_SLL
 {% endif %}
@@ -223,23 +225,21 @@ update_boot_chain_shim64:
   cmd.run:
     - name: "yum -y upgrade shim-x64 >> /var/log/yum_sles_es_migration.log"
     - onlyif: rpm -q shim-x64
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' shim-x64)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - unless: /usr/bin/rpm -q --qf '_|-%{VENDOR}-|_' shim-x64 | /usr/bin/grep -q "{{ suseVendor }}"
     - require:
       - cmd: re_install_from_SLL
 
-update_boot_chain_grub64:
+update_boot_chain_grub:
   cmd.run:
     - name: "yum -y upgrade grub2-common >> /var/log/yum_sles_es_migration.log"
-    - onlyif: rpm -q shim-x64
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)" -a "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
+    - unless: /usr/bin/rpm -q --qf '_|-%{VENDOR}-|_' grub2-common | /usr/bin/grep -q "{{ suseVendor }}"
     - require:
       - cmd: re_install_from_SLL
 
-update_boot_chain_kernel64:
+update_boot_chain_kernel:
   cmd.run:
     - name: "yum -y upgrade kernel >> /var/log/yum_sles_es_migration.log"
-    - onlyif: rpm -q shim-x64
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' shim-x64)"
+    - unless: /usr/bin/rpm -q --qf '_|-%{VENDOR}-|_' kernel | /usr/bin/grep -q "{{ suseVendor }}"
     - require:
       - cmd: re_install_from_SLL
 
@@ -247,23 +247,7 @@ update_boot_chain_shim32:
   cmd.run:
     - name: "yum -y upgrade shim-ia32 >> /var/log/yum_sles_es_migration.log"
     - onlyif: rpm -q shim-ia32
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' shim-ia32)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' shim-ia32)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
-    - require:
-      - cmd: re_install_from_SLL
-
-update_boot_chain_grub32:
-  cmd.run:
-    - name: "yum -y upgrade grub2-common >> /var/log/yum_sles_es_migration.log"
-    - onlyif: rpm -q shim-ia32
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' shim-ia32)" -a "$(rpm -q --qf '%{VENDOR}' grub2-common)" == "$(rpm -q --qf '%{VENDOR}' kernel)"
-    - require:
-      - cmd: re_install_from_SLL
-
-update_boot_chain_kernel32:
-  cmd.run:
-    - name: "yum -y upgrade kernel >> /var/log/yum_sles_es_migration.log"
-    - onlyif: rpm -q shim-ia32
-    - unless: /usr/bin/test "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' grub2-common)" -a "$(rpm -q --qf '%{VENDOR}' kernel)" == "$(rpm -q --qf '%{VENDOR}' shim-ia32)"
+    - unless: /usr/bin/rpm -q --qf '_|-%{VENDOR}-|_' shim-ia32 | /usr/bin/grep -q "{{ suseVendor }}"
     - require:
       - cmd: re_install_from_SLL
 {% endif %}
