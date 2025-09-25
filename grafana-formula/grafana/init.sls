@@ -136,6 +136,22 @@ grafana-sap-netweaver-dashboards:
   pkg.removed
 {%- endif %}
 
+{% set firewall_active = salt['service.available']('firewalld') and salt['service.status']('firewalld') %}
+{% if firewall_active %}
+grafana_service:
+  firewalld.service:
+    - name: grafana
+    - ports:
+      - 3000/tcp
+
+firewall_grafana:
+  firewalld.present:
+    - name: public
+    - prune_services: False
+    - services:
+      - grafana
+{% endif %}
+
 grafana-server:
   pkg.installed:
     - names:
