@@ -132,6 +132,25 @@ view {{ view }} {
 };
 {%- endfor %}
 
+{%- if map.get("container", False) %}
+logging {
+  channel stdout {
+    stderr;
+    severity info;
+    print-category yes;
+    print-severity yes;
+    print-time yes;
+  };
+
+  category default {
+    stdout;
+  };
+
+  category queries {
+    stdout;
+  };
+};
+{%- else %}
 {%- if salt['pillar.get']('bind:config:enable_logging', True) %}
 {%- if salt['pillar.get']('bind:config:use_extensive_logging', False) %}
 include "{{ map.logging_config }}";
@@ -143,6 +162,7 @@ logging {
   };
   category queries { querylog; };
 };
+{%- endif %}
 {%- endif %}
 {%- endif %}
 

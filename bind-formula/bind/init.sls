@@ -7,30 +7,21 @@
 {%- set key_size = salt['pillar.get']('bind:lookup:key_size', map.key_size) %}
 {%- set key_flags = {'zsk': 256, 'ksk': 257} %}
 
-{%- if map.get('zones_directory') %}
-  {%- set zones_directory = map.zones_directory %}
-{%- else %}
-  {%- set zones_directory = map.named_directory %}
-{%- endif %}
+{%- set zones_directory = map.get('zones_directory', map.named_directory) %}
+{%- set container_zones_directory = map.get('container_zones_directory', map.get('container_named_directory', zones_directory)) %}
 
 include:
   - bind/install
 
+{%- if not map.get("container", False) %}
 {{ map.chroot_dir }}{{ map.log_dir }}:
   file.directory:
     - user: root
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
     - mode: 775
+    - makedirs: true
     - require:
       - pkg: bind
-
-bind_restart:
-  service.running:
-    - name: {{ map.service }}
-    - reload: False
-    - watch:
-      - file: {{ map.chroot_dir }}{{ map.log_dir }}/query.log
-      - file: bind_key_directory
 
 {{ map.chroot_dir }}{{ map.log_dir }}/query.log:
   file.managed:
@@ -40,6 +31,17 @@ bind_restart:
     - mode: {{ salt['pillar.get']('bind:config:log_mode', map.log_mode) }}
     - require:
       - file: {{ map.chroot_dir }}{{ map.log_dir }}
+{%- endif %}
+
+{%- if not grains.get('transactional') %}
+bind_restart:
+  service.running:
+    - name: {{ map.service }}
+    - reload: False
+    - watch:
+      - file: {{ map.chroot_dir }}{{ map.log_dir }}/query.log
+      - file: bind_key_directory
+{%- endif %}
 
 named_directory:
   file.directory:
@@ -50,6 +52,53 @@ named_directory:
     - makedirs: True
     - require:
       - pkg: bind
+
+{{ map.named_directory }}/dyn:
+  file.directory:
+    - user: root
+    - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
+    - mode: 775
+    - makedirs: true
+    - require:
+      - pkg: bind
+
+{{ map.named_directory }}/master:
+  file.directory:
+    - user: root
+    - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
+    - mode: 775
+    - makedirs: true
+    - require:
+      - pkg: bind
+
+
+{{ map.named_directory }}/slave:
+  file.directory:
+    - user: root
+    - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
+    - mode: 775
+    - makedirs: true
+    - require:
+      - pkg: bind
+
+{{ map.named_directory }}/127.0.0.zone:
+  file.touch:
+    - makedirs: true
+
+{{ map.named_directory }}/localhost.zone:
+  file.touch:
+    - makedirs: true
+
+{{ map.named_directory }}/named.root.key:
+  file.touch:
+    - makedirs: true
+
+{{ map.named_directory }}/root.hint:
+  file.touch:
+    - makedirs: true
+
+
+
 
 {% if map.get('zones_directory') %}
 bind_zones_directory:
@@ -80,8 +129,10 @@ bind_config:
         map: {{ map }}
     - require:
       - pkg: bind
+{%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+{%- endif %}
 
 bind_local_config:
   file.managed:
@@ -93,12 +144,16 @@ bind_local_config:
     - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
     - context:
         map: {{ map }}
-        zones_directory: {{ zones_directory }}
+        zones_directory: {{ container_zones_directory }}
     - require:
       - pkg: bind
+{%- if not map.get("container", False) %}
       - file: {{ map.chroot_dir }}{{ map.log_dir }}/query.log
+{%- endif %}
+{%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+{%- endif %}
 
 {% if grains['os_family'] not in ['Arch', 'FreeBSD', 'Gentoo']  %}
 bind_default_config:
@@ -111,8 +166,10 @@ bind_default_config:
     - mode: 644
     - context:
         map: {{ map }}
+{%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind_restart
+{% endif %}
 {% endif %}
 
 {%- if salt['pillar.get']('bind:config:use_extensive_logging', False) %}
@@ -128,8 +185,10 @@ bind_logging_config:
         map: {{ map }}
     - require:
       - pkg: bind
+{%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+{%- endif %}
 {%- endif %}
 
 {% if grains['os_family'] == 'Debian' %}
@@ -143,8 +202,10 @@ bind_key_config:
     - mode: {{ salt['pillar.get']('bind:config:mode', '640') }}
     - require:
       - pkg: bind
+{%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+{%- endif %}
 
 bind_options_config:
   file.managed:
@@ -157,11 +218,13 @@ bind_options_config:
     - context:
         key_directory: {{ map.key_directory }}
         named_directory: {{ map.named_directory }}
-        zones_directory: {{ zones_directory }}
+        zones_directory: {{ container_zones_directory }}
     - require:
       - pkg: bind
+{%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+{%- endif %}
 
 bind_default_zones:
   file.managed:
@@ -173,8 +236,10 @@ bind_default_zones:
     - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
     - require:
       - pkg: bind
+{%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+{%- endif %}
 
 /etc/logrotate.d/{{ map.service }}:
   file.managed:
@@ -242,8 +307,10 @@ zones{{ dash_view }}-{{ zone }}{{ '.include' if serial_auto else '' }}:
     - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
     - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
+{%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+{%- endif %}
     - require:
       - file: named_directory
       {% if map.get('zones_directory') %}
@@ -268,13 +335,15 @@ zones{{ dash_view }}-{{ zone }}:
     - context:
         zone: zones{{ dash_view }}-{{ zone }}
         soa: {{ salt['pillar.get']("bind:available_zones:" + zone + ":soa") | json }}
-        include: {{ zones_directory }}/{{ file }}.include
+        include: {{ container_zones_directory }}/{{ file }}.include
     {% endif %}
     - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
     - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
+{%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+{%- endif %}
     - require:
       - file: named_directory
       {% if map.get('zones_directory') %}
