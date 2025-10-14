@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct 14 14:51:10 UTC 2025 - Ondrej Holecek <oholecek@suse.com>
+
+- Update to version 1.0.0
+  * add support for containerized Kea server (jsc#SUMA-449)
+
+-------------------------------------------------------------------
 Thu Jan  6 14:40:03 UTC 2022 - Michael Calmer <mc@suse.com>
 
 - Update to version 0.1.1641480250.d5bd14c

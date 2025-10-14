@@ -19,7 +19,7 @@
 %define fname dhcpd
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           dhcpd-formula
-Version:        0.1
+Version:        1.0.0
 Release:        0
 Summary:        Salt formula for configuring and running DHCP server
 License:        Apache-2.0

@@ -9,6 +9,8 @@ SYSTEM_LOCK_VERSION=0.1
 UYUNI_CONFIG_VERSION=0.2
 LIBERATE_VERSION=0.1.0
 PXE_VERSION=0.3.0
+DHCP_VERSION=1.0.0
+BIND_VERSION=1.0.0
 
 locale:: clean
 	git archive --format=tar.gz --prefix=locale-formula-${LOCALE_VERSION}/ HEAD:locale-formula/ >locale-formula-${LOCALE_VERSION}.tar.gz
@@ -39,6 +41,11 @@ liberate:: clean
 
 pxe:: clean
 	git archive --format=tar.gz --prefix=pxe-formula-${PXE_VERSION}/ HEAD:pxe-formula/ >pxe-formula-${PXE_VERSION}.tar.gz
+
+dhcp:: clean
+	git archive --format=tar.gz --prefix=dhcpd-formula-${DHCP_VERSION}/ HEAD:dhcpd-formula/ >dhcpd-formula-${DHCP_VERSION}.tar.gz
+bind:: clean
+	git archive --format=tar.gz --prefix=bind-formula-${BIND_VERSION}/ HEAD:bind-formula/ >bind-formula-${BIND_VERSION}.tar.gz
 
 clean::
 	find . -name "*~" | xargs rm -f
