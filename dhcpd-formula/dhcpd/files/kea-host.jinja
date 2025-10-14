@@ -1,0 +1,44 @@
+{#
+    Kea host reservation configuration.
+    This template is included for each host reservation.
+    It maps ISC-style host declarations to Kea's reservation format.
+#}
+{
+    {%- if 'hardware' in config %}
+    "hw-address": "{{ config.hardware.split(' ')[1] }}",
+    {%- endif %}
+    {%- if 'fixed_address' in config %}
+    "ip-address": "{{ config.fixed_address }}",
+    {%- endif %}
+    "hostname": "{{ host }}",
+    {% if is_global_reservation %}
+    // This host is not tied to a specific subnet's address pool.
+    "reservations-in-subnet": false,
+    {% endif %}
+
+    {%- if 'next_server' in config %}
+    "next-server": "{{ config.next_server }}",
+    {%- endif %}
+
+    "option-data": [
+        {%- set host_options = [] %}
+        {%- if 'host_name' in config %}
+            {%- do host_options.append({"name": "host-name", "data": config.host_name }) %}
+        {%- endif %}
+        {# The complex if/else for boot files in the original host.jinja is
+           replicated by leveraging the globally defined, ordered client classes. #}
+        {%- if 'filename' in config %}
+            {%- do host_options.append({"name": "boot-file-name", "data": config.filename}) %}
+        {%- endif %}
+        {# Render collected host options #}
+        {%- for option in host_options %}
+        {
+            "name": "{{ option.name }}",
+            "data": "{{ option.data }}"
+            {%- if option.get('client-class') %}
+            , "client-class": "{{ option['client-class'] }}"
+            {%- endif %}
+        }{% if not loop.last %},{% endif %}
+        {%- endfor %}
+    ]
+}
