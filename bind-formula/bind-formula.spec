@@ -19,7 +19,7 @@
 %define fname bind
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           bind-formula
-Version:        0.1
+Version:        1.0.0
 Release:        0
 Summary:        Salt formula for configuring and running BIND
 License:        Apache-2.0
