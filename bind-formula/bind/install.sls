@@ -12,7 +12,9 @@ bind:
   service.running:
     - name: {{ map.service }}
     - enable: True
+{%- if not map.get("container", False) %}
     - reload: True
+{%- endif %}
 {%- endif %}
 {%- if map.get("container", False) %}
     - require:

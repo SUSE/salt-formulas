@@ -39,7 +39,9 @@ bind_restart:
     - name: {{ map.service }}
     - reload: False
     - watch:
+{%- if not map.get("container", False) %}
       - file: {{ map.chroot_dir }}{{ map.log_dir }}/query.log
+{%- endif %}
       - file: bind_key_directory
 {%- endif %}
 
@@ -49,7 +51,7 @@ named_directory:
     - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
     - mode: 775
-    - makedirs: True
+    - makedirs: true
     - require:
       - pkg: bind
 
@@ -82,19 +84,31 @@ named_directory:
       - pkg: bind
 
 {{ map.named_directory }}/127.0.0.zone:
-  file.touch:
+  file.managed:
+    - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
+    - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
+    - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
     - makedirs: true
 
 {{ map.named_directory }}/localhost.zone:
-  file.touch:
+  file.managed:
+    - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
+    - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
+    - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
     - makedirs: true
 
 {{ map.named_directory }}/named.root.key:
-  file.touch:
+  file.managed:
+    - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
+    - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
+    - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
     - makedirs: true
 
 {{ map.named_directory }}/root.hint:
-  file.touch:
+  file.managed:
+    - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
+    - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
+    - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
     - makedirs: true
 
 
@@ -107,7 +121,7 @@ bind_zones_directory:
     - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
     - mode: 775
-    - makedirs: True
+    - makedirs: true
     - require:
       - pkg: bind
       - file: named_directory
@@ -142,6 +156,7 @@ bind_local_config:
     - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
     - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
+    - makedirs: true
     - context:
         map: {{ map }}
         zones_directory: {{ container_zones_directory }}
@@ -153,6 +168,19 @@ bind_local_config:
 {%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+{%- endif %}
+
+{%- if map.get("container", False) %}
+/etc/named.d/forwarders.conf:
+  file.managed:
+    - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
+    - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
+    - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
+    - makedirs: true
+{%- if not grains.get('transactional') %}
+    - watch_in:
+      - service: bind
+{%- endif %}
 {%- endif %}
 
 {% if grains['os_family'] not in ['Arch', 'FreeBSD', 'Gentoo']  %}
