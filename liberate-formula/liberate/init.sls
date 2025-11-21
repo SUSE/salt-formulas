@@ -6,6 +6,7 @@
 {% set release = grains.get('osmajorrelease', None)|int() %}
 {% set osName = grains.get('os', None) %}
 {% set reinstallPackages = salt['pillar.get']('liberate:reinstall_packages', false) %}
+{% set installLogos = salt['pillar.get']('liberate:install_logos', false) %}
 
 {% set liberated = false %}
 {% set liberationDate = salt['system.get_system_date']() %}
@@ -55,10 +56,12 @@ install_package_9:
     - name: sll-release
     - refresh: True
 
+{% if installLogos %}
 install_logos_9:
   pkg.installed:
     - name: sll-logos
     - refresh: True
+{% endif %}
 
 {% if reinstallPackages %}
 re_install_from_SLL:
@@ -108,10 +111,12 @@ install_package_8:
     - name: sles_es-release
     - refresh: True
 
+{% if installLogos %}
 install_logos_8:
   pkg.installed:
     - name: sles_es-logos
     - refresh: True
+{% endif %}
 
 {% if reinstallPackages %}
 re_install_from_SLL:
@@ -152,10 +157,12 @@ install_package_7:
     - name: sles_es-release-server
     - refresh: True
 
+{% if installLogos %}
 install_logos_7:
   pkg.installed:
     - name: sles_es-logos
     - refresh: True
+{% endif %}
 
 {% if reinstallPackages %}
 fix_anaconda:
