@@ -159,4 +159,14 @@
         'container_named_directory': '/var/lib/named',
         'group': '44',
     },
-}, grain='osfullname', merge=salt['pillar.get']('bind:lookup')))) %}
+}, grain='osfullname', merge=salt['grains.filter_by']({
+  'SUSE Linux Enterprise Server 15 SP7': {
+        'pkgs': [],
+        'image': 'registry.opensuse.org/opensuse/bind:latest',
+        'service': 'bind-container',
+        'container': True,
+        'named_directory': '/var/lib/named',
+        'container_named_directory': '/var/lib/named',
+        'group': '44',
+  },
+}, grain='oscodename', merge=salt['pillar.get']('bind:lookup'))))) %}

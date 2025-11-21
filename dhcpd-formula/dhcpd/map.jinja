@@ -44,4 +44,13 @@
         'kea_3_0': True,
         'container': True,
     }
-}, grain='osfullname', merge=salt['pillar.get']('dhcpd:lookup'))) %}
+}, grain='osfullname', merge=salt['grains.filter_by']({
+  'SUSE Linux Enterprise Server 15 SP7': {
+        'server': 'kea',
+        'service': 'kea-container',
+        'config': '/etc/kea/kea-dhcp4.conf',
+        'image': 'registry.suse.com/suse/kea:2.6',
+        'kea_3_0': False,
+        'container': True,
+  },
+}, grain='oscodename', merge=salt['pillar.get']('dhcpd:lookup')))) %}
