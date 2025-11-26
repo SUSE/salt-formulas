@@ -89,6 +89,12 @@ named_directory:
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
     - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
     - makedirs: true
+{%- if not grains.get('transactional') %}
+    - watch_in:
+      - service: bind
+    - require_in:
+      - service: bind
+{%- endif %}
 
 {{ map.named_directory }}/localhost.zone:
   file.managed:
@@ -96,6 +102,12 @@ named_directory:
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
     - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
     - makedirs: true
+{%- if not grains.get('transactional') %}
+    - watch_in:
+      - service: bind
+    - require_in:
+      - service: bind
+{%- endif %}
 
 {{ map.named_directory }}/named.root.key:
   file.managed:
@@ -103,6 +115,12 @@ named_directory:
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
     - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
     - makedirs: true
+{%- if not grains.get('transactional') %}
+    - watch_in:
+      - service: bind_restart
+    - require_in:
+      - service: bind
+{%- endif %}
 
 {{ map.named_directory }}/root.hint:
   file.managed:
@@ -110,6 +128,12 @@ named_directory:
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
     - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
     - makedirs: true
+{%- if not grains.get('transactional') %}
+    - watch_in:
+      - service: bind
+    - require_in:
+      - service: bind
+{%- endif %}
 
 
 
@@ -125,6 +149,10 @@ bind_zones_directory:
     - require:
       - pkg: bind
       - file: named_directory
+{%- if not grains.get('transactional') %}
+    - watch_in:
+      - service: bind_restart
+{%- endif %}
 {% endif %}
 
 bind_config:
@@ -145,6 +173,8 @@ bind_config:
       - pkg: bind
 {%- if not grains.get('transactional') %}
     - watch_in:
+      - service: bind
+    - require_in:
       - service: bind
 {%- endif %}
 
@@ -168,6 +198,8 @@ bind_local_config:
 {%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+    - require_in:
+      - service: bind
 {%- endif %}
 
 {%- if map.get("container", False) %}
@@ -179,6 +211,8 @@ bind_local_config:
     - makedirs: true
 {%- if not grains.get('transactional') %}
     - watch_in:
+      - service: bind
+    - require_in:
       - service: bind
 {%- endif %}
 {%- endif %}
@@ -197,6 +231,8 @@ bind_default_config:
 {%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind_restart
+    - require_in:
+      - service: bind
 {% endif %}
 {% endif %}
 
@@ -216,6 +252,8 @@ bind_logging_config:
 {%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+    - require_in:
+      - service: bind
 {%- endif %}
 {%- endif %}
 
@@ -232,6 +270,8 @@ bind_key_config:
       - pkg: bind
 {%- if not grains.get('transactional') %}
     - watch_in:
+      - service: bind
+    - require_in:
       - service: bind
 {%- endif %}
 
@@ -252,6 +292,8 @@ bind_options_config:
 {%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+    - require_in:
+      - service: bind
 {%- endif %}
 
 bind_default_zones:
@@ -266,6 +308,8 @@ bind_default_zones:
       - pkg: bind
 {%- if not grains.get('transactional') %}
     - watch_in:
+      - service: bind
+    - require_in:
       - service: bind
 {%- endif %}
 
@@ -291,6 +335,12 @@ bind_rndc_client_config:
         map: {{ map }}
     - require:
       - pkg: bind
+{%- if not grains.get('transactional') %}
+    - watch_in:
+      - service: bind
+    - require_in:
+      - service: bind
+{%- endif %}
 {%- endif %}
 {% endif %}
 
@@ -338,6 +388,8 @@ zones{{ dash_view }}-{{ zone }}{{ '.include' if serial_auto else '' }}:
 {%- if not grains.get('transactional') %}
     - watch_in:
       - service: bind
+    - require_in:
+      - service: bind
 {%- endif %}
     - require:
       - file: named_directory
@@ -353,6 +405,12 @@ zones{{ dash_view }}-{{ zone }}:
     - zone: zones{{ dash_view }}-{{ zone }}
     - watch:
       - file: {{ zones_directory }}/{{ file }}.include
+{%- if not grains.get('transactional') %}
+    - watch_in:
+      - service: bind
+    - require_in:
+      - service: bind
+{%- endif %}
   file.managed:
     - name: {{ zones_directory }}/{{ file }}
     - require:
@@ -370,6 +428,8 @@ zones{{ dash_view }}-{{ zone }}:
     - mode: {{ salt['pillar.get']('bind:config:mode', '644') }}
 {%- if not grains.get('transactional') %}
     - watch_in:
+      - service: bind
+    - require_in:
       - service: bind
 {%- endif %}
     - require:

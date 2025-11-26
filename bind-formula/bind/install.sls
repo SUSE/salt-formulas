@@ -16,8 +16,9 @@ bind:
     - reload: True
 {%- endif %}
 {%- endif %}
-{%- if map.get("container", False) %}
     - require:
+      - file: bind_key_directory
+{%- if map.get("container", False) %}
       - file: /etc/systemd/system/{{ map.service }}.service
 
 bind_service_config:
