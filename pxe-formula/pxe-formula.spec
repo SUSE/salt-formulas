@@ -45,5 +45,6 @@ cp metadata.yml %{buildroot}%{_datadir}/susemanager/formulas/metadata/%{fname}
 
 %files
 %{_datadir}/susemanager
+%license LICENSE
 
 %changelog
