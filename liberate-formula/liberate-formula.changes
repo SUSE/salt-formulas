@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Dec 11 13:20:46 UTC 2025 - Thomas Florio <thomas.florio@suse.com>
+
+- Version 0.1.2
+
+-------------------------------------------------------------------
 Wed Nov 26 15:53:35 UTC 2025 - Kevin Walter <kwalter@suse.com>
 
 - add option to prevent logo packages from being installed 
