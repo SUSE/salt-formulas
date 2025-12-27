@@ -1,3 +1,7 @@
+- Enable containerized bind on SLE15SP7
+- Handle missing conf files or directories
+- Make sure the service is started after the config
+
 -------------------------------------------------------------------
 Tue Oct 14 14:50:21 UTC 2025 - Ondrej Holecek <oholecek@suse.com>
 

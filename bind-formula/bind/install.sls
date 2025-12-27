@@ -12,10 +12,13 @@ bind:
   service.running:
     - name: {{ map.service }}
     - enable: True
+{%- if not map.get("container", False) %}
     - reload: True
 {%- endif %}
-{%- if map.get("container", False) %}
+{%- endif %}
     - require:
+      - file: bind_key_directory
+{%- if map.get("container", False) %}
       - file: /etc/systemd/system/{{ map.service }}.service
 
 bind_service_config:
