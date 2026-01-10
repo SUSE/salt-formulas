@@ -644,7 +644,7 @@
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
-          "legendFormat": "",
+          "legendFormat": "{{mountpoint}}",
           "refId": "A",
           "step": 7200
         }
@@ -1147,7 +1147,7 @@
           "expr": "label_replace(1 - node_filesystem_avail_bytes{instance=~\"$server:9100\", fstype=~\"vfat|xfs|ext\\\\d\"} / node_filesystem_size_bytes, \"shortdev\", \"$1\", \"device\", \"/dev/(.*)\")",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{shortdev}}",
+          "legendFormat": "{{mountpoint}}",
           "refId": "A",
           "step": 2400
         },
