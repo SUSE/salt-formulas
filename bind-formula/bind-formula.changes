@@ -1,6 +1,10 @@
-- Enable containerized bind on SLE15SP7
-- Handle missing conf files or directories
-- Make sure the service is started after the config
+-------------------------------------------------------------------
+Tue Jan  6 13:35:20 UTC 2026 - Ondrej Holecek <oholecek@suse.com>
+
+- Update to version 1.1.0
+  * Enable containerized bind on SLE15SP7
+  * Handle missing conf files or directories
+  * Make sure the service is started after the config
 
 -------------------------------------------------------------------
 Tue Oct 14 14:50:21 UTC 2025 - Ondrej Holecek <oholecek@suse.com>
@@ -11,7 +15,7 @@ Tue Oct 14 14:50:21 UTC 2025 - Ondrej Holecek <oholecek@suse.com>
 -------------------------------------------------------------------
 Mon Jan 17 10:18:00 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
 
-- Update to version 0.1.1642432942.9359cc6
+- Update to version 0.1.1642519328.52d7c39
   * Update defaults based on SLE15SP4 release
   * chroot option was replaced by systemd protections
 

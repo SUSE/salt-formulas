@@ -9,8 +9,8 @@ SYSTEM_LOCK_VERSION=0.1
 UYUNI_CONFIG_VERSION=0.2
 LIBERATE_VERSION=0.1.2
 PXE_VERSION=0.3.0
-DHCP_VERSION=1.0.0
-BIND_VERSION=1.0.0
+DHCP_VERSION=1.1.0
+BIND_VERSION=1.1.0
 
 locale:: clean
 	git archive --format=tar.gz --prefix=locale-formula-${LOCALE_VERSION}/ HEAD:locale-formula/ >locale-formula-${LOCALE_VERSION}.tar.gz
