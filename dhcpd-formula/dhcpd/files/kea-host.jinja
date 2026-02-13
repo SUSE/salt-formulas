@@ -11,10 +11,6 @@
     "ip-address": "{{ config.fixed_address }}",
     {%- endif %}
     "hostname": "{{ host }}",
-    {% if is_global_reservation %}
-    // This host is not tied to a specific subnet's address pool.
-    "reservations-in-subnet": false,
-    {% endif %}
 
     {%- if 'next_server' in config %}
     "next-server": "{{ config.next_server }}",
