@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Feb 18 14:24:06 UTC 2026 - Vladimir Nadvornik <nadvornik@suse.com>
+
+- Update to version 1.1.2
+  * enable "reservations-global" to fix global hosts (bsc#1258366)
+  * disable "match-client-id" - to fix static reservations
+    when the id changes during boot (bsc#1258369)
+
+-------------------------------------------------------------------
 Fri Feb 13 13:38:08 UTC 2026 - Vladimir Nadvornik <nadvornik@suse.com>
 
 - Update to version 1.1.1
