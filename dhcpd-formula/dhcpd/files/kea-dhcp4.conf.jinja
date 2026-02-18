@@ -29,6 +29,9 @@
     "valid-lifetime": {{ salt['pillar.get']('dhcpd:default_lease_time', 600) }},
     "max-valid-lifetime": {{ salt['pillar.get']('dhcpd:max_lease_time', 3600) }},
 
+    "match-client-id": false,
+    "reservations-global": true,
+
     {%- set standalone_subnets = salt['pillar.get']('dhcpd:subnets', {}) %}
     {%- if not dhcpd.kea_3_0 %}
       {%- set class_filename = {} %}
