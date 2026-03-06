@@ -40,19 +40,35 @@ scrape_configs:
   - job_name: 'mgr-server'
     static_configs:
       - targets:
-        - {{ uyuni_server_hostname }}:9100 # Node exporter
-        - {{ uyuni_server_hostname }}:5556 # Tomcat JMX
-        - {{ uyuni_server_hostname }}:5557 # Taskomatic JMX
-        - {{ uyuni_server_hostname }}:9800 # Uyuni server exporter
-        labels: {}
-      - targets:
-        - {{ uyuni_server_hostname }}:80 # Message queue
+        - {{ uyuni_server_hostname }} # Node exporter
         labels:
+          role: node-exporter
+          __metrics_path__: /node-exporter/metrics
+      - targets:
+        - {{ uyuni_server_hostname }} # Tomcat JMX
+        labels:
+          role: tomcat-jmx
+          __metrics_path__: /tomcat-jmx/metrics
+      - targets:
+        - {{ uyuni_server_hostname }} # Taskomatic JMX
+        labels:
+          role: tasko-jmx
+          __metrics_path__: /tasko-jmx/metrics
+      - targets:
+        - {{ uyuni_server_hostname }} # Uyuni server exporter
+        labels:
+          role: tasko-exporter
+          __metrics_path__: /tasko-exporter/metrics
+      - targets:
+        - {{ uyuni_server_hostname }} # Message queue
+        labels:
+          role: tomcat-exporter
           __metrics_path__: /rhn/metrics
       - targets:
-        - {{ uyuni_server_hostname }}:9187 # PostgresSQL
+        - {{ uyuni_server_hostname }} # PostgresSQL
         labels:
           role: postgres
+          __metrics_path__: /postgresql-exporter/metrics
 {%- endif %}
 {% set sd_username = salt['pillar.get']('prometheus:mgr:sd_username') %}
 {% set sd_password = salt['pillar.get']('prometheus:mgr:sd_password') %}

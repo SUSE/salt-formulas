@@ -117,7 +117,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "count(node_cpu_seconds_total{instance=~\"$server:9100\",  mode=\"system\"})",
+          "expr": "count(node_cpu_seconds_total{instance=~\"$server\", role=\"node-exporter\",  mode=\"system\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -205,7 +205,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "min(up{instance=~\"$server:9100\"})",
+          "expr": "min(up{instance=~\"$server\", role=\"node-exporter\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -350,7 +350,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "(node_load1{instance=~\"$server:9100\"}) / scalar( count by (instance) (node_cpu_seconds_total{instance=~\"$server:9100\", mode=\"system\"}))",
+          "expr": "(node_load1{instance=~\"$server\", role=\"node-exporter\"}) / scalar( count by (instance) (node_cpu_seconds_total{instance=~\"$server\", role=\"node-exporter\", mode=\"system\"}))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -363,7 +363,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "(node_load5{instance=~\"$server:9100\"}) / scalar( count by (instance) (node_cpu_seconds_total{instance=~\"$server:9100\", mode=\"system\"}))",
+          "expr": "(node_load5{instance=~\"$server\", role=\"node-exporter\"}) / scalar( count by (instance) (node_cpu_seconds_total{instance=~\"$server\", role=\"node-exporter\", mode=\"system\"}))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -376,7 +376,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "(node_load15{instance=~\"$server:9100\"}) / scalar( count by (instance) (node_cpu_seconds_total{instance=~\"$server:9100\", mode=\"system\"}))",
+          "expr": "(node_load15{instance=~\"$server\", role=\"node-exporter\"}) / scalar( count by (instance) (node_cpu_seconds_total{instance=~\"$server\", role=\"node-exporter\", mode=\"system\"}))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -389,7 +389,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "1 - (node_memory_MemAvailable_bytes{instance=~\"$server:9100\"} / node_memory_MemTotal_bytes)",
+          "expr": "1 - (node_memory_MemAvailable_bytes{instance=~\"$server\", role=\"node-exporter\"} / node_memory_MemTotal_bytes)",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 1,
@@ -470,7 +470,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(node_memory_MemTotal_bytes{instance=~\"$server:9100\"})",
+          "expr": "avg(node_memory_MemTotal_bytes{instance=~\"$server\", role=\"node-exporter\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -558,7 +558,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(irate(node_cpu_seconds_total{instance=~\"$server:9100\", mode!=\"idle\"}[5m])) / count(node_cpu_seconds_total{instance=~\"$server:9100\",  mode=\"system\"})",
+          "expr": "sum(irate(node_cpu_seconds_total{instance=~\"$server\", role=\"node-exporter\", mode!=\"idle\"}[5m])) / count(node_cpu_seconds_total{instance=~\"$server\", role=\"node-exporter\",  mode=\"system\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -640,7 +640,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(max by (device) (node_filesystem_size_bytes{instance=~\"$server:9100\", fstype=~\"vfat|btrfs|xfs|ext\\\\d\"}))",
+          "expr": "sum(max by (device) (node_filesystem_size_bytes{instance=~\"$server\", role=\"node-exporter\", fstype=~\"vfat|btrfs|xfs|ext\\\\d\"}))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -757,7 +757,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(irate(node_cpu{instance=~\"$server:9100\", mode=\"system\"}[5m]) or irate(node_cpu_seconds_total{instance=~\"$server:9100\", mode=\"system\"}[5m]))",
+          "expr": "avg(irate(node_cpu{instance=~\"$server\", role=\"node-exporter\", mode=\"system\"}[5m]) or irate(node_cpu_seconds_total{instance=~\"$server\", role=\"node-exporter\", mode=\"system\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -770,7 +770,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(irate(node_cpu{instance=~\"$server:9100\", mode=\"iowait\"}[5m]) or irate(node_cpu_seconds_total{instance=~\"$server:9100\", mode=\"iowait\"}[5m]))",
+          "expr": "avg(irate(node_cpu{instance=~\"$server\", role=\"node-exporter\", mode=\"iowait\"}[5m]) or irate(node_cpu_seconds_total{instance=~\"$server\", role=\"node-exporter\", mode=\"iowait\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -783,7 +783,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(irate(node_cpu{instance=~\"$server:9100\", mode!~\"user|system|iowait|guest|idle\"}[5m]) or irate(node_cpu_seconds_total{instance=~\"$server:9100\", mode!~\"user|system|iowait|guest|idle\"}[5m]))",
+          "expr": "avg(irate(node_cpu{instance=~\"$server\", role=\"node-exporter\", mode!~\"user|system|iowait|guest|idle\"}[5m]) or irate(node_cpu_seconds_total{instance=~\"$server\", role=\"node-exporter\", mode!~\"user|system|iowait|guest|idle\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -979,7 +979,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(node_network_transmit_bytes_total{instance=~\"$server:9100\"}[5m]))",
+          "expr": "sum(rate(node_network_transmit_bytes_total{instance=~\"$server\", role=\"node-exporter\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -992,7 +992,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(node_network_receive_bytes_total{instance=~\"$server:9100\"}[5m]))",
+          "expr": "sum(rate(node_network_receive_bytes_total{instance=~\"$server\", role=\"node-exporter\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "network-rx",
@@ -1144,7 +1144,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "label_replace(1 - node_filesystem_avail_bytes{instance=~\"$server:9100\", fstype=~\"vfat|xfs|ext\\\\d\"} / node_filesystem_size_bytes, \"shortdev\", \"$1\", \"device\", \"/dev/(.*)\")",
+          "expr": "label_replace(1 - node_filesystem_avail_bytes{instance=~\"$server\", role=\"node-exporter\", fstype=~\"vfat|xfs|ext\\\\d\"} / node_filesystem_size_bytes, \"shortdev\", \"$1\", \"device\", \"/dev/(.*)\")",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{shortdev}}",
@@ -1157,7 +1157,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "label_replace(1 - max by (device) (node_filesystem_avail_bytes{instance=~\"$server:9100\", fstype=\"btrfs\"} / node_filesystem_size_bytes), \"shortdev\", \"$1\", \"device\", \"/dev/(.*)\")   ",
+          "expr": "label_replace(1 - max by (device) (node_filesystem_avail_bytes{instance=~\"$server\", role=\"node-exporter\", fstype=\"btrfs\"} / node_filesystem_size_bytes), \"shortdev\", \"$1\", \"device\", \"/dev/(.*)\")   ",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -1322,7 +1322,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "1 - ((node_memory_MemAvailable{instance=~\"$server:9100\"} / node_memory_MemTotal) or (node_memory_MemAvailable_bytes{instance=~\"$server:9100\"} / node_memory_MemTotal_bytes))",
+          "expr": "1 - ((node_memory_MemAvailable{instance=~\"$server\", role=\"node-exporter\"} / node_memory_MemTotal) or (node_memory_MemAvailable_bytes{instance=~\"$server\", role=\"node-exporter\"} / node_memory_MemTotal_bytes))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "RAM",
@@ -1517,7 +1517,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(rate(node_disk_read_bytes_total{instance=~\"$server:9100\"}[5m]))",
+          "expr": "avg(rate(node_disk_read_bytes_total{instance=~\"$server\", role=\"node-exporter\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -1529,7 +1529,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(rate(node_disk_written_bytes_total{instance=~\"$server:9100\"}[5m]))",
+          "expr": "avg(rate(node_disk_written_bytes_total{instance=~\"$server\", role=\"node-exporter\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -1693,7 +1693,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "node_filesystem_avail_bytes{instance=~\"$server:9100\", fstype=~\"vfat|btrfs|xfs|ext\\\\d\"}+0",
+          "expr": "node_filesystem_avail_bytes{instance=~\"$server\", role=\"node-exporter\", fstype=~\"vfat|btrfs|xfs|ext\\\\d\"}+0",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1705,7 +1705,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "node_filesystem_size_bytes{instance=~\"$server:9100\", fstype=~\"vfat|btrfs|xfs|ext\\\\d\"}",
+          "expr": "node_filesystem_size_bytes{instance=~\"$server\", role=\"node-exporter\", fstype=~\"vfat|btrfs|xfs|ext\\\\d\"}",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1864,7 +1864,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(java_lang_Threading_ThreadCount{instance=\"$server:5556\"})",
+          "expr": "avg(java_lang_Threading_ThreadCount{instance=\"$server\", role=\"tomcat-jmx\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -1877,7 +1877,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(java_lang_Memory_HeapMemoryUsage_used{instance=~\"$server:5556\"})",
+          "expr": "avg(java_lang_Memory_HeapMemoryUsage_used{instance=~\"$server\", role=\"tomcat-jmx\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "memory",
@@ -2011,7 +2011,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_database_tup_fetched{instance=~\"$server:9187\", datname=~\"uyuni|susemanager\"}[5m])",
+          "expr": "rate(pg_stat_database_tup_fetched{instance=~\"$server\", role=\"postgres\", datname=~\"uyuni|susemanager\"}[5m])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "fetched",
@@ -2025,7 +2025,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_database_tup_inserted{instance=~\"$server:9187\", datname=~\"uyuni|susemanager\"}[5m])",
+          "expr": "rate(pg_stat_database_tup_inserted{instance=~\"$server\", role=\"postgres\", datname=~\"uyuni|susemanager\"}[5m])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "inserted",
@@ -2038,7 +2038,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(pg_stat_database_tup_updated{instance=~\"$server:9187\", datname=~\"uyuni|susemanager\"}[5m])",
+          "expr": "rate(pg_stat_database_tup_updated{instance=~\"$server\", role=\"postgres\", datname=~\"uyuni|susemanager\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2051,7 +2051,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_database_tup_deleted{instance=~\"$server:9187\", datname=~\"uyuni|susemanager\"}[5m])",
+          "expr": "rate(pg_stat_database_tup_deleted{instance=~\"$server\", role=\"postgres\", datname=~\"uyuni|susemanager\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2064,7 +2064,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(pg_locks_count{instance=~\"$server:9187\" ,datname=~\"uyuni|susemanager\"})",
+          "expr": "sum(pg_locks_count{instance=~\"$server\", role=\"postgres\" ,datname=~\"uyuni|susemanager\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -2238,7 +2238,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "taskomatic_scheduler_threads{instance=~\"$server:9800\"}",
+          "expr": "taskomatic_scheduler_threads{instance=~\"$server\", role=\"tasko-exporter\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2253,7 +2253,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "taskomatic_scheduler_threads_active{instance=~\"$server:9800\"}",
+          "expr": "taskomatic_scheduler_threads_active{instance=~\"$server\", role=\"tasko-exporter\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "threads active",
@@ -2265,7 +2265,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "increase(taskomatic_scheduler_completed_task_count{instance=~\"$server:9800\"}[2m])",
+          "expr": "increase(taskomatic_scheduler_completed_task_count{instance=~\"$server\", role=\"tasko-exporter\"}[2m])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "tasks completed",
@@ -2398,7 +2398,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(java_lang_Threading_ThreadCount{instance=\"$server:5557\"})",
+          "expr": "avg(java_lang_Threading_ThreadCount{instance=\"$server\", role=\"tasko-jmx\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2411,7 +2411,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(java_lang_Memory_HeapMemoryUsage_used{instance=~\"$server:5557\"})",
+          "expr": "avg(java_lang_Memory_HeapMemoryUsage_used{instance=~\"$server\", role=\"tasko-jmx\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "memory",
@@ -2587,7 +2587,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "increase(mgr_serveractions_failed{instance=~\"$server:9187\"}[2m])",
+          "expr": "increase(mgr_serveractions_failed{instance=~\"$server\", role=\"postgres\"}[2m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -2601,7 +2601,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "increase(mgr_serveractions_completed{instance=~\"$server:9187\"}[2m])",
+          "expr": "increase(mgr_serveractions_completed{instance=~\"$server\", role=\"postgres\"}[2m])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "completed",
@@ -2612,7 +2612,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "mgr_serveractions_picked_up{instance=~\"$server:9187\"}",
+          "expr": "mgr_serveractions_picked_up{instance=~\"$server\", role=\"postgres\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2624,7 +2624,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "mgr_serveractions_queued{instance=~\"$server:9187\"}",
+          "expr": "mgr_serveractions_queued{instance=~\"$server\", role=\"postgres\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2790,7 +2790,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum without(queue) (salt_queue_thread_pool_size{instance=~\"$server:80\"})",
+          "expr": "sum without(queue) (salt_queue_thread_pool_size{instance=~\"$server\", role=\"tomcat-exporter\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2805,7 +2805,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum without(queue) (salt_queue_thread_pool_active_threads{instance=~\"$server:80\"})",
+          "expr": "sum without(queue) (salt_queue_thread_pool_active_threads{instance=~\"$server\", role=\"tomcat-exporter\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "threads active",
@@ -2818,7 +2818,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "increase(salt_queue_thread_pool_tasks_total{instance=~\"$server:80\"}[2m])",
+          "expr": "increase(salt_queue_thread_pool_tasks_total{instance=~\"$server\", role=\"tomcat-exporter\"}[2m])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "tasks queue {{queue}}",
