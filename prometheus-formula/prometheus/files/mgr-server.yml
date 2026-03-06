@@ -1,10 +1,25 @@
 - targets:
-  - {{ uyuni_server_hostname }}:9100
-  - {{ uyuni_server_hostname }}:5556
-  - {{ uyuni_server_hostname }}:5557
-  - {{ uyuni_server_hostname }}:9800
-  labels: {}
+  - {{ uyuni_server_hostname }} # Node exporter
+  labels:
+    role: node-exporter
+    __metrics_path__: /node-exporter/metrics
 - targets:
-  - {{ uyuni_server_hostname }}:9187
+  - {{ uyuni_server_hostname }} # Tomcat JMX
+  labels:
+    role: tomcat-jmx
+    __metrics_path__: /tomcat-jmx/metrics
+- targets:
+  - {{ uyuni_server_hostname }} # Taskomatic JMX
+  labels:
+    role: tasko-jmx
+    __metrics_path__: /tasko-jmx/metrics
+- targets:
+  - {{ uyuni_server_hostname }} # Uyuni server exporter
+  labels:
+    role: tasko-exporter
+    __metrics_path__: /tasko-exporter/metrics
+- targets:
+  - {{ uyuni_server_hostname }} # PostgresSQL
   labels:
     role: postgres
+    __metrics_path__: /postgresql-exporter/metrics
