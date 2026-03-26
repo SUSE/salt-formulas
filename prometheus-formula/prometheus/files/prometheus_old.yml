@@ -38,6 +38,7 @@ scrape_configs:
   # Monitor {{ uyuni_server_hostname }}
   # --------------------
   - job_name: 'mgr-server'
+    scheme: https
     static_configs:
       - targets:
         - {{ uyuni_server_hostname }} # Node exporter
