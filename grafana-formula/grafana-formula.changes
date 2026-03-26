@@ -1,4 +1,5 @@
   * Change the exporters from ports to paths
+  * Adjust tho panels to the OpenMetrics specification
 
 -------------------------------------------------------------------
 Thu Sep 25 12:29:59 UTC 2025 - Witek Bedyk <witold.bedyk@suse.com>

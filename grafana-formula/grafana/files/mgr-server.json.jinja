@@ -2238,7 +2238,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "taskomatic_scheduler_threads{instance=~\"$server\", role=\"tasko-exporter\"}",
+          "expr": "taskomatic_scheduler_threads_total{instance=~\"$server\", role=\"tasko-exporter\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2265,7 +2265,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "increase(taskomatic_scheduler_completed_task_count{instance=~\"$server\", role=\"tasko-exporter\"}[2m])",
+          "expr": "increase(taskomatic_scheduler_completed_task_count_total{instance=~\"$server\", role=\"tasko-exporter\"}[2m])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "tasks completed",
@@ -2587,7 +2587,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "increase(mgr_serveractions_failed{instance=~\"$server\", role=\"postgres\"}[2m])",
+          "expr": "increase(mgr_serveractions_failed_total{instance=~\"$server\", role=\"postgres\"}[2m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -2601,7 +2601,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "increase(mgr_serveractions_completed{instance=~\"$server\", role=\"postgres\"}[2m])",
+          "expr": "increase(mgr_serveractions_completed_total{instance=~\"$server\", role=\"postgres\"}[2m])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "completed",
