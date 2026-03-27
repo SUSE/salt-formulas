@@ -1,0 +1,20 @@
+apiVersion: 1
+
+datasources:
+  - name: ReportDB
+    uid: fffl1ncs75r7kd
+    type: postgres
+    url: {{ server }}:5432
+    user: {{ user }}
+    secureJsonData:
+      password: '{{ password }}'
+    jsonData:
+      database: {{ database }}
+      sslmode: 'verify-full'
+      maxOpenConns: 100
+      maxIdleConns: 100
+      maxIdleConnsAuto: true
+      connMaxLifetime: 14400
+      postgresVersion: 903
+      timescaledb: false
+    editable: true

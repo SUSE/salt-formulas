@@ -4,8 +4,10 @@ providers:
 - name: default
   orgId: 1
   folder: ''
+  folderUid: ''
   type: file
   disableDeletion: false
   updateIntervalSeconds: 10 # how often Grafana will scan for changed dashboards
   options:
-    path: /etc/grafana/provisioning
+    path: /etc/grafana/provisioning/dashboards
+    foldersFromFilesStructure: true

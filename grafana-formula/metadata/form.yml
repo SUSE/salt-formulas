@@ -49,6 +49,15 @@ grafana:
           $type: password
           $name: Prometheus server password
 
+    reportdb:
+      $type: group
+      $name: Report DB
+      $help: Enable Reporting Dashboards
+
+      enabled:
+        $type: boolean
+        $default: False
+
   dashboards:
     $type: group
     $disabled: "!formValues.grafana.enabled"

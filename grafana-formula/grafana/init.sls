@@ -32,6 +32,27 @@
     - makedirs: True
     - template: jinja
 
+{%- if salt['pillar.get']('grafana:datasources:reportdb:enabled', False) %}
+/etc/grafana/provisioning/datasources/reportdb.yml:
+  file.managed:
+    - source: salt://grafana/files/reportdb_datasource.yml
+    - makedirs: True
+    - template: jinja
+    - defaults:
+      server: salt['pillar.get']('mgr_origin_server', grains['master'])
+      database: salt['pillar.get']('reportdb_name', 'reportdb')
+      user: salt['pillar.get']('reportdb_user')
+      password: salt['pillar.get']('reportdb_pass')
+
+/etc/grafana/provisioning/dashboards/Reporting/report.json:
+  file.managed:
+    - source: salt://grafana/files/reporting/report.json.jinja
+    - makedirs: True
+    - template: jinja
+    - defaults:
+      product_name: {{ product_name }}
+{%- endif%}
+
 /etc/grafana/provisioning/dashboards/dashboard-provider.yml:
   file.managed:
     - source: "salt://grafana/files/dashboard-provider.yml"
