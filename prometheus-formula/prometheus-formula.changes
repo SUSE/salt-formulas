@@ -1,3 +1,6 @@
+  * Change exporters ports to paths
+  * Use https for the server exporters
+
 -------------------------------------------------------------------
 Mon Jul  7 15:08:07 UTC 2025 - Witek Bedyk <witold.bedyk@suse.com>
 
