@@ -5,7 +5,7 @@ datasources:
     uid: fffl1ncs75r7kd
     type: postgres
     url: {{ server }}:5432
-    user: {{ user }}
+    user: {{ username }}
     secureJsonData:
       password: '{{ password }}'
     jsonData:
