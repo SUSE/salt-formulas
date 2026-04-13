@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 13 13:35:10 UTC 2026 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 5.2.0
   * Add reporting DB datasource
   * Add reporting dashboard
   * Change the exporters from ports to paths
