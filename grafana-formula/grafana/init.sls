@@ -47,14 +47,14 @@
   file.absent
 {%- endif %}
 
-/etc/grafana/provisioning/dashboards/Reporting/report.json:
+/etc/grafana/provisioning/dashboards/Reporting:
 {%- if salt['pillar.get']('grafana:datasources:reportdb:enabled', False) %}
-  file.managed:
-    - source: salt://grafana/files/reporting/report.json.jinja
-    - makedirs: True
+  file.recurse:
+    - source: salt://grafana/files/reporting
     - template: jinja
     - defaults:
       product_name: {{ product_name }}
+      server: {{ salt['pillar.get']('mgr_origin_server', grains['master']) }}
 {%- else %}
   file.absent
 {%- endif%}
