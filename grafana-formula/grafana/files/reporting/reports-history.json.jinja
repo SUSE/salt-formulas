@@ -1,0 +1,1876 @@
+{%- set datasource_uid = 'fffl1ncs75r7kd' -%}
+{
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-postgresql-datasource",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Detailed reports and historical data for Uyuni. Channels, packages, errata cross-references, actions, full system inventory, user management, system history, SCAP compliance, and confidential computing.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "title": "Fleet Overview & Security",
+      "type": "link",
+      "url": "/d/reportdb-fleet-security",
+      "icon": "dashboard",
+      "targetBlank": false,
+      "tooltip": "Open the Fleet Overview & Security dashboard"
+    }
+  ],
+  "panels": [
+    {
+      "id": 80,
+      "title": "Channels & Packages",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": [
+        {
+          "id": 81,
+          "title": "Channel Overview",
+          "description": "All software channels with package counts and organization info",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT channel_label, channel_name, number_of_packages, organization FROM ChannelsReport WHERE organization IN ($organization) ORDER BY number_of_packages DESC LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": true,
+              "reducer": [
+                "sum"
+              ],
+              "fields": [
+                "number_of_packages"
+              ]
+            }
+          }
+        },
+        {
+          "id": 82,
+          "title": "Top 20 Channels by Package Count",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 11
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT channel_name, number_of_packages FROM ChannelsReport WHERE organization IN ($organization) ORDER BY number_of_packages DESC LIMIT 20",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            },
+            "sortBy": []
+          }
+        },
+        {
+          "id": 83,
+          "title": "Installed Packages",
+          "description": "Packages installed across systems. Use column filters to search for a specific package name.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 21
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT s.hostname, spi.name AS package_name, spi.epoch, spi.version, spi.release, spi.arch FROM SystemPackageInstalled spi JOIN System s ON spi.mgm_id = s.mgm_id AND spi.system_id = s.system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY s.hostname, spi.name LIMIT 500",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "filterable": true
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": true,
+              "reducer": [
+                "count"
+              ],
+              "fields": [
+                "hostname"
+              ]
+            },
+            "filterable": true
+          }
+        },
+        {
+          "id": 84,
+          "title": "Available Package Updates (Newest)",
+          "description": "Packages with available updates showing current and newest versions. Based on the packages-updates-newest report.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 31
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT system_id, organization, package_name, package_version || '-' || package_release AS installed_version, newer_version || '-' || newer_release AS available_version FROM PackagesUpdatesNewestReport WHERE organization IN ($organization) ORDER BY package_name, system_id LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "filterable": true
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            },
+            "filterable": true
+          }
+        },
+        {
+          "id": 85,
+          "title": "Custom Channels",
+          "description": "Organization-owned custom channels with repository details",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 41
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT label AS channel_label, name AS channel_name, type, arch, summary, parent_channel_label, organization FROM Channel WHERE organization IN ($organization) AND organization IS NOT NULL ORDER BY name",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 86,
+          "title": "Cloned Channels",
+          "description": "Channels cloned from original sources",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 51
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT c.label AS channel_label, c.name AS channel_name, orig.label AS original_label, orig.name AS original_name FROM Channel c JOIN Channel orig ON c.mgm_id = orig.mgm_id AND c.original_channel_id = orig.channel_id WHERE c.original_channel_id IS NOT NULL AND c.organization IN ($organization) ORDER BY c.name",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 140,
+      "title": "Errata & Channel Cross-Reference",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "panels": [
+        {
+          "id": 141,
+          "title": "Errata in Channels",
+          "description": "Which errata are available in which channels. Based on the errata-channels report.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 2
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT ce.advisory_name, ce.channel_label, c.name AS channel_name, e.advisory_type FROM ChannelErrata ce JOIN Channel c ON ce.mgm_id = c.mgm_id AND ce.channel_id = c.channel_id JOIN Errata e ON ce.mgm_id = e.mgm_id AND ce.errata_id = e.errata_id ORDER BY ce.advisory_name, c.name LIMIT 500",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 142,
+          "title": "Errata Affecting Systems (with IP)",
+          "description": "Systems affected by errata including IP addresses. Based on the errata-systems report.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 12
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT advisory_name, profile_name, hostname, ip_address FROM ErrataSystemsReport WHERE system_id IN (SELECT system_id FROM System WHERE organization IN ($organization)) ORDER BY advisory_name, hostname LIMIT 500",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 143,
+          "title": "Extra Packages on Systems",
+          "description": "Packages installed on systems that are not available from subscribed channels. Based on the system-extra-packages report.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 22
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT s.hostname, spi.name AS package_name, spi.version, spi.release, spi.arch FROM SystemPackageInstalled spi JOIN System s ON spi.mgm_id = s.mgm_id AND spi.system_id = s.system_id LEFT JOIN ( SELECT DISTINCT cp.mgm_id, sc.system_id, p.name FROM ChannelPackage cp JOIN SystemChannel sc ON cp.mgm_id = sc.mgm_id AND cp.channel_id = sc.channel_id JOIN Package p ON cp.mgm_id = p.mgm_id AND cp.package_id = p.package_id ) avail ON spi.mgm_id = avail.mgm_id AND spi.system_id = avail.system_id AND spi.name = avail.name WHERE avail.name IS NULL AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY s.hostname, spi.name LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "title": "Actions & Operations",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "panels": [
+        {
+          "id": 91,
+          "title": "100 Latest Actions",
+          "description": "Most recent scheduled actions with system status breakdown",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 3
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT action_id, earliest_action, action_name, event, scheduler_username, in_progress_systems, completed_systems, failed_systems FROM ActionsReport ORDER BY action_id DESC LIMIT 100",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 92,
+          "title": "Action Status Distribution",
+          "description": "Breakdown of all action statuses across the fleet",
+          "type": "piechart",
+          "gridPos": {
+            "h": 10,
+            "w": 8,
+            "x": 0,
+            "y": 13
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT status, COUNT(*) AS count FROM SystemAction GROUP BY status ORDER BY count DESC",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "pieType": "pie",
+            "tooltip": {
+              "mode": "single"
+            },
+            "legend": {
+              "displayMode": "table",
+              "placement": "right",
+              "values": [
+                "value",
+                "percent"
+              ]
+            }
+          }
+        },
+        {
+          "id": 93,
+          "title": "Failed Actions (Recent)",
+          "description": "Actions that have failed, with system details",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 16,
+            "x": 8,
+            "y": 23
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT sa.action_id, sa.action_name, sa.hostname, sa.event, sa.event_data, sa.earliest_action, sa.completion_time FROM SystemAction sa WHERE sa.status = 'Failed' ORDER BY sa.completion_time DESC NULLS LAST, sa.action_id DESC LIMIT 100",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 94,
+          "title": "Last 100 Package/Patch Operations",
+          "description": "Recent package installations, upgrades, removals and patch updates",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 33
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT action_id, earliest_action, action_name, event, scheduler_username, in_progress_systems, completed_systems, failed_systems FROM ActionsReport WHERE event IN ('Package Install', 'Package Upgrade', 'Package Removal', 'Patch Update') ORDER BY action_id DESC LIMIT 100",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 100,
+      "title": "System Inventory (Full Reports)",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "panels": [
+        {
+          "id": 101,
+          "title": "Full System Inventory",
+          "description": "Complete inventory of all registered systems with network, channel, and patch status info. Based on the inventory report.",
+          "type": "table",
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 4
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT system_id, profile_name, hostname, ip_address, ip6_addresses, registered_by, registration_time, last_checkin_time, last_boot_time, kernel_version, architecture, organization, packages_out_of_date, errata_out_of_date, extra_pkg_count, status, software_channels, entitlements, system_groups, virtual_host, is_virtualized, virt_type, hardware, minion_id, machine_id FROM InventoryReport WHERE organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY hostname LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "filterable": true
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "hostname"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "View system in Uyuni",
+                        "url": "https://{{ server }}/rhn/systems/details/Overview.do?sid=${__data.fields.system_id}",
+                        "targetBlank": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": true,
+              "reducer": [
+                "count"
+              ],
+              "fields": [
+                "hostname"
+              ]
+            },
+            "filterable": true
+          }
+        },
+        {
+          "id": 102,
+          "title": "System Hardware Details",
+          "description": "Detailed hardware specifications including CPU, memory, BIOS, and network information. Based on the system-hardware report.",
+          "type": "table",
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 16
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT hostname, architecture, cpus, sockets, cores, threads, cpu_model, cpu_vendor, cpu_mhz, memory_size AS ram_mb, swap_size AS swap_mb, vendor AS hw_vendor, product AS hw_product, bios_vendor, bios_version, ip_address, hardware_address AS mac_address, is_virtualized FROM SystemHardwareReport WHERE system_id IN (SELECT system_id FROM System WHERE organization IN ($organization)) ORDER BY hostname LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 103,
+          "title": "System Group Members (filtered by $system_group)",
+          "description": "Systems belonging to the selected system groups. Use the System Group dropdown to filter.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 28
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT group_name, system_name, system_id FROM SystemGroupsSystemsReport WHERE system_id IN (SELECT system_id FROM System WHERE organization IN ($organization)) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY group_name, system_name LIMIT 500",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": true,
+              "reducer": [
+                "count"
+              ],
+              "fields": [
+                "system_name"
+              ]
+            }
+          }
+        },
+        {
+          "id": 104,
+          "title": "System Groups Overview",
+          "description": "All system groups with member counts",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 38
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT name, current_members, organization FROM SystemGroupsReport WHERE organization IN ($organization) ORDER BY current_members DESC",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": true,
+              "reducer": [
+                "sum"
+              ],
+              "fields": [
+                "current_members"
+              ]
+            }
+          }
+        },
+        {
+          "id": 105,
+          "title": "Custom System Info",
+          "description": "Custom key-value metadata assigned to systems",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 48
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT system_id, organization, key, value, description FROM SystemCustomInfo WHERE organization IN ($organization) ORDER BY system_id, key LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 106,
+          "title": "System Search: $search_system",
+          "description": "Search for systems by hostname. Enter a partial hostname in the Search System variable.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 58
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT system_id, profile_name, hostname, ip_address, kernel_version, architecture, organization, packages_out_of_date, errata_out_of_date, status, last_checkin_time FROM InventoryReport WHERE organization IN ($organization) AND '$search_system' != '' AND hostname ILIKE '%$search_system%' ORDER BY hostname LIMIT 100",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 107,
+          "title": "Errata for Searched System",
+          "description": "Pending errata/patches for the system specified in Search System",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 68
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT se.hostname, se.advisory_name, se.advisory_type, e.severity, e.cve, e.synopsis, e.reboot_required FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE '$search_system' != '' AND se.hostname ILIKE '%$search_system%' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY CASE e.severity WHEN 'critical' THEN 1 WHEN 'important' THEN 2 WHEN 'moderate' THEN 3 WHEN 'low' THEN 4 ELSE 5 END, se.advisory_name LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "severity"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background-solid"
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "type": "value",
+                        "options": {
+                          "critical": {
+                            "color": "dark-red",
+                            "index": 0
+                          },
+                          "important": {
+                            "color": "dark-orange",
+                            "index": 1
+                          },
+                          "moderate": {
+                            "color": "dark-yellow",
+                            "index": 2
+                          },
+                          "low": {
+                            "color": "dark-green",
+                            "index": 3
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 110,
+      "title": "User Management & Audit",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "panels": [
+        {
+          "id": 111,
+          "title": "User Accounts",
+          "description": "All user accounts with roles, status, and login information. Based on the users report.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 5
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT username, organization, first_name, last_name, email, position, roles, status, creation_time, last_login_time FROM AccountsReport WHERE organization IN ($organization) ORDER BY username LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background-solid"
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "type": "value",
+                        "options": {
+                          "enabled": {
+                            "color": "dark-green",
+                            "index": 0
+                          },
+                          "disabled": {
+                            "color": "dark-red",
+                            "index": 1
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": true,
+              "reducer": [
+                "count"
+              ],
+              "fields": [
+                "username"
+              ]
+            }
+          }
+        },
+        {
+          "id": 112,
+          "title": "Users with MD5 Encrypted Passwords (Security Risk)",
+          "description": "Users whose passwords are stored with weak MD5 encryption. These should be migrated to stronger hashing.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 15
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT username, organization, email, status, creation_time, last_login_time FROM AccountsReport WHERE organization IN ($organization) AND md5_encryption ORDER BY username",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": true,
+              "reducer": [
+                "count"
+              ],
+              "fields": [
+                "username"
+              ]
+            }
+          }
+        },
+        {
+          "id": 113,
+          "title": "User-System Access Map",
+          "description": "Which users have access to which systems, including admin status and access group. Based on the users-systems report.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 25
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT username, organization, system_id, group_name, is_admin FROM AccountsSystemsReport WHERE organization IN ($organization) ORDER BY username, system_id LIMIT 500",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "is_admin"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background-solid"
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "type": "value",
+                        "options": {
+                          "true": {
+                            "color": "dark-orange",
+                            "index": 0,
+                            "text": "ADMIN"
+                          },
+                          "false": {
+                            "color": "transparent",
+                            "index": 1,
+                            "text": "user"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 114,
+          "title": "System Group Permissions",
+          "description": "User access permissions to system groups",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 35
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT sgp.group_name, a.username, a.organization FROM SystemGroupPermission sgp JOIN Account a ON sgp.mgm_id = a.mgm_id AND sgp.account_id = a.account_id WHERE a.organization IN ($organization) ORDER BY sgp.group_name, a.username LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 130,
+      "title": "System History",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "panels": [
+        {
+          "id": 131,
+          "title": "System Event History",
+          "description": "General system event history. Use Search System variable to filter by hostname.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 6
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT hostname, event, event_data, event_time FROM SystemHistory WHERE ('$search_system' = '' OR hostname ILIKE '%$search_system%') ORDER BY event_time DESC LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 132,
+          "title": "Package Operation History",
+          "description": "History of package installations, upgrades, and removals",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 16
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryPackagesReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id ORDER BY sa.earliest_action DESC LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 133,
+          "title": "Patch/Errata Application History",
+          "description": "History of patch and errata applications across systems",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 26
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryErrataReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id ORDER BY sa.earliest_action DESC LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 134,
+          "title": "Channel Subscription History",
+          "description": "History of channel subscription changes",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 36
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT s.hostname, ch.event_time, ch.status, ch.event, ch.event_data FROM SystemHistoryChannelsReport ch JOIN System s ON ch.mgm_id = s.mgm_id AND ch.system_id = s.system_id ORDER BY ch.event_time DESC LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 135,
+          "title": "Configuration Management History",
+          "description": "History of configuration management actions",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 46
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryConfigurationReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id ORDER BY sa.earliest_action DESC LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 137,
+          "title": "OpenSCAP Scan History",
+          "description": "History of OpenSCAP compliance scan actions",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 56
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryScapReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id ORDER BY sa.earliest_action DESC LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 138,
+          "title": "Autoinstallation History",
+          "description": "History of automatic installation (kickstart/AutoYaST) actions",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 66
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryAutoinstallationReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id ORDER BY sa.earliest_action DESC LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "title": "SCAP Compliance",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "panels": [
+        {
+          "id": 51,
+          "title": "SCAP Scan Results Overview",
+          "description": "OpenSCAP/XCCDF scan results with pass/fail counts and compliance percentage",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 7
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT hostname, name AS scan_name, profile_title, end_time, pass, fail, error, not_selected, informational, other, ROUND(pass * 100.0 / NULLIF(pass + fail, 0), 1) AS compliance_pct FROM ScapScanReport WHERE organization IN ($organization) ORDER BY end_time DESC LIMIT 100",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "compliance_pct"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "fail"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-reds"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            },
+            "sortBy": [
+              {
+                "displayName": "compliance_pct",
+                "desc": false
+              }
+            ]
+          }
+        },
+        {
+          "id": 52,
+          "title": "Compliance Rate by SCAP Profile",
+          "description": "Average compliance percentage for each SCAP/XCCDF profile",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 17
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT profile_title, ROUND(AVG(pass * 100.0 / NULLIF(pass + fail, 0)), 1) AS avg_compliance_pct FROM ScapScanReport WHERE organization IN ($organization) AND profile_title IS NOT NULL GROUP BY profile_title ORDER BY avg_compliance_pct",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            },
+            "sortBy": []
+          }
+        },
+        {
+          "id": 53,
+          "title": "SCAP Rule Failures",
+          "description": "Individual SCAP/XCCDF rules that failed, with affected system and profile",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 27
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT sr.idref AS rule, sr.ident, sr.result, s.hostname, x.profile_title FROM XccdScanResult sr JOIN XccdScan x ON sr.mgm_id = x.mgm_id AND sr.scan_id = x.scan_id JOIN System s ON sr.mgm_id = s.mgm_id AND sr.system_id = s.system_id WHERE sr.result = 'fail' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY sr.idref, s.hostname LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": true,
+              "reducer": [
+                "count"
+              ],
+              "fields": [
+                "rule"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 120,
+      "title": "Confidential Computing Attestation",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "panels": [
+        {
+          "id": 121,
+          "title": "CoCo Attestation Overview",
+          "description": "Confidential Computing attestation reports with pass/fail summary",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 8
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT s.hostname, s.system_id, ca.environment_type, ca.status, ca.pass, ca.fail, ca.create_time FROM CoCoAttestation ca JOIN System s ON ca.mgm_id = s.mgm_id AND ca.system_id = s.system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY ca.create_time DESC LIMIT 100",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "fail"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-reds"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 122,
+          "title": "CoCo Attestation Results Detail",
+          "description": "Detailed results for each attestation check",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 18
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT s.hostname, ca.environment_type, car.result_type, car.result_status, car.description, car.details, car.attestation_time FROM CoCoAttestationResult car JOIN CoCoAttestation ca ON car.mgm_id = ca.mgm_id AND car.report_id = ca.report_id JOIN System s ON ca.mgm_id = s.mgm_id AND ca.system_id = s.system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY car.attestation_time DESC LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": [
+    "uyuni",
+    "reporting",
+    "security",
+    "compliance",
+    "infrastructure"
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "organization",
+        "label": "Organization",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "{{ datasource_uid }}"
+        },
+        "query": "SELECT DISTINCT organization FROM System WHERE organization IS NOT NULL ORDER BY organization",
+        "includeAll": true,
+        "multi": true,
+        "refresh": 1,
+        "sort": 1,
+        "current": {}
+      },
+      {
+        "name": "system_group",
+        "label": "System Group",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "{{ datasource_uid }}"
+        },
+        "query": "SELECT DISTINCT name FROM SystemGroup UNION SELECT '(none)' WHERE NOT EXISTS (SELECT 1 FROM SystemGroup) ORDER BY 1",
+        "includeAll": true,
+        "multi": true,
+        "refresh": 1,
+        "sort": 1,
+        "current": {}
+      },
+      {
+        "name": "proxy_name",
+        "label": "Proxy",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "{{ datasource_uid }}"
+        },
+        "query": "SELECT DISTINCT hostname FROM System WHERE is_proxy UNION SELECT '(none)' WHERE NOT EXISTS (SELECT 1 FROM System WHERE is_proxy) ORDER BY 1",
+        "includeAll": true,
+        "multi": true,
+        "refresh": 1,
+        "sort": 1,
+        "current": {}
+      },
+      {
+        "name": "search_system",
+        "label": "Search System",
+        "description": "Enter a hostname (or partial) to search for a specific system across inventory, errata, and history panels",
+        "type": "textbox",
+        "current": {
+          "selected": true,
+          "text": "",
+          "value": ""
+        },
+        "query": ""
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "{{ product_name }} Reports & History",
+  "uid": "reportdb-reports-history",
+  "version": 1
+}
+

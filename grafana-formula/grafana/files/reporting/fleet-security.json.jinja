@@ -1,0 +1,2342 @@
+{%- set datasource_uid = 'fffl1ncs75r7kd' -%}
+{
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-postgresql-datasource",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Operational dashboard for Uyuni fleet management. Executive overview, fleet composition, security posture, CVE analysis, patch compliance, proxy infrastructure, and virtualization.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "title": "Reports & History",
+      "type": "link",
+      "url": "/d/reportdb-reports-history",
+      "icon": "doc",
+      "targetBlank": false,
+      "tooltip": "Open the Reports & History dashboard"
+    }
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "title": "Executive Overview",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": []
+    },
+    {
+      "id": 2,
+      "title": "Total Systems",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 0,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Total Proxies",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 3,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE is_proxy AND organization IN ($organization)",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Total Channels",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 6,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(*) AS total FROM Channel WHERE organization IN ($organization)",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Outstanding Patches",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 9,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Systems Needing Updates",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 12,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(*) AS total FROM SystemOutdated so JOIN System s ON so.mgm_id = s.mgm_id AND so.system_id = s.system_id WHERE (so.packages_out_of_date > 0 OR so.errata_out_of_date > 0) AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 7,
+      "title": "Inactive Systems (>7d)",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 15,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE last_checkin_time < NOW() - INTERVAL '7 days' AND organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 8,
+      "title": "Critical Security Patches",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 18,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(DISTINCT e.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND e.severity = 'critical' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 9,
+      "title": "SCAP Compliance %",
+      "type": "gauge",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT ROUND(AVG(pass * 100.0 / NULLIF(pass + fail, 0)), 1) AS compliance_pct FROM XccdScan x JOIN System s ON x.mgm_id = s.mgm_id AND x.system_id = s.system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 100,
+          "unit": "percent",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "green",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      }
+    },
+    {
+      "id": 10,
+      "title": "Fleet Composition",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "panels": []
+    },
+    {
+      "id": 11,
+      "title": "OS Family Distribution",
+      "description": "Distribution of registered systems by OS family (e.g. SLES, RHEL, CentOS, Ubuntu)",
+      "type": "piechart",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 6
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COALESCE(minion_os_family, 'Unknown') AS os_family, COUNT(*) AS count FROM System WHERE organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY minion_os_family ORDER BY count DESC",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "pieType": "pie",
+        "tooltip": {
+          "mode": "single"
+        },
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value",
+            "percent"
+          ]
+        }
+      }
+    },
+    {
+      "id": 12,
+      "title": "Architecture Distribution",
+      "description": "Distribution of registered systems by CPU architecture",
+      "type": "piechart",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 8,
+        "y": 6
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COALESCE(architecture, 'Unknown') AS architecture, COUNT(*) AS count FROM System WHERE organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY architecture ORDER BY count DESC",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "pieType": "pie",
+        "tooltip": {
+          "mode": "single"
+        },
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value",
+            "percent"
+          ]
+        }
+      }
+    },
+    {
+      "id": 13,
+      "title": "Virtual vs Physical",
+      "description": "Breakdown of virtual and physical systems",
+      "type": "piechart",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 16,
+        "y": 6
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT CASE WHEN svd.virtual_system_id IS NOT NULL THEN 'Virtual' ELSE 'Physical' END AS type, COUNT(*) AS count FROM System s LEFT JOIN SystemVirtualData svd ON s.mgm_id = svd.mgm_id AND s.system_id = svd.virtual_system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY type ORDER BY count DESC",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "pieType": "donut",
+        "tooltip": {
+          "mode": "single"
+        },
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value",
+            "percent"
+          ]
+        }
+      }
+    },
+    {
+      "id": 14,
+      "title": "Top 15 Kernel Versions",
+      "description": "Most common kernel versions across the fleet",
+      "type": "table",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 16
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COALESCE(kernel_version, 'Unknown') AS kernel, COUNT(*) AS systems FROM System WHERE organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY kernel_version ORDER BY systems DESC LIMIT 15",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": true,
+          "reducer": [
+            "sum"
+          ],
+          "fields": [
+            "systems"
+          ]
+        },
+        "sortBy": [
+          {
+            "displayName": "systems",
+            "desc": true
+          }
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "title": "Systems by Organization",
+      "description": "Number of registered systems per organization",
+      "type": "table",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 8,
+        "y": 16
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COALESCE(organization, 'No Org') AS organization, COUNT(*) AS systems FROM System GROUP BY organization ORDER BY systems DESC",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": true,
+          "reducer": [
+            "sum"
+          ],
+          "fields": [
+            "systems"
+          ]
+        },
+        "sortBy": [
+          {
+            "displayName": "systems",
+            "desc": true
+          }
+        ]
+      }
+    },
+    {
+      "id": 144,
+      "title": "Hardware Vendor Distribution",
+      "description": "Distribution of systems by hardware vendor",
+      "type": "piechart",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 16,
+        "y": 16
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COALESCE(vendor, 'Unknown') AS vendor, COUNT(*) AS count FROM SystemHardware GROUP BY vendor ORDER BY count DESC LIMIT 20",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "pieType": "pie",
+        "tooltip": {
+          "mode": "single"
+        },
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value",
+            "percent"
+          ]
+        }
+      }
+    },
+    {
+      "id": 20,
+      "title": "Security & CVE Analysis",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "panels": []
+    },
+    {
+      "id": 21,
+      "title": "Critical Security Pending",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 27
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND e.severity = 'critical' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 22,
+      "title": "Important Security Pending",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 27
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND e.severity = 'important' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-orange",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 23,
+      "title": "Bug Fix Patches Pending",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 27
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Bug Fix Advisory' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 24,
+      "title": "Patches Requiring Reboot",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 27
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(DISTINCT e.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.reboot_required AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-red",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 25,
+      "title": "Enhancement Patches",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 27
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Product Enhancement Advisory' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 26,
+      "title": "Total CVEs Referenced",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 27
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(DISTINCT unnested_cve) AS total FROM Errata, unnest(string_to_array(cve, ',')) AS unnested_cve WHERE cve IS NOT NULL",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 27,
+      "title": "Errata by Type",
+      "description": "Distribution of all applicable errata by advisory type",
+      "type": "piechart",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 31
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COALESCE(advisory_type, 'Unknown') AS type, COUNT(*) AS count FROM Errata GROUP BY advisory_type ORDER BY count DESC",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "pieType": "pie",
+        "tooltip": {
+          "mode": "single"
+        },
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value",
+            "percent"
+          ]
+        }
+      }
+    },
+    {
+      "id": 28,
+      "title": "Security Errata by Severity",
+      "description": "Security advisories broken down by severity level",
+      "type": "piechart",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 8,
+        "y": 31
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COALESCE(severity, 'unspecified') AS severity, COUNT(*) AS count FROM Errata WHERE advisory_type = 'Security Advisory' GROUP BY severity ORDER BY CASE severity WHEN 'critical' THEN 1 WHEN 'important' THEN 2 WHEN 'moderate' THEN 3 WHEN 'low' THEN 4 ELSE 5 END",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "critical"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "dark-red"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "important"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "dark-orange"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "moderate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "dark-yellow"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "low"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "dark-green"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "pieType": "pie",
+        "tooltip": {
+          "mode": "single"
+        },
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value",
+            "percent"
+          ]
+        }
+      }
+    },
+    {
+      "id": 29,
+      "title": "Top 20 Most Exposed Systems (Security Patches)",
+      "description": "Systems with the most pending security errata",
+      "type": "table",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 16,
+        "y": 31
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT s.hostname, COUNT(se.errata_id) AS pending_security_errata FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE e.advisory_type = 'Security Advisory' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY s.hostname ORDER BY pending_security_errata DESC LIMIT 20",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": false
+        },
+        "sortBy": []
+      }
+    },
+    {
+      "id": 30,
+      "title": "System Currency Score (Patch Risk Ranking)",
+      "description": "Weighted patch risk score per system. Higher score = more patches needed. Weight: critical=32, important=16, moderate=8, low=4, bugfix=2, enhancement=1. Based on the legacy system-currency report.",
+      "type": "table",
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT s.hostname, s.system_id, s.organization, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'critical' THEN 1 END) AS critical, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'important' THEN 1 END) AS important, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'moderate' THEN 1 END) AS moderate, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND (e.severity = 'low' OR e.severity IS NULL) THEN 1 END) AS low, COUNT(CASE WHEN e.advisory_type = 'Bug Fix Advisory' THEN 1 END) AS bugfix, COUNT(CASE WHEN e.advisory_type = 'Product Enhancement Advisory' THEN 1 END) AS enhancement, (COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'critical' THEN 1 END) * 32 + COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'important' THEN 1 END) * 16 + COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'moderate' THEN 1 END) * 8 + COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND (e.severity = 'low' OR e.severity IS NULL) THEN 1 END) * 4 + COUNT(CASE WHEN e.advisory_type = 'Bug Fix Advisory' THEN 1 END) * 2 + COUNT(CASE WHEN e.advisory_type = 'Product Enhancement Advisory' THEN 1 END)) AS score FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY s.hostname, s.system_id, s.organization ORDER BY score DESC LIMIT 100",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "filterable": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "critical"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "dark-red"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "important"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "dark-orange"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "score"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-reds"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "hostname"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View system in Uyuni",
+                    "url": "https://{{ server }}/rhn/systems/details/Overview.do?sid=${__data.fields.system_id}",
+                    "targetBlank": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": false
+        },
+        "sortBy": [
+          {
+            "displayName": "score",
+            "desc": true
+          }
+        ],
+        "filterable": true
+      }
+    },
+    {
+      "id": 31,
+      "title": "Errata with CVE Details",
+      "description": "All errata with CVE information and affected system counts. Use column filters to search by CVE, severity, or advisory name.",
+      "type": "table",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 53
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT e.advisory_name, e.advisory_type, e.severity, e.cve, e.synopsis, e.issue_date, e.reboot_required, COUNT(DISTINCT se.system_id) AS affected_systems FROM Errata e LEFT JOIN SystemErrata se ON e.mgm_id = se.mgm_id AND e.errata_id = se.errata_id WHERE e.cve IS NOT NULL GROUP BY e.advisory_name, e.advisory_type, e.severity, e.cve, e.synopsis, e.issue_date, e.reboot_required ORDER BY affected_systems DESC LIMIT 500",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "filterable": true
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": false
+        },
+        "filterable": true
+      }
+    },
+    {
+      "id": 32,
+      "title": "Systems Affected by Security Errata (with CVE)",
+      "description": "Systems with pending security errata including CVE details. Use column filters to find systems affected by a specific CVE.",
+      "type": "table",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 53
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT DISTINCT s.hostname, s.system_id, s.architecture, s.minion_os_family AS os_family, na.address AS ip_address, e.advisory_name, e.severity, e.cve FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id LEFT JOIN SystemNetInterface ni ON s.mgm_id = ni.mgm_id AND s.system_id = ni.system_id AND ni.primary_interface LEFT JOIN SystemNetAddressV4 na ON s.mgm_id = na.mgm_id AND s.system_id = na.system_id AND ni.interface_id = na.interface_id WHERE e.advisory_type = 'Security Advisory' AND e.cve IS NOT NULL AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY s.hostname LIMIT 500",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "filterable": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "hostname"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View system in Uyuni",
+                    "url": "https://{{ server }}/rhn/systems/details/Overview.do?sid=${__data.fields.system_id}",
+                    "targetBlank": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": false
+        },
+        "filterable": true
+      }
+    },
+    {
+      "id": 33,
+      "title": "Critical Security Patches - Full Detail",
+      "description": "All pending security advisories with affected system count, ordered by severity",
+      "type": "table",
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 63
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT e.advisory_name, e.severity, e.cve, e.synopsis, e.issue_date, e.update_date, e.reboot_required, COUNT(DISTINCT se.system_id) AS affected_systems FROM Errata e JOIN SystemErrata se ON e.mgm_id = se.mgm_id AND e.errata_id = se.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY e.advisory_name, e.severity, e.cve, e.synopsis, e.issue_date, e.update_date, e.reboot_required ORDER BY CASE e.severity WHEN 'critical' THEN 1 WHEN 'important' THEN 2 WHEN 'moderate' THEN 3 WHEN 'low' THEN 4 ELSE 5 END, affected_systems DESC LIMIT 200",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "filterable": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "severity"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background-solid"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "critical": {
+                        "color": "dark-red",
+                        "index": 0
+                      },
+                      "important": {
+                        "color": "dark-orange",
+                        "index": 1
+                      },
+                      "moderate": {
+                        "color": "dark-yellow",
+                        "index": 2
+                      },
+                      "low": {
+                        "color": "dark-green",
+                        "index": 3
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": false
+        },
+        "sortBy": [
+          {
+            "displayName": "affected_systems",
+            "desc": true
+          }
+        ],
+        "filterable": true
+      }
+    },
+    {
+      "id": 40,
+      "title": "System Health & Patch Compliance",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 73
+      },
+      "panels": []
+    },
+    {
+      "id": 41,
+      "title": "Outdated Systems Overview",
+      "description": "Systems with outstanding package or errata updates, ordered by most outdated first",
+      "type": "table",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 74
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT s.hostname, s.system_id, so.packages_out_of_date, so.errata_out_of_date, so.extra_pkg_count, so.status, s.last_checkin_time, s.organization FROM SystemOutdated so JOIN System s ON so.mgm_id = s.mgm_id AND so.system_id = s.system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY so.errata_out_of_date DESC, so.packages_out_of_date DESC LIMIT 100",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "filterable": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "errata_out_of_date"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-reds"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "packages_out_of_date"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-YlRd"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "hostname"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View system in Uyuni",
+                    "url": "https://{{ server }}/rhn/systems/details/Overview.do?sid=${__data.fields.system_id}",
+                    "targetBlank": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": false
+        },
+        "sortBy": [
+          {
+            "displayName": "errata_out_of_date",
+            "desc": true
+          }
+        ],
+        "filterable": true
+      }
+    },
+    {
+      "id": 42,
+      "title": "Inactive Systems (>7 days)",
+      "description": "Systems that have not checked in within the threshold. Use the Inactivity (Days) variable to adjust.",
+      "type": "table",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 74
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT system_name, organization, last_checkin_time AS last_checkin, inactivity FROM SystemInactivityReport WHERE organization IN ($organization) AND inactivity >= CAST('7 days' AS interval) ORDER BY inactivity DESC",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": true,
+          "reducer": [
+            "count"
+          ],
+          "fields": [
+            "system_name"
+          ]
+        }
+      }
+    },
+    {
+      "id": 43,
+      "title": "System Check-in Recency",
+      "description": "Distribution of systems by how recently they checked in",
+      "type": "table",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 84
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT bucket AS checkin_age, cnt AS systems FROM ( SELECT CASE WHEN last_checkin_time >= NOW() - INTERVAL '1 day' THEN '1 - Last 24h' WHEN last_checkin_time >= NOW() - INTERVAL '7 days' THEN '2 - 1-7 days' WHEN last_checkin_time >= NOW() - INTERVAL '30 days' THEN '3 - 7-30 days' WHEN last_checkin_time >= NOW() - INTERVAL '90 days' THEN '4 - 30-90 days' ELSE '5 - 90+ days' END AS bucket, COUNT(*) AS cnt FROM System WHERE organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY bucket ) sub ORDER BY bucket",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": false
+        },
+        "sortBy": []
+      }
+    },
+    {
+      "id": 44,
+      "title": "Systems Requiring Reboot (Pending Patches)",
+      "description": "Systems with pending patches that require a reboot to apply",
+      "type": "table",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 84
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT DISTINCT s.hostname, s.system_id, s.organization, COUNT(DISTINCT e.errata_id) AS patches_requiring_reboot FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE e.reboot_required AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY s.hostname, s.system_id, s.organization ORDER BY patches_requiring_reboot DESC LIMIT 100",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "hostname"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View system in Uyuni",
+                    "url": "https://{{ server }}/rhn/systems/details/Overview.do?sid=${__data.fields.system_id}",
+                    "targetBlank": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": false
+        }
+      }
+    },
+    {
+      "id": 60,
+      "title": "Proxy Infrastructure",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 94
+      },
+      "panels": [
+        {
+          "id": 61,
+          "title": "Proxy Overview",
+          "description": "All proxy servers and the number of systems registered through each",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 95
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT proxy_name, proxy_id, COUNT(system_id) AS managed_systems FROM ProxyOverviewReport WHERE system_id IN (SELECT system_id FROM System WHERE organization IN ($organization)) GROUP BY proxy_name, proxy_id ORDER BY managed_systems DESC",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": true,
+              "reducer": [
+                "sum"
+              ],
+              "fields": [
+                "managed_systems"
+              ]
+            }
+          }
+        },
+        {
+          "id": 62,
+          "title": "Systems per Proxy",
+          "description": "Bar chart showing the number of managed systems behind each proxy",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 105
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT proxy_name, COUNT(system_id) AS systems FROM ProxyOverviewReport WHERE system_id IN (SELECT system_id FROM System WHERE organization IN ($organization)) GROUP BY proxy_name ORDER BY systems DESC",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            },
+            "sortBy": []
+          }
+        },
+        {
+          "id": 63,
+          "title": "Systems Behind Proxy: $proxy_name",
+          "description": "List of systems registered through the selected proxy. Use the Proxy dropdown to filter.",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 115
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT por.proxy_name, por.system_name, por.system_id, s.architecture, s.minion_os_family AS os_family, s.kernel_version, s.last_checkin_time FROM ProxyOverviewReport por JOIN System s ON por.mgm_id = s.mgm_id AND por.system_id = s.system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY por.proxy_name, por.system_name",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": true,
+              "reducer": [
+                "count"
+              ],
+              "fields": [
+                "system_name"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "title": "Virtualization",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 95
+      },
+      "panels": [
+        {
+          "id": 71,
+          "title": "Host-Guest Relationships",
+          "description": "Virtual machine host-to-guest mappings with resource details",
+          "type": "table",
+          "gridPos": {
+            "h": 12,
+            "w": 16,
+            "x": 0,
+            "y": 96
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT h.hostname AS host_name, h.system_id AS host_id, g.hostname AS guest_name, g.system_id AS guest_id, svd.instance_type_name AS virt_type, svd.vcpus, svd.memory_size AS memory_mb, svd.state_name AS state FROM SystemVirtualData svd JOIN System h ON svd.mgm_id = h.mgm_id AND svd.host_system_id = h.system_id LEFT JOIN System g ON svd.mgm_id = g.mgm_id AND svd.virtual_system_id = g.system_id WHERE svd.host_system_id IS NOT NULL AND h.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR h.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR h.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY h.hostname, g.hostname LIMIT 200",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 72,
+          "title": "VM Type Distribution",
+          "description": "Distribution of virtual machines by hypervisor type",
+          "type": "piechart",
+          "gridPos": {
+            "h": 12,
+            "w": 8,
+            "x": 16,
+            "y": 108
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT COALESCE(instance_type_name, 'Unknown') AS virt_type, COUNT(*) AS count FROM SystemVirtualData WHERE virtual_system_id IS NOT NULL GROUP BY instance_type_name ORDER BY count DESC",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "pieType": "pie",
+            "tooltip": {
+              "mode": "single"
+            },
+            "legend": {
+              "displayMode": "table",
+              "placement": "right",
+              "values": [
+                "value",
+                "percent"
+              ]
+            }
+          }
+        },
+        {
+          "id": 73,
+          "title": "VMs per Host (Top 20)",
+          "description": "Hosts with the most virtual machines",
+          "type": "table",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 120
+          },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT h.hostname AS host, COUNT(svd.virtual_system_id) AS guests FROM SystemVirtualData svd JOIN System h ON svd.mgm_id = h.mgm_id AND svd.host_system_id = h.system_id WHERE svd.host_system_id IS NOT NULL AND svd.virtual_system_id IS NOT NULL AND h.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR h.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR h.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY h.hostname ORDER BY guests DESC LIMIT 20",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "footer": {
+              "show": false
+            },
+            "sortBy": []
+          }
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": [
+    "uyuni",
+    "reporting",
+    "security",
+    "compliance",
+    "infrastructure"
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "organization",
+        "label": "Organization",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "{{ datasource_uid }}"
+        },
+        "query": "SELECT DISTINCT organization FROM System WHERE organization IS NOT NULL ORDER BY organization",
+        "includeAll": true,
+        "multi": true,
+        "refresh": 1,
+        "sort": 1,
+        "current": {}
+      },
+      {
+        "name": "system_group",
+        "label": "System Group",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "{{ datasource_uid }}"
+        },
+        "query": "SELECT DISTINCT name FROM SystemGroup UNION SELECT '(none)' WHERE NOT EXISTS (SELECT 1 FROM SystemGroup) ORDER BY 1",
+        "includeAll": true,
+        "multi": true,
+        "refresh": 1,
+        "sort": 1,
+        "current": {}
+      },
+      {
+        "name": "proxy_name",
+        "label": "Proxy",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "{{ datasource_uid }}"
+        },
+        "query": "SELECT DISTINCT hostname FROM System WHERE is_proxy UNION SELECT '(none)' WHERE NOT EXISTS (SELECT 1 FROM System WHERE is_proxy) ORDER BY 1",
+        "includeAll": true,
+        "multi": true,
+        "refresh": 1,
+        "sort": 1,
+        "current": {}
+      },
+      {
+        "name": "search_system",
+        "label": "Search System",
+        "description": "Enter a hostname (or partial) to search for a specific system across inventory, errata, and history panels",
+        "type": "textbox",
+        "current": {
+          "selected": true,
+          "text": "",
+          "value": ""
+        },
+        "query": ""
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "{{ product_name }} Fleet Overview & Security",
+  "uid": "reportdb-fleet-security",
+  "version": 1
+}
+
