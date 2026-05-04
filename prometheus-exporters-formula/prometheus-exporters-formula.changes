@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May  4 14:50:35 UTC 2026 - Pablo Suárez Hernández <pablo.suarezhernandez@suse.com>
+
+- Version 1.4.3
+  * Add support for Python 3.13
+
+-------------------------------------------------------------------
 Wed Jul 23 08:07:55 UTC 2025 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 1.4.2
