@@ -18,7 +18,7 @@
 %define fname prometheus-exporters
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           prometheus-exporters-formula
-Version:        1.4.2
+Version:        1.4.3
 Release:        0
 Summary:        Salt formula for installing and configuring Prometheus exporters
 License:        Apache-2.0
@@ -41,14 +41,8 @@ Salt formula for installing and configuring Prometheus exporters.
 %install
 mkdir -p %{buildroot}%{fdir}/states/%{fname}
 mkdir -p %{buildroot}%{fdir}/metadata/%{fname}
-mkdir -p %{buildroot}%{fdir}/scripts/%{fname}
 cp -R prometheus-exporters/* %{buildroot}%{fdir}/states/%{fname}
 cp -R metadata/* %{buildroot}%{fdir}/metadata/%{fname}
-cp -R scripts/* %{buildroot}%{fdir}/scripts/%{fname}
-chmod a+x %{buildroot}%{fdir}/scripts/%{fname}/*
-
-%post
-%{fdir}/scripts/%{fname}/migrate_formula_data.py
 
 %files
 %defattr(-,root,root)
@@ -57,9 +51,7 @@ chmod a+x %{buildroot}%{fdir}/scripts/%{fname}/*
 %dir %{fdir}
 %dir %{fdir}/states
 %dir %{fdir}/metadata
-%dir %{fdir}/scripts
 %{fdir}/states/%{fname}
 %{fdir}/metadata/%{fname}
-%{fdir}/scripts/%{fname}
 
 %changelog
