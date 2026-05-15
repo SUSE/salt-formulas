@@ -14,8 +14,70 @@
 {% set isLiberty = salt['file.search']('/etc/os-release', 'SUSE Liberty Linux') %}
 {% set isSleES = salt['file.search']('/etc/os-release', 'SLES Expanded Support') %}
 
+# EL 10
+{% if release == 10 %}
+{% if not isLiberty %}
+
+/usr/share/redhat-release:
+  file.absent
+
+/etc/dnf/protected.d/redhat-release.conf:
+  file.absent
+
+{% if osName == 'Rocky' %}
+/usr/share/rocky-release/:
+  file.absent
+
+remove_release_package:
+  cmd.run:
+    - name: "rpm -e --nodeps rocky-release"
+{% endif %}
+
+{% if osName == 'AlmaLinux' %}
+/usr/share/almalinux-release/:
+  file.absent
+
+remove_release_package:
+  cmd.run:
+    - name: "rpm -e --nodeps almalinux-release"
+{% endif %}
+
+{% if osName == 'OEL' %}
+/usr/share/oraclelinux-release/:
+  file.absent
+
+remove_release_package:
+  cmd.run:
+    - name: "rpm -e --nodeps oraclelinux-release"
+{% endif %}
+
+install_package_10:
+  pkg.installed:
+    - name: sll-release
+    - refresh: True
+
+{% if installLogos %}
+install_logos_10:
+  pkg.installed:
+    - name: sll-logos
+    - refresh: True
+{% endif %}
+
+{% if reinstallPackages %}
+re_install_from_SLL:
+  cmd.run:
+    - name: "dnf -x 'venv-salt-minion' reinstall '*' -y >> /var/log/dnf_sll_migration.log"
+    - require:
+      - pkg: install_package_10
+{% endif %}
+
+{% set liberated = true %}
+
+{% endif %} # end if for search
+
+
 # EL 9
-{% if release == 9 %}
+{% elif release == 9 %}
 {% if not isLiberty %}
 
 /usr/share/redhat-release:
