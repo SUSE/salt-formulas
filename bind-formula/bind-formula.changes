@@ -1,3 +1,6 @@
+- Include bind-forwarders.conf if include-forwarders option
+  is enabled (bsc#1265217)
+
 -------------------------------------------------------------------
 Tue Jan  6 13:35:20 UTC 2026 - Ondrej Holecek <oholecek@suse.com>
 

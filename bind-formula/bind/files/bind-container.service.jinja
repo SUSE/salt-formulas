@@ -16,6 +16,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
         -p 53:53/udp -p 53:53/tcp \
         -v /etc/named.d:/etc/named.d:ro,Z \
         -v /etc/named.conf:/etc/named.conf:ro,Z \
+        {%- if salt["pillar.get"]("bind:config:include_forwarders", False) %}
+        -v /run/netconfig/bind-forwarders.conf:/run/netconfig/bind-forwarders.conf:ro,Z \
+        {%- endif %}
         -v {{ map.named_directory }}:{{ map.container_named_directory }}:Z \
         -v {{ key_directory }}:{{ key_directory }}:ro,Z \
 	--conmon-pidfile %t/bind-container.pid \
