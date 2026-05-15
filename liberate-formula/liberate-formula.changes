@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 15 12:00:00 UTC 2026 - Oscar Barrios <obarrios@suse.com>
+
+- Liberate formula support for EL10
+
+-------------------------------------------------------------------
 Thu Dec 11 13:20:46 UTC 2025 - Thomas Florio <thomas.florio@suse.com>
 
 - Version 0.1.2
