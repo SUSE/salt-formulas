@@ -24,6 +24,12 @@
 /etc/dnf/protected.d/redhat-release.conf:
   file.absent
 
+{% if osName == 'RedHat' or osName == 'CentOS' %}
+remove_release_package:
+  cmd.run:
+    - name: "rpm -e --nodeps redhat-release"
+{% endif %}
+
 {% if osName == 'Rocky' %}
 /usr/share/rocky-release/:
   file.absent
@@ -55,6 +61,8 @@ install_package_10:
   pkg.installed:
     - name: sll-release
     - refresh: True
+    - require:
+      - cmd: remove_release_package
 
 {% if installLogos %}
 install_logos_10:
