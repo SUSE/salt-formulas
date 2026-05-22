@@ -18,51 +18,10 @@
 {% if release == 10 %}
 {% if not isLiberty %}
 
-/usr/share/redhat-release:
-  file.absent
-
-/etc/dnf/protected.d/redhat-release.conf:
-  file.absent
-
-{% if osName == 'RedHat' or osName == 'CentOS' %}
-remove_release_package:
-  cmd.run:
-    - name: "rpm -e --nodeps redhat-release"
-{% endif %}
-
-{% if osName == 'Rocky' %}
-/usr/share/rocky-release/:
-  file.absent
-
-remove_release_package:
-  cmd.run:
-    - name: "rpm -e --nodeps rocky-release"
-{% endif %}
-
-{% if osName == 'AlmaLinux' %}
-/usr/share/almalinux-release/:
-  file.absent
-
-remove_release_package:
-  cmd.run:
-    - name: "rpm -e --nodeps almalinux-release"
-{% endif %}
-
-{% if osName == 'OEL' %}
-/usr/share/oraclelinux-release/:
-  file.absent
-
-remove_release_package:
-  cmd.run:
-    - name: "rpm -e --nodeps oraclelinux-release"
-{% endif %}
-
 install_package_10:
   pkg.installed:
     - name: sll-release
     - refresh: True
-    - require:
-      - cmd: remove_release_package
 
 {% if installLogos %}
 install_logos_10:
