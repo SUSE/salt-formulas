@@ -1,7 +1,7 @@
 #
 # spec file for package liberate-formula
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -19,18 +19,18 @@
 %define fname liberate
 %define fdir  %{_datadir}/susemanager/formulas
 
-Name:           liberate-formula
-Version:        0.1.3
+Name:           %{fname}-formula
+Version:        0.1.4
 Release:        0
-Summary:        Formula to liberate servers and convert them to SLL
+Summary:        Formula to %{fname} servers and convert them to SUSE Liberty Linux
 License:        Apache-2.0
 Group:          System/Packages
-Source:         liberate-formula-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+URL:            https://github.com/SUSE/salt-formulas
+Source:         %{name}-%{version}.tar.gz
 BuildArch:      noarch
 
 %description
-Formula to liberate servers and convert them to SLL
+Formula to %{fname} servers and convert them to SUSE Liberty Linux
 
 %prep
 %setup -q
@@ -44,7 +44,6 @@ cp -R liberate/* %{buildroot}%{fdir}/states/%{fname}
 cp -R metadata/* %{buildroot}%{fdir}/metadata/%{fname}
 
 %files
-%defattr(-,root,root)
 %doc README.md
 %license LICENSE
 %dir %{_datadir}/susemanager

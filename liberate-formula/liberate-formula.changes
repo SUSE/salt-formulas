@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue May 26 17:13:05 UTC 2026 - Marina Latini <marina.latini@suse.com>
+
+- Version 0.1.4
+  * Add project URL
+  * Drop deprecated %defatt and update copyright year
+  * Clarify acronym to SUSE Liberty Linux in Summary and Description
+
+-------------------------------------------------------------------
 Thu May 15 12:00:00 UTC 2026 - Oscar Barrios <obarrios@suse.com>
 
 - Version 0.1.3
