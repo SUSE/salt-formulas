@@ -1,6 +1,6 @@
 # Liberate formula
 
-This formula converts your systems from EL clones, like CentOS 7 or even RHEL 9, to SUSE Liberty Linux. This method is meant to perform the conversion during the minion onboarding on [Uyuni](https://www.uyuni-project.org/) / [SUSE Manager](https://www.suse.com/products/suse-manager/), which is a tool for system management, patching deployment and automation.
+This formula converts your systems from EL clones, like CentOS 7 or even RHEL 9, to SUSE Liberty Linux. This method is meant to perform the conversion during the minion onboarding on [Uyuni](https://www.uyuni-project.org/) / [SUSE Multi-Linux Manager](https://www.suse.com/products/multi-linux-manager/), which is a tool for system management, patching deployment and automation.
 
 This is the result of the Hackweek 23 project 
 [Use Uyuni to migrate EL linux to SLL](https://hackweek.opensuse.org/23/projects/use-uyuni-to-migrate-el-linux-to-sll).
@@ -12,8 +12,8 @@ This is the result of the Hackweek 23 project
 - Install formula
   - `zypper in liberate-formula`
 
-### Configuring Uyuni/SUSE Manager
-Now it's time to start basic configuration to have all the software channels for [SUSE Liberty Linux](https://www.suse.com/products/suse-liberty-linux/) available for the conversion.
+### Configuring Uyuni/SUSE Multi-Linux Manager
+Now it's time to start basic configuration to have all the software channels for [SUSE Liberty Linux](https://www.suse.com/products/multi-linux-support/) available for the conversion.
 
 - Provide SUSE Customer Center credentials
   - Log in to [SUSE Customer Center](https://scc.suse.com)
@@ -28,9 +28,10 @@ Now it's time to start basic configuration to have all the software channels for
     - EL7: `SUSE Linux Enterprise Server with Expanded Support 7 x86_64`
     - EL8: `RHEL or SLES ES or CentOS 8 Base`
     - EL9: `RHEL and Liberty 9 Base`
+    - EL10: `RHEL and Liberty 10 Base`
   - Click on the top right button `+ Add products`
   - Initial sychronization can take considerable time. You can check progress by accessing the server machine via SSH and monitoring the logs using `tail -f /var/log/rhn/reposync/*`
-- Create one Activation Key per [SUSE Liberty Linux](https://www.suse.com/products/suse-liberty-linux/) parent channel
+- Create one Activation Key per [SUSE Liberty Linux](https://www.suse.com/products/multi-linux-support/) parent channel
   - Note: Activation Keys are the way to register systems and automatically assign them to the required software and configuration channels corresponding to them
   - Go to `Systems` -> `Activation Keys` and click on the top right message `+ Create key`
   - Then in the new Activation Key, add the following content:
@@ -42,6 +43,7 @@ Now it's time to start basic configuration to have all the software channels for
         - EL7: `RHEL x86_64 Server 7`
         - EL8: `RHEL8-Pool for x86_64`
         - EL9: `EL9-Pool for x86_64`
+        - EL9: `EL10-Pool for x86_64`
     - `Child Channel`
       - Use `include recommended` where available or select all if unavailable
     - `Add-On system type`: Leave all blank
@@ -100,7 +102,7 @@ This way when you register a system with this key it will perform the conversion
   - Onboarding a new system using a *bootstrap script* with an assigned Activation key
     ```Note: This is intended to be used for mass registration```
     - In the left menu, go to `Admin` -> `Manager Configuration` -> `Bootstrap Script`, to reach the bootstrap script configuration. Let's fill the fields here.
-      - `Uyuni/SUSE Manager server hostname`: This should be set to the hostname that the client systems (a.k.a. minions) will use to reach the server, as well as the hostname
+      - `Uyuni/SUSE Multi-Linux Manager server hostname`: This should be set to the hostname that the client systems (a.k.a. minions) will use to reach the server, as well as the hostname
         - Note: a Certificate will be used associated to this name for the client systems, as it was configured in the initial setup. If it's changed, a new certificate shall be created
       - `SSL cert location`: Path, in the server, to the filename provided as a certificate to register it. Please keep it as it is.
       - `Bootstrap using Salt`: Select this checkbox to apply salt states, like the one we added via configuration channel. It is required to perform the conversion.
@@ -134,6 +136,10 @@ Software channels, System Group Membership, and Formulas can be assigned to any 
 
 | OS version  | Status  |
 | ----------- | ------- |
+| Rhel 10      | Working |
+| Rocky 10     | Working |
+| Alma 10      | Working |
+| Oracle 10    | Working |
 | Rhel 9      | Working |
 | Rocky 9     | Working |
 | Alma 9      | Working |
