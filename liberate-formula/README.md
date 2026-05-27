@@ -45,7 +45,7 @@ Now it's time to start basic configuration to have all the software channels for
         - EL9: `EL9-Pool for x86_64`
         - EL9: `EL10-Pool for x86_64`
     - `Child Channel`
-      - Use `include recommended` where available or select all if unavailable
+      - select all available channels
     - `Add-On system type`: Leave all blank
     - `Contact Method`: Default
     - `Universal Default`: Leave unchecked
