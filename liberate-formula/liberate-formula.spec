@@ -20,7 +20,7 @@
 %define fdir  %{_datadir}/susemanager/formulas
 
 Name:           %{fname}-formula
-Version:        0.1.4
+Version:        0.1.5
 Release:        0
 Summary:        Formula to %{fname} servers and convert them to SUSE Liberty Linux
 License:        Apache-2.0
