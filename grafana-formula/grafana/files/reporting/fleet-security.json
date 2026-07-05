@@ -115,7 +115,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE mgm_id = $manager AND organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))",
           "format": "table",
           "refId": "A"
         }
@@ -170,7 +170,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE is_proxy AND organization IN ($organization)",
+          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE is_proxy AND mgm_id = $manager AND organization IN ($organization)",
           "format": "table",
           "refId": "A"
         }
@@ -225,7 +225,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(*) AS total FROM Channel WHERE organization IN ($organization)",
+          "rawSql": "SELECT COUNT(*) AS total FROM Channel WHERE mgm_id = $manager AND organization IN ($organization)",
           "format": "table",
           "refId": "A"
         }
@@ -280,7 +280,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))",
           "format": "table",
           "refId": "A"
         }
@@ -335,7 +335,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(*) AS total FROM SystemOutdated so JOIN System s ON so.mgm_id = s.mgm_id AND so.system_id = s.system_id WHERE (so.packages_out_of_date > 0 OR so.errata_out_of_date > 0) AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "rawSql": "SELECT COUNT(*) AS total FROM SystemOutdated so JOIN System s ON so.mgm_id = s.mgm_id AND so.system_id = s.system_id WHERE (so.packages_out_of_date > 0 OR so.errata_out_of_date > 0) AND s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))",
           "format": "table",
           "refId": "A"
         }
@@ -390,7 +390,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE last_checkin_time < NOW() - INTERVAL '7 days' AND organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE last_checkin_time < NOW() - INTERVAL '7 days' AND mgm_id = $manager AND organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))",
           "format": "table",
           "refId": "A"
         }
@@ -445,7 +445,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(DISTINCT e.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND e.severity = 'Critical' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "rawSql": "SELECT COUNT(DISTINCT e.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND e.severity = 'Critical' AND s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))",
           "format": "table",
           "refId": "A"
         }
@@ -500,7 +500,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT ROUND(AVG(pass * 100.0 / NULLIF(pass + fail, 0)), 1) AS compliance_pct FROM XccdScan x JOIN System s ON x.mgm_id = s.mgm_id AND x.system_id = s.system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "rawSql": "SELECT ROUND(AVG(pass * 100.0 / NULLIF(pass + fail, 0)), 1) AS compliance_pct FROM XccdScan x JOIN System s ON x.mgm_id = s.mgm_id AND x.system_id = s.system_id WHERE s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))",
           "format": "table",
           "refId": "A"
         }
@@ -583,7 +583,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COALESCE(minion_os_family, 'Unknown') AS os_family, COUNT(*) AS count FROM System WHERE organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY minion_os_family ORDER BY count DESC",
+          "rawSql": "SELECT COALESCE(minion_os_family, 'Unknown') AS os_family, COUNT(*) AS count FROM System WHERE mgm_id = $manager AND organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) GROUP BY minion_os_family ORDER BY count DESC",
           "format": "table",
           "refId": "A"
         }
@@ -635,7 +635,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COALESCE(architecture, 'Unknown') AS architecture, COUNT(*) AS count FROM System WHERE organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY architecture ORDER BY count DESC",
+          "rawSql": "SELECT COALESCE(architecture, 'Unknown') AS architecture, COUNT(*) AS count FROM System WHERE mgm_id = $manager AND organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) GROUP BY architecture ORDER BY count DESC",
           "format": "table",
           "refId": "A"
         }
@@ -687,7 +687,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT CASE WHEN svd.virtual_system_id IS NOT NULL THEN 'Virtual' ELSE 'Physical' END AS type, COUNT(*) AS count FROM System s LEFT JOIN SystemVirtualData svd ON s.mgm_id = svd.mgm_id AND s.system_id = svd.virtual_system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY type ORDER BY count DESC",
+          "rawSql": "SELECT CASE WHEN svd.virtual_system_id IS NOT NULL THEN 'Virtual' ELSE 'Physical' END AS type, COUNT(*) AS count FROM System s LEFT JOIN SystemVirtualData svd ON s.mgm_id = svd.mgm_id AND s.system_id = svd.virtual_system_id WHERE s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) GROUP BY type ORDER BY count DESC",
           "format": "table",
           "refId": "A"
         }
@@ -739,7 +739,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COALESCE(kernel_version, 'Unknown') AS kernel, COUNT(*) AS systems FROM System WHERE organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY kernel_version ORDER BY systems DESC LIMIT 15",
+          "rawSql": "SELECT COALESCE(kernel_version, 'Unknown') AS kernel, COUNT(*) AS systems FROM System WHERE mgm_id = $manager AND organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) GROUP BY kernel_version ORDER BY systems DESC LIMIT 15",
           "format": "table",
           "refId": "A"
         }
@@ -788,7 +788,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COALESCE(organization, 'No Org') AS organization, COUNT(*) AS systems FROM System GROUP BY organization ORDER BY systems DESC",
+          "rawSql": "SELECT COALESCE(organization, 'No Org') AS organization, COUNT(*) AS systems FROM System WHERE mgm_id = $manager GROUP BY organization ORDER BY systems DESC",
           "format": "table",
           "refId": "A"
         }
@@ -837,7 +837,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COALESCE(vendor, 'Unknown') AS vendor, COUNT(*) AS count FROM SystemHardware GROUP BY vendor ORDER BY count DESC LIMIT 20",
+          "rawSql": "SELECT COALESCE(vendor, 'Unknown') AS vendor, COUNT(*) AS count FROM SystemHardware WHERE mgm_id = $manager GROUP BY vendor ORDER BY count DESC LIMIT 20",
           "format": "table",
           "refId": "A"
         }
@@ -901,7 +901,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND e.severity = 'Critical' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND e.severity = 'Critical' AND s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))",
           "format": "table",
           "refId": "A"
         }
@@ -956,7 +956,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND e.severity = 'Important' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND e.severity = 'Important' AND s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))",
           "format": "table",
           "refId": "A"
         }
@@ -1011,7 +1011,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Bug Fix Advisory' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Bug Fix Advisory' AND s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))",
           "format": "table",
           "refId": "A"
         }
@@ -1066,7 +1066,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(DISTINCT e.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.reboot_required AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "rawSql": "SELECT COUNT(DISTINCT e.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.reboot_required AND s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))",
           "format": "table",
           "refId": "A"
         }
@@ -1121,7 +1121,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Product Enhancement Advisory' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group)))",
+          "rawSql": "SELECT COUNT(DISTINCT se.errata_id) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Product Enhancement Advisory' AND s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))",
           "format": "table",
           "refId": "A"
         }
@@ -1176,7 +1176,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(DISTINCT unnested_cve) AS total FROM Errata, unnest(string_to_array(cve, ',')) AS unnested_cve WHERE cve IS NOT NULL",
+          "rawSql": "SELECT COUNT(DISTINCT unnested_cve) AS total FROM Errata, unnest(string_to_array(cve, ',')) AS unnested_cve WHERE mgm_id = $manager AND cve IS NOT NULL",
           "format": "table",
           "refId": "A"
         }
@@ -1232,7 +1232,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COALESCE(advisory_type, 'Unknown') AS type, COUNT(*) AS count FROM Errata GROUP BY advisory_type ORDER BY count DESC",
+          "rawSql": "SELECT COALESCE(advisory_type, 'Unknown') AS type, COUNT(*) AS count FROM Errata WHERE mgm_id = $manager GROUP BY advisory_type ORDER BY count DESC",
           "format": "table",
           "refId": "A"
         }
@@ -1284,7 +1284,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COALESCE(severity, 'unspecified') AS severity, COUNT(*) AS count FROM Errata WHERE advisory_type = 'Security Advisory' GROUP BY severity ORDER BY CASE severity WHEN 'Critical' THEN 1 WHEN 'Important' THEN 2 WHEN 'Moderate' THEN 3 WHEN 'Low' THEN 4 ELSE 5 END",
+          "rawSql": "SELECT COALESCE(severity, 'unspecified') AS severity, COUNT(*) AS count FROM Errata WHERE mgm_id = $manager AND advisory_type = 'Security Advisory' GROUP BY severity ORDER BY CASE severity WHEN 'Critical' THEN 1 WHEN 'Important' THEN 2 WHEN 'Moderate' THEN 3 WHEN 'Low' THEN 4 ELSE 5 END",
           "format": "table",
           "refId": "A"
         }
@@ -1397,7 +1397,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT s.hostname, COUNT(se.errata_id) AS pending_security_errata FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE e.advisory_type = 'Security Advisory' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY s.hostname ORDER BY pending_security_errata DESC LIMIT 20",
+          "rawSql": "SELECT s.hostname, COUNT(se.errata_id) AS pending_security_errata FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE e.advisory_type = 'Security Advisory' AND s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) GROUP BY s.hostname ORDER BY pending_security_errata DESC LIMIT 20",
           "format": "table",
           "refId": "A"
         }
@@ -1435,7 +1435,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT s.hostname, s.system_id, s.organization, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Critical' THEN 1 END) AS critical, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Important' THEN 1 END) AS important, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Moderate' THEN 1 END) AS moderate, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND (e.severity = 'Low' OR e.severity IS NULL) THEN 1 END) AS low, COUNT(CASE WHEN e.advisory_type = 'Bug Fix Advisory' THEN 1 END) AS bugfix, COUNT(CASE WHEN e.advisory_type = 'Product Enhancement Advisory' THEN 1 END) AS enhancement, (COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Critical' THEN 1 END) * 32 + COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Important' THEN 1 END) * 16 + COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Moderate' THEN 1 END) * 8 + COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND (e.severity = 'Low' OR e.severity IS NULL) THEN 1 END) * 4 + COUNT(CASE WHEN e.advisory_type = 'Bug Fix Advisory' THEN 1 END) * 2 + COUNT(CASE WHEN e.advisory_type = 'Product Enhancement Advisory' THEN 1 END)) AS score FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY s.hostname, s.system_id, s.organization ORDER BY score DESC LIMIT 100",
+          "rawSql": "SELECT s.hostname, s.system_id, s.organization, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Critical' THEN 1 END) AS critical, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Important' THEN 1 END) AS important, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Moderate' THEN 1 END) AS moderate, COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND (e.severity = 'Low' OR e.severity IS NULL) THEN 1 END) AS low, COUNT(CASE WHEN e.advisory_type = 'Bug Fix Advisory' THEN 1 END) AS bugfix, COUNT(CASE WHEN e.advisory_type = 'Product Enhancement Advisory' THEN 1 END) AS enhancement, (COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Critical' THEN 1 END) * 32 + COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Important' THEN 1 END) * 16 + COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND e.severity = 'Moderate' THEN 1 END) * 8 + COUNT(CASE WHEN e.advisory_type = 'Security Advisory' AND (e.severity = 'Low' OR e.severity IS NULL) THEN 1 END) * 4 + COUNT(CASE WHEN e.advisory_type = 'Bug Fix Advisory' THEN 1 END) * 2 + COUNT(CASE WHEN e.advisory_type = 'Product Enhancement Advisory' THEN 1 END)) AS score FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) GROUP BY s.hostname, s.system_id, s.organization ORDER BY score DESC LIMIT 100",
           "format": "table",
           "refId": "A"
         }
@@ -1558,7 +1558,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT e.advisory_name, e.advisory_type, e.severity, e.cve, e.synopsis, e.issue_date, e.reboot_required, COUNT(DISTINCT se.system_id) AS affected_systems FROM Errata e LEFT JOIN SystemErrata se ON e.mgm_id = se.mgm_id AND e.errata_id = se.errata_id WHERE e.cve IS NOT NULL GROUP BY e.advisory_name, e.advisory_type, e.severity, e.cve, e.synopsis, e.issue_date, e.reboot_required ORDER BY affected_systems DESC LIMIT 500",
+          "rawSql": "SELECT e.advisory_name, e.advisory_type, e.severity, e.cve, e.synopsis, e.issue_date, e.reboot_required, COUNT(DISTINCT se.system_id) AS affected_systems FROM Errata e LEFT JOIN SystemErrata se ON e.mgm_id = se.mgm_id AND e.errata_id = se.errata_id WHERE e.mgm_id = $manager AND e.cve IS NOT NULL GROUP BY e.advisory_name, e.advisory_type, e.severity, e.cve, e.synopsis, e.issue_date, e.reboot_required ORDER BY affected_systems DESC LIMIT 500",
           "format": "table",
           "refId": "A"
         }
@@ -1600,7 +1600,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT DISTINCT s.hostname, s.system_id, s.architecture, s.minion_os_family AS os_family, na.address AS ip_address, e.advisory_name, e.severity, e.cve FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id LEFT JOIN SystemNetInterface ni ON s.mgm_id = ni.mgm_id AND s.system_id = ni.system_id AND ni.primary_interface LEFT JOIN SystemNetAddressV4 na ON s.mgm_id = na.mgm_id AND s.system_id = na.system_id AND ni.interface_id = na.interface_id WHERE e.advisory_type = 'Security Advisory' AND e.cve IS NOT NULL AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY s.hostname LIMIT 500",
+          "rawSql": "SELECT DISTINCT s.hostname, s.system_id, s.architecture, s.minion_os_family AS os_family, na.address AS ip_address, e.advisory_name, e.severity, e.cve FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id LEFT JOIN SystemNetInterface ni ON s.mgm_id = ni.mgm_id AND s.system_id = ni.system_id AND ni.primary_interface LEFT JOIN SystemNetAddressV4 na ON s.mgm_id = na.mgm_id AND s.system_id = na.system_id AND ni.interface_id = na.interface_id WHERE e.advisory_type = 'Security Advisory' AND e.cve IS NOT NULL AND s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY s.hostname LIMIT 500",
           "format": "table",
           "refId": "A"
         }
@@ -1661,7 +1661,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT e.advisory_name, e.severity, e.cve, e.synopsis, e.issue_date, e.update_date, e.reboot_required, COUNT(DISTINCT se.system_id) AS affected_systems FROM Errata e JOIN SystemErrata se ON e.mgm_id = se.mgm_id AND e.errata_id = se.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY e.advisory_name, e.severity, e.cve, e.synopsis, e.issue_date, e.update_date, e.reboot_required ORDER BY CASE e.severity WHEN 'Critical' THEN 1 WHEN 'Important' THEN 2 WHEN 'Moderate' THEN 3 WHEN 'Low' THEN 4 ELSE 5 END, affected_systems DESC LIMIT 200",
+          "rawSql": "SELECT e.advisory_name, e.severity, e.cve, e.synopsis, e.issue_date, e.update_date, e.reboot_required, COUNT(DISTINCT se.system_id) AS affected_systems FROM Errata e JOIN SystemErrata se ON e.mgm_id = se.mgm_id AND e.errata_id = se.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE e.advisory_type = 'Security Advisory' AND s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) GROUP BY e.advisory_name, e.severity, e.cve, e.synopsis, e.issue_date, e.update_date, e.reboot_required ORDER BY CASE e.severity WHEN 'Critical' THEN 1 WHEN 'Important' THEN 2 WHEN 'Moderate' THEN 3 WHEN 'Low' THEN 4 ELSE 5 END, affected_systems DESC LIMIT 200",
           "format": "table",
           "refId": "A"
         }
@@ -1761,7 +1761,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT s.hostname, s.system_id, so.packages_out_of_date, so.errata_out_of_date, so.extra_pkg_count, so.status, s.last_checkin_time, s.organization FROM SystemOutdated so JOIN System s ON so.mgm_id = s.mgm_id AND so.system_id = s.system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY so.errata_out_of_date DESC, so.packages_out_of_date DESC LIMIT 100",
+          "rawSql": "SELECT s.hostname, s.system_id, so.packages_out_of_date, so.errata_out_of_date, so.extra_pkg_count, so.status, s.last_checkin_time, s.organization FROM SystemOutdated so JOIN System s ON so.mgm_id = s.mgm_id AND so.system_id = s.system_id WHERE s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY so.errata_out_of_date DESC, so.packages_out_of_date DESC LIMIT 100",
           "format": "table",
           "refId": "A"
         }
@@ -1864,7 +1864,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT system_name, organization, last_checkin_time AS last_checkin, inactivity FROM SystemInactivityReport WHERE organization IN ($organization) AND inactivity >= CAST('7 days' AS interval) ORDER BY inactivity DESC",
+          "rawSql": "SELECT system_name, organization, last_checkin_time AS last_checkin, inactivity FROM SystemInactivityReport WHERE mgm_id = $manager AND organization IN ($organization) AND inactivity >= CAST('7 days' AS interval) ORDER BY inactivity DESC",
           "format": "table",
           "refId": "A"
         }
@@ -1907,7 +1907,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT bucket AS checkin_age, cnt AS systems FROM ( SELECT CASE WHEN last_checkin_time >= NOW() - INTERVAL '1 day' THEN '1 - Last 24h' WHEN last_checkin_time >= NOW() - INTERVAL '7 days' THEN '2 - 1-7 days' WHEN last_checkin_time >= NOW() - INTERVAL '30 days' THEN '3 - 7-30 days' WHEN last_checkin_time >= NOW() - INTERVAL '90 days' THEN '4 - 30-90 days' ELSE '5 - 90+ days' END AS bucket, COUNT(*) AS cnt FROM System WHERE organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY bucket ) sub ORDER BY bucket",
+          "rawSql": "SELECT bucket AS checkin_age, cnt AS systems FROM ( SELECT CASE WHEN last_checkin_time >= NOW() - INTERVAL '1 day' THEN '1 - Last 24h' WHEN last_checkin_time >= NOW() - INTERVAL '7 days' THEN '2 - 1-7 days' WHEN last_checkin_time >= NOW() - INTERVAL '30 days' THEN '3 - 7-30 days' WHEN last_checkin_time >= NOW() - INTERVAL '90 days' THEN '4 - 30-90 days' ELSE '5 - 90+ days' END AS bucket, COUNT(*) AS cnt FROM System WHERE mgm_id = $manager AND organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) GROUP BY bucket ) sub ORDER BY bucket",
           "format": "table",
           "refId": "A"
         }
@@ -1945,7 +1945,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT DISTINCT s.hostname, s.system_id, s.organization, COUNT(DISTINCT e.errata_id) AS patches_requiring_reboot FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE e.reboot_required AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY s.hostname, s.system_id, s.organization ORDER BY patches_requiring_reboot DESC LIMIT 100",
+          "rawSql": "SELECT DISTINCT s.hostname, s.system_id, s.organization, COUNT(DISTINCT e.errata_id) AS patches_requiring_reboot FROM SystemErrata se JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE e.reboot_required AND s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) GROUP BY s.hostname, s.system_id, s.organization ORDER BY patches_requiring_reboot DESC LIMIT 100",
           "format": "table",
           "refId": "A"
         }
@@ -2013,7 +2013,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT proxy_name, proxy_id, COUNT(system_id) AS managed_systems FROM ProxyOverviewReport WHERE system_id IN (SELECT system_id FROM System WHERE organization IN ($organization)) GROUP BY proxy_name, proxy_id ORDER BY managed_systems DESC",
+              "rawSql": "SELECT proxy_name, proxy_id, COUNT(system_id) AS managed_systems FROM ProxyOverviewReport WHERE system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND organization IN ($organization)) GROUP BY proxy_name, proxy_id ORDER BY managed_systems DESC",
               "format": "table",
               "refId": "A"
             }
@@ -2056,7 +2056,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT proxy_name, COUNT(system_id) AS systems FROM ProxyOverviewReport WHERE system_id IN (SELECT system_id FROM System WHERE organization IN ($organization)) GROUP BY proxy_name ORDER BY systems DESC",
+              "rawSql": "SELECT proxy_name, COUNT(system_id) AS systems FROM ProxyOverviewReport WHERE system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND organization IN ($organization)) GROUP BY proxy_name ORDER BY systems DESC",
               "format": "table",
               "refId": "A"
             }
@@ -2094,7 +2094,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT por.proxy_name, por.system_name, por.system_id, s.architecture, s.minion_os_family AS os_family, s.kernel_version, s.last_checkin_time FROM ProxyOverviewReport por JOIN System s ON por.mgm_id = s.mgm_id AND por.system_id = s.system_id WHERE s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY por.proxy_name, por.system_name",
+              "rawSql": "SELECT por.proxy_name, por.system_name, por.system_id, s.architecture, s.minion_os_family AS os_family, s.kernel_version, s.last_checkin_time FROM ProxyOverviewReport por JOIN System s ON por.mgm_id = s.mgm_id AND por.system_id = s.system_id WHERE s.mgm_id = $manager AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY por.proxy_name, por.system_name",
               "format": "table",
               "refId": "A"
             }
@@ -2151,7 +2151,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT h.hostname AS host_name, h.system_id AS host_id, g.hostname AS guest_name, g.system_id AS guest_id, svd.instance_type_name AS virt_type, svd.vcpus, svd.memory_size AS memory_mb, svd.state_name AS state FROM SystemVirtualData svd JOIN System h ON svd.mgm_id = h.mgm_id AND svd.host_system_id = h.system_id LEFT JOIN System g ON svd.mgm_id = g.mgm_id AND svd.virtual_system_id = g.system_id WHERE svd.host_system_id IS NOT NULL AND h.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR h.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR h.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) ORDER BY h.hostname, g.hostname LIMIT 200",
+              "rawSql": "SELECT h.hostname AS host_name, h.system_id AS host_id, g.hostname AS guest_name, g.system_id AS guest_id, svd.instance_type_name AS virt_type, svd.vcpus, svd.memory_size AS memory_mb, svd.state_name AS state FROM SystemVirtualData svd JOIN System h ON svd.mgm_id = h.mgm_id AND svd.host_system_id = h.system_id LEFT JOIN System g ON svd.mgm_id = g.mgm_id AND svd.virtual_system_id = g.system_id WHERE svd.host_system_id IS NOT NULL AND h.mgm_id = $manager AND h.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR h.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR h.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY h.hostname, g.hostname LIMIT 200",
               "format": "table",
               "refId": "A"
             }
@@ -2188,7 +2188,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT COALESCE(instance_type_name, 'Unknown') AS virt_type, COUNT(*) AS count FROM SystemVirtualData WHERE virtual_system_id IS NOT NULL GROUP BY instance_type_name ORDER BY count DESC",
+              "rawSql": "SELECT COALESCE(instance_type_name, 'Unknown') AS virt_type, COUNT(*) AS count FROM SystemVirtualData WHERE mgm_id = $manager AND virtual_system_id IS NOT NULL GROUP BY instance_type_name ORDER BY count DESC",
               "format": "table",
               "refId": "A"
             }
@@ -2240,7 +2240,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT h.hostname AS host, COUNT(svd.virtual_system_id) AS guests FROM SystemVirtualData svd JOIN System h ON svd.mgm_id = h.mgm_id AND svd.host_system_id = h.system_id WHERE svd.host_system_id IS NOT NULL AND svd.virtual_system_id IS NOT NULL AND h.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE is_proxy AND hostname NOT IN ($proxy_name)) OR h.proxy_system_id IN (SELECT system_id FROM System WHERE is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE name NOT IN ($system_group)) OR h.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.group_name IN ($system_group))) GROUP BY h.hostname ORDER BY guests DESC LIMIT 20",
+              "rawSql": "SELECT h.hostname AS host, COUNT(svd.virtual_system_id) AS guests FROM SystemVirtualData svd JOIN System h ON svd.mgm_id = h.mgm_id AND svd.host_system_id = h.system_id WHERE svd.host_system_id IS NOT NULL AND svd.virtual_system_id IS NOT NULL AND h.mgm_id = $manager AND h.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR h.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR h.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) GROUP BY h.hostname ORDER BY guests DESC LIMIT 20",
               "format": "table",
               "refId": "A"
             }
@@ -2271,6 +2271,26 @@
   "templating": {
     "list": [
       {
+        "name": "manager",
+        "label": "Managed Server",
+        "description": "Scope the dashboard to a single managed server. On a Hub, choose a peripheral; on a standalone or peripheral server only this server is available.",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "{{ datasource_uid }}"
+        },
+        "query": "SELECT DISTINCT s.mgm_id AS __value, COALESCE(mgr.hostname, 'This Server') AS __text FROM System s LEFT JOIN System mgr ON mgr.mgm_id = 1 AND mgr.is_mgr_server AND mgr.system_id = s.mgm_id ORDER BY 2",
+        "includeAll": false,
+        "multi": false,
+        "refresh": 1,
+        "sort": 0,
+        "current": {
+          "selected": true,
+          "text": "This Server",
+          "value": "1"
+        }
+      },
+      {
         "name": "organization",
         "label": "Organization",
         "type": "query",
@@ -2278,7 +2298,7 @@
           "type": "grafana-postgresql-datasource",
           "uid": "{{ datasource_uid }}"
         },
-        "query": "SELECT DISTINCT organization FROM System WHERE organization IS NOT NULL ORDER BY organization",
+        "query": "SELECT DISTINCT organization FROM System WHERE mgm_id = $manager AND organization IS NOT NULL ORDER BY organization",
         "includeAll": true,
         "multi": true,
         "refresh": 1,
@@ -2293,7 +2313,7 @@
           "type": "grafana-postgresql-datasource",
           "uid": "{{ datasource_uid }}"
         },
-        "query": "SELECT DISTINCT name FROM SystemGroup UNION SELECT '(none)' WHERE NOT EXISTS (SELECT 1 FROM SystemGroup) ORDER BY 1",
+        "query": "SELECT DISTINCT name FROM SystemGroup WHERE mgm_id = $manager UNION SELECT '(none)' WHERE NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager) ORDER BY 1",
         "includeAll": true,
         "multi": true,
         "refresh": 1,
@@ -2308,7 +2328,7 @@
           "type": "grafana-postgresql-datasource",
           "uid": "{{ datasource_uid }}"
         },
-        "query": "SELECT DISTINCT hostname FROM System WHERE is_proxy UNION SELECT '(none)' WHERE NOT EXISTS (SELECT 1 FROM System WHERE is_proxy) ORDER BY 1",
+        "query": "SELECT DISTINCT hostname FROM System WHERE mgm_id = $manager AND is_proxy UNION SELECT '(none)' WHERE NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy) ORDER BY 1",
         "includeAll": true,
         "multi": true,
         "refresh": 1,
@@ -2337,6 +2357,6 @@
   "timezone": "browser",
   "title": "{{ product_name }} Fleet Overview & Security",
   "uid": "reportdb-fleet-security",
-  "version": 2
+  "version": 3
 }
 
