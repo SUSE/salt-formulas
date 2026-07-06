@@ -225,7 +225,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "{{ datasource_uid }}"
           },
-          "rawSql": "SELECT COUNT(*) AS total FROM Channel WHERE mgm_id = $manager AND organization IN ($organization)",
+          "rawSql": "SELECT COUNT(*) AS total FROM ChannelsReport WHERE mgm_id = $manager AND (organization IS NULL OR organization IN ($organization))",
           "format": "table",
           "refId": "A"
         }
@@ -2334,18 +2334,6 @@
         "refresh": 1,
         "sort": 1,
         "current": {}
-      },
-      {
-        "name": "search_system",
-        "label": "Search System",
-        "description": "Enter a hostname (or partial) to search for a specific system across inventory, errata, and history panels",
-        "type": "textbox",
-        "current": {
-          "selected": true,
-          "text": "",
-          "value": ""
-        },
-        "query": ""
       }
     ]
   },

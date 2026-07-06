@@ -742,7 +742,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT hostname, architecture, cpus, sockets, cores, threads, cpu_model, cpu_vendor, cpu_mhz, memory_size AS ram_mb, swap_size AS swap_mb, vendor AS hw_vendor, product AS hw_product, bios_vendor, bios_version, ip_address, hardware_address AS mac_address, is_virtualized FROM SystemHardwareReport WHERE mgm_id = $manager AND system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND organization IN ($organization)) ORDER BY hostname LIMIT 200",
+              "rawSql": "SELECT hostname, architecture, cpus, sockets, cores, threads, cpu_model, cpu_vendor, cpu_mhz, memory_size AS ram_mb, swap_size AS swap_mb, vendor AS hw_vendor, product AS hw_product, bios_vendor, bios_version, ip_address, hardware_address AS mac_address, is_virtualized FROM SystemHardwareReport WHERE mgm_id = $manager AND system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND organization IN ($organization)) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY hostname LIMIT 200",
               "format": "table",
               "refId": "A"
             }
@@ -865,7 +865,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT system_id, organization, key, value, description FROM SystemCustomInfo WHERE mgm_id = $manager AND organization IN ($organization) ORDER BY system_id, key LIMIT 200",
+              "rawSql": "SELECT system_id, organization, key, value, description FROM SystemCustomInfo WHERE mgm_id = $manager AND organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY system_id, key LIMIT 200",
               "format": "table",
               "refId": "A"
             }
@@ -873,119 +873,6 @@
           "fieldConfig": {
             "defaults": {},
             "overrides": []
-          },
-          "options": {
-            "showHeader": true,
-            "footer": {
-              "show": false
-            }
-          }
-        },
-        {
-          "id": 106,
-          "title": "System Search: $search_system",
-          "description": "Search for systems by hostname. Enter a partial hostname in the Search System variable.",
-          "type": "table",
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 12,
-            "y": 58
-          },
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "{{ datasource_uid }}"
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "grafana-postgresql-datasource",
-                "uid": "{{ datasource_uid }}"
-              },
-              "rawSql": "SELECT system_id, profile_name, hostname, ip_address, kernel_version, architecture, organization, packages_out_of_date, errata_out_of_date, status, last_checkin_time FROM InventoryReport WHERE mgm_id = $manager AND organization IN ($organization) AND '$search_system' != '' AND hostname ILIKE '%$search_system%' ORDER BY hostname LIMIT 100",
-              "format": "table",
-              "refId": "A"
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "options": {
-            "showHeader": true,
-            "footer": {
-              "show": false
-            }
-          }
-        },
-        {
-          "id": 107,
-          "title": "Errata for Searched System",
-          "description": "Pending errata/patches for the system specified in Search System",
-          "type": "table",
-          "gridPos": {
-            "h": 10,
-            "w": 24,
-            "x": 0,
-            "y": 68
-          },
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "{{ datasource_uid }}"
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "grafana-postgresql-datasource",
-                "uid": "{{ datasource_uid }}"
-              },
-              "rawSql": "SELECT se.hostname, se.advisory_name, se.advisory_type, e.severity, e.cve, e.synopsis, e.reboot_required FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id JOIN System s ON se.mgm_id = s.mgm_id AND se.system_id = s.system_id WHERE se.mgm_id = $manager AND '$search_system' != '' AND se.hostname ILIKE '%$search_system%' AND s.organization IN ($organization) AND (NOT EXISTS (SELECT 1 FROM System WHERE mgm_id = $manager AND is_proxy AND hostname NOT IN ($proxy_name)) OR s.proxy_system_id IN (SELECT system_id FROM System WHERE mgm_id = $manager AND is_proxy AND hostname IN ($proxy_name))) AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY CASE e.severity WHEN 'Critical' THEN 1 WHEN 'Important' THEN 2 WHEN 'Moderate' THEN 3 WHEN 'Low' THEN 4 ELSE 5 END, se.advisory_name LIMIT 200",
-              "format": "table",
-              "refId": "A"
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "severity"
-                },
-                "properties": [
-                  {
-                    "id": "custom.displayMode",
-                    "value": "color-background-solid"
-                  },
-                  {
-                    "id": "mappings",
-                    "value": [
-                      {
-                        "type": "value",
-                        "options": {
-                          "critical": {
-                            "color": "dark-red",
-                            "index": 0
-                          },
-                          "important": {
-                            "color": "dark-orange",
-                            "index": 1
-                          },
-                          "moderate": {
-                            "color": "dark-yellow",
-                            "index": 2
-                          },
-                          "low": {
-                            "color": "dark-green",
-                            "index": 3
-                          }
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
           },
           "options": {
             "showHeader": true,
@@ -1249,7 +1136,7 @@
         {
           "id": 131,
           "title": "System Event History",
-          "description": "General system event history. Use Search System variable to filter by hostname.",
+          "description": "General system event history.",
           "type": "table",
           "gridPos": {
             "h": 10,
@@ -1267,7 +1154,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT hostname, event, event_data, event_time FROM SystemHistory WHERE mgm_id = $manager AND ('$search_system' = '' OR hostname ILIKE '%$search_system%') ORDER BY event_time DESC LIMIT 200",
+              "rawSql": "SELECT hostname, event, event_data, event_time FROM SystemHistory WHERE mgm_id = $manager AND hostname IN (SELECT hostname FROM System sysg WHERE sysg.mgm_id = $manager AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR sysg.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group)))) ORDER BY event_time DESC LIMIT 200",
               "format": "table",
               "refId": "A"
             }
@@ -1304,7 +1191,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryPackagesReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id WHERE s.mgm_id = $manager ORDER BY sa.earliest_action DESC LIMIT 200",
+              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryPackagesReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id WHERE s.mgm_id = $manager AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY sa.earliest_action DESC LIMIT 200",
               "format": "table",
               "refId": "A"
             }
@@ -1341,7 +1228,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryErrataReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id WHERE s.mgm_id = $manager ORDER BY sa.earliest_action DESC LIMIT 200",
+              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryErrataReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id WHERE s.mgm_id = $manager AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY sa.earliest_action DESC LIMIT 200",
               "format": "table",
               "refId": "A"
             }
@@ -1378,7 +1265,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT s.hostname, ch.event_time, ch.status, ch.event, ch.event_data FROM SystemHistoryChannelsReport ch JOIN System s ON ch.mgm_id = s.mgm_id AND ch.system_id = s.system_id WHERE s.mgm_id = $manager ORDER BY ch.event_time DESC LIMIT 200",
+              "rawSql": "SELECT s.hostname, ch.event_time, ch.status, ch.event, ch.event_data FROM SystemHistoryChannelsReport ch JOIN System s ON ch.mgm_id = s.mgm_id AND ch.system_id = s.system_id WHERE s.mgm_id = $manager AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY ch.event_time DESC LIMIT 200",
               "format": "table",
               "refId": "A"
             }
@@ -1415,7 +1302,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryConfigurationReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id WHERE s.mgm_id = $manager ORDER BY sa.earliest_action DESC LIMIT 200",
+              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryConfigurationReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id WHERE s.mgm_id = $manager AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY sa.earliest_action DESC LIMIT 200",
               "format": "table",
               "refId": "A"
             }
@@ -1452,7 +1339,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryScapReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id WHERE s.mgm_id = $manager ORDER BY sa.earliest_action DESC LIMIT 200",
+              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryScapReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id WHERE s.mgm_id = $manager AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY sa.earliest_action DESC LIMIT 200",
               "format": "table",
               "refId": "A"
             }
@@ -1489,7 +1376,7 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "{{ datasource_uid }}"
               },
-              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryAutoinstallationReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id WHERE s.mgm_id = $manager ORDER BY sa.earliest_action DESC LIMIT 200",
+              "rawSql": "SELECT s.hostname, sa.earliest_action, sa.completion_time, sa.status, sa.event, sa.event_data FROM SystemHistoryAutoinstallationReport sa JOIN System s ON sa.mgm_id = s.mgm_id AND sa.system_id = s.system_id WHERE s.mgm_id = $manager AND (NOT EXISTS (SELECT 1 FROM SystemGroup WHERE mgm_id = $manager AND name NOT IN ($system_group)) OR s.system_id IN (SELECT sgm.system_id FROM SystemGroupMember sgm WHERE sgm.mgm_id = $manager AND sgm.group_name IN ($system_group))) ORDER BY sa.earliest_action DESC LIMIT 200",
               "format": "table",
               "refId": "A"
             }
@@ -1868,18 +1755,6 @@
         "refresh": 1,
         "sort": 1,
         "current": {}
-      },
-      {
-        "name": "search_system",
-        "label": "Search System",
-        "description": "Enter a hostname (or partial) to search for a specific system across inventory, errata, and history panels",
-        "type": "textbox",
-        "current": {
-          "selected": true,
-          "text": "",
-          "value": ""
-        },
-        "query": ""
       }
     ]
   },
