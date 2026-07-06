@@ -1,0 +1,490 @@
+{%- set datasource_uid = 'fffl1ncs75r7kd' -%}
+{
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-postgresql-datasource",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Hub-level overview across all Uyuni peripheral servers. Shows aggregated fleet statistics and per-peripheral breakdown. Click a peripheral to drill into its detailed dashboards.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "id": 1,
+      "title": "Hub Executive Summary",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "panels": []
+    },
+    {
+      "id": 2,
+      "title": "Peripheral Servers",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 1 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE is_mgr_server = TRUE",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "blue", "value": null }]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Total Managed Systems",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 1 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE NOT is_mgr_server AND NOT is_proxy",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "blue", "value": null }]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Total Outstanding Patches",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 1 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(*) AS total FROM SystemErrata",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "yellow", "value": null }]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Critical Security Patches (Fleet-wide)",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 1 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(*) AS total FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE e.advisory_type = 'Security Advisory' AND e.severity = 'Critical'",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "dark-red", "value": null }]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Inactive Systems Fleet-wide (>7d)",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 1 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT COUNT(*) AS total FROM System WHERE NOT is_mgr_server AND NOT is_proxy AND last_checkin_time < NOW() - INTERVAL '7 days'",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "orange", "value": null }]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 10,
+      "title": "Peripheral Server Summary",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "panels": []
+    },
+    {
+      "id": 11,
+      "title": "Per-Peripheral Overview",
+      "description": "One row per peripheral server. Click a peripheral name to open the Fleet Overview & Security dashboard scoped to that peripheral.",
+      "type": "table",
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 6 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT mgr.hostname AS peripheral_server, mgr.system_id AS peripheral_id, (SELECT COUNT(*) FROM System sys WHERE sys.mgm_id = mgr.system_id AND NOT sys.is_mgr_server AND NOT sys.is_proxy) AS total_systems, (SELECT COUNT(*) FROM System sys WHERE sys.mgm_id = mgr.system_id AND NOT sys.is_mgr_server AND NOT sys.is_proxy AND sys.last_checkin_time < NOW() - INTERVAL '7 days') AS inactive_7d, (SELECT COUNT(*) FROM SystemErrata se WHERE se.mgm_id = mgr.system_id) AS outstanding_patches, (SELECT COUNT(*) FROM SystemErrata se JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE se.mgm_id = mgr.system_id AND e.advisory_type = 'Security Advisory' AND e.severity = 'Critical') AS critical_patches FROM System mgr WHERE mgr.is_mgr_server = TRUE ORDER BY critical_patches DESC NULLS LAST, total_systems DESC",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "critical_patches" },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": { "mode": "continuous-reds" }
+              }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "inactive_7d" },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": { "mode": "continuous-YlRd" }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": true,
+          "reducer": ["sum"],
+          "fields": ["total_systems", "outstanding_patches", "critical_patches", "inactive_7d"]
+        },
+        "sortBy": [{ "displayName": "critical_patches", "desc": true }]
+      }
+    },
+    {
+      "id": 30,
+      "title": "All Systems",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 19 },
+      "panels": []
+    },
+    {
+      "id": 31,
+      "title": "System Inventory",
+      "description": "All systems across hub and all peripherals. Peripheral servers are highlighted so they can be used to filter the view.",
+      "type": "table",
+      "gridPos": { "h": 14, "w": 24, "x": 0, "y": 20 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "{{ datasource_uid }}"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "rawSql": "SELECT CASE WHEN s.is_mgr_server THEN 'Peripheral' WHEN s.is_proxy THEN 'Proxy' ELSE 'System' END AS type, s.profile_name, s.hostname, CASE WHEN s.mgm_id = 1 THEN 'Hub' ELSE COALESCE((SELECT mgr.profile_name FROM System mgr WHERE mgr.mgm_id = 1 AND mgr.system_id = s.mgm_id AND mgr.is_mgr_server = TRUE), s.mgm_id::text) END AS managed_by, s.architecture, s.last_checkin_time, s.registration_time FROM System s ORDER BY s.is_mgr_server DESC, s.is_proxy DESC, s.mgm_id, s.profile_name",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "type" },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "Peripheral": { "color": "semi-dark-blue", "index": 0, "text": "Peripheral" },
+                      "Proxy":      { "color": "semi-dark-purple", "index": 1, "text": "Proxy" },
+                      "System":     { "color": "semi-dark-green", "index": 2, "text": "System" }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "last_checkin_time" },
+            "properties": [
+              { "id": "unit", "value": "dateTimeAsLocal" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "registration_time" },
+            "properties": [
+              { "id": "unit", "value": "dateTimeAsLocal" }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": true,
+          "reducer": ["count"],
+          "fields": ["profile_name"]
+        },
+        "sortBy": [{ "displayName": "type", "desc": false }]
+      }
+    },
+    {
+      "id": 20,
+      "title": "Fleet-wide Security Analysis",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 18 },
+      "panels": [
+        {
+          "id": 21,
+          "title": "Systems per Peripheral",
+          "description": "Distribution of managed systems across peripheral servers",
+          "type": "piechart",
+          "gridPos": { "h": 10, "w": 8, "x": 0, "y": 19 },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT mgr.hostname AS peripheral, COUNT(sys.system_id) AS systems FROM System mgr JOIN System sys ON sys.mgm_id = mgr.system_id AND NOT sys.is_mgr_server AND NOT sys.is_proxy WHERE mgr.is_mgr_server = TRUE GROUP BY mgr.hostname ORDER BY systems DESC",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": { "defaults": {}, "overrides": [] },
+          "options": {
+            "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": true },
+            "pieType": "pie",
+            "tooltip": { "mode": "single" },
+            "legend": { "displayMode": "table", "placement": "right", "values": ["value", "percent"] }
+          }
+        },
+        {
+          "id": 22,
+          "title": "Critical Patches by Peripheral",
+          "description": "Number of critical security patch exposures per peripheral",
+          "type": "table",
+          "gridPos": { "h": 10, "w": 16, "x": 8, "y": 19 },
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "{{ datasource_uid }}"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "{{ datasource_uid }}"
+              },
+              "rawSql": "SELECT mgr.hostname AS peripheral, COUNT(*) AS critical_patch_exposures FROM System mgr JOIN SystemErrata se ON se.mgm_id = mgr.system_id JOIN Errata e ON se.mgm_id = e.mgm_id AND se.errata_id = e.errata_id WHERE mgr.is_mgr_server = TRUE AND e.advisory_type = 'Security Advisory' AND e.severity = 'Critical' GROUP BY mgr.hostname ORDER BY critical_patch_exposures DESC",
+              "format": "table",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": [
+              {
+                "matcher": { "id": "byName", "options": "critical_patch_exposures" },
+                "properties": [
+                  { "id": "custom.displayMode", "value": "color-background" },
+                  { "id": "color", "value": { "mode": "continuous-reds" } }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "footer": { "show": true, "reducer": ["sum"], "fields": ["critical_patch_exposures"] }
+          }
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": ["uyuni", "hub", "reporting", "infrastructure"],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "{{ product_name }} Hub Overview",
+  "uid": "reportdb-hub-overview",
+  "version": 1
+}

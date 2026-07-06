@@ -58,6 +58,13 @@ grafana:
         $type: boolean
         $default: False
 
+      is_hub:
+        $type: boolean
+        $name: This Report DB is for a Hub server
+        $help: Enable if this Report DB aggregates peripheral servers (Hub). Adds the Hub overview dashboard listing peripheral servers and their fleets. Leave off for standalone servers.
+        $default: False
+        $disabled: "!formValues.grafana.datasources.reportdb.enabled"
+
   dashboards:
     $type: group
     $disabled: "!formValues.grafana.enabled"

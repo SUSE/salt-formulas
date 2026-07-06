@@ -59,6 +59,18 @@
   file.absent
 {%- endif%}
 
+/etc/grafana/provisioning/dashboards/Reporting/hub-overview.json:
+{%- if salt['pillar.get']('grafana:datasources:reportdb:enabled', False) and salt['pillar.get']('grafana:datasources:reportdb:is_hub', False) %}
+  file.managed:
+    - source: salt://grafana/files/hub-overview.json.jinja
+    - makedirs: True
+    - template: jinja
+    - defaults:
+      product_name: {{ product_name }}
+{%- else %}
+  file.absent
+{%- endif %}
+
 /etc/grafana/provisioning/dashboards/dashboard-provider.yml:
   file.managed:
     - source: "salt://grafana/files/dashboard-provider.yml"

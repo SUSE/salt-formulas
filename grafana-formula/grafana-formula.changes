@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Sun Jul 05 11:44:38 UTC 2026 - Abid Mehmood <amehmood@suse.de>
+
+- Version 5.2.3
+  * Scope `Fleet Overview & Security` and `Reports & History`
+    dashboards by a `$manager` variable so a Hub Report DB can be
+    filtered per peripheral server
+  * Add optional `Hub Overview` dashboard, gated by the new
+    "This Report DB is for a Hub server" formula option
+    (bsc#1262238)
+
+-------------------------------------------------------------------
 Fri Jun 19 12:40:28 UTC 2026 - Witek Bedyk <witold.bedyk@suse.com>
 
 - Version 5.2.2
