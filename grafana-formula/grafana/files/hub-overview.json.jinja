@@ -53,7 +53,32 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "links": [],
+  "links": [
+    {
+      "title": "Fleet Security (Hub)",
+      "tooltip": "Open Fleet Overview & Security scoped to this Hub server's own systems",
+      "type": "link",
+      "url": "/d/reportdb-fleet-security/?var-manager=1",
+      "icon": "external link",
+      "targetBlank": false,
+      "asDropdown": false,
+      "includeVars": false,
+      "keepTime": true,
+      "tags": []
+    },
+    {
+      "title": "Reports (Hub)",
+      "tooltip": "Open Reports & History scoped to this Hub server's own systems",
+      "type": "link",
+      "url": "/d/reportdb-reports-history/?var-manager=1",
+      "icon": "external link",
+      "targetBlank": false,
+      "asDropdown": false,
+      "includeVars": false,
+      "keepTime": true,
+      "tags": []
+    }
+  ],
   "panels": [
     {
       "id": 1,
@@ -280,6 +305,32 @@
       "fieldConfig": {
         "defaults": {},
         "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "peripheral_server" },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Fleet Overview & Security for ${__data.fields.peripheral_server}",
+                    "url": "/d/reportdb-fleet-security/?var-manager=${__data.fields.peripheral_id}&${__url_time_range}",
+                    "targetBlank": false
+                  },
+                  {
+                    "title": "Reports & History for ${__data.fields.peripheral_server}",
+                    "url": "/d/reportdb-reports-history/?var-manager=${__data.fields.peripheral_id}&${__url_time_range}",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "peripheral_id" },
+            "properties": [
+              { "id": "custom.hidden", "value": true }
+            ]
+          },
           {
             "matcher": { "id": "byName", "options": "critical_patches" },
             "properties": [
