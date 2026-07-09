@@ -47,39 +47,6 @@ re_install_from_SLL:
 {% elif release == 9 %}
 {% if not isLiberty %}
 
-/usr/share/redhat-release:
-  file.absent
-
-/etc/dnf/protected.d/redhat-release.conf:
-  file.absent
-
-{% if osName == 'Rocky' %}
-/usr/share/rocky-release/:
-  file.absent
-
-remove_release_package:
-  cmd.run:
-    - name: "rpm -e --nodeps rocky-release"
-{% endif %}
-
-{% if osName == 'AlmaLinux' %}
-/usr/share/almalinux-release/:
-  file.absent
-
-remove_release_package:
-  cmd.run:
-    - name: "rpm -e --nodeps almalinux-release"
-{% endif %}
-
-{% if osName == 'OEL' %}
-/usr/share/oraclelinux-release/:
-  file.absent
-
-remove_release_package:
-  cmd.run:
-    - name: "rpm -e --nodeps oraclelinux-release"
-{% endif %}
-
 install_package_9:
   pkg.installed:
     - name: sll-release
