@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jul 09 15:05:32 UTC 2026 - Kevin Walter <kwalter@suse.com>
+
+- Exclude kernel package from reinstall (bsc#1269223)
+
+-------------------------------------------------------------------
 Tue May 26 17:13:05 UTC 2026 - Marina Latini <marina.latini@suse.com>
 
 - Version 0.1.4
