@@ -33,7 +33,7 @@ install_logos_10:
 {% if reinstallPackages %}
 re_install_from_SLL:
   cmd.run:
-    - name: "dnf -x 'venv-salt-minion' reinstall '*' -y >> /var/log/dnf_sll_migration.log"
+    - name: "dnf -x 'kernel' -x 'grub2-common' -x 'grub2-efi-x64' -x 'shim-x64' -x 'venv-salt-minion' reinstall '*' -y >> /var/log/dnf_sll_migration.log"
     - require:
       - pkg: install_package_10
 {% endif %}
@@ -95,7 +95,7 @@ install_logos_9:
 {% if reinstallPackages %}
 re_install_from_SLL:
   cmd.run:
-    - name: "dnf -x 'venv-salt-minion' reinstall '*' -y >> /var/log/dnf_sll_migration.log"
+    - name: "dnf -x 'kernel' -x 'grub2-common' -x 'grub2-efi-x64' -x 'shim-x64' -x 'venv-salt-minion' reinstall '*' -y >> /var/log/dnf_sll_migration.log"
     - require:
       - pkg: install_package_9
 {% endif %}
@@ -150,7 +150,7 @@ install_logos_8:
 {% if reinstallPackages %}
 re_install_from_SLL:
   cmd.run:
-    - name: "yum -x 'venv-salt-minion' -x 'salt-minion' reinstall '*' -y >> /var/log/dnf_sles_es_migration.log"
+    - name: "yum -x 'kernel' -x 'grub2-common' -x 'grub2-efi-x64' -x 'shim-x64' -x 'venv-salt-minion' -x 'salt-minion' reinstall '*' -y >> /var/log/dnf_sles_es_migration.log"
     - require:
       - pkg: install_package_8
 {% endif %}
@@ -208,7 +208,7 @@ fix_libreport_plugin_bugzilla:
 
 re_install_from_SLL:
   cmd.run:
-    - name: "yum -x 'venv-salt-minion' -x 'salt-minion' -x 'libreport-plugin-bugzilla' -y  reinstall `rpm -qa` --obsoletes >> /var/log/yum_sles_es_migration.log"
+    - name: "yum -x 'kernel' -x 'grub2' -x 'grub2-common' -x 'grub2-efi-x64' -x 'shim' -x 'shim-x64' -x 'venv-salt-minion' -x 'salt-minion' -x 'libreport-plugin-bugzilla' -y  reinstall `rpm -qa` --obsoletes >> /var/log/yum_sles_es_migration.log"
     - require:
       - pkg: install_package_7
       - cmd: fix_libreport_plugin_bugzilla
