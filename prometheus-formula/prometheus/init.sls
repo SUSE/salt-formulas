@@ -15,7 +15,7 @@
 {%- endif %}
 
 {%- if not supported %}
-  os_not_supported:
+  prometheus_os_not_supported:
     test.fail_without_changes:
       - name: "OS not supported!"
 {%- else %}
