@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Wed Oct  7 11:46:39 UTC 2026 - Witek Bedyk <witold.bedyk@suse.com>
+
+- Version 0.10.0
+  * Rename SLS ID to avoid conflicts (bsc#1284340)
   * Change exporters ports to paths
   * Use https for the server exporters
 
