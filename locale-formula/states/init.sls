@@ -52,6 +52,7 @@ mgr_locale_package:
   file.replace:
     - pattern: ^ROOT_USES_LANG=.*
     - repl: ROOT_USES_LANG="yes"
+    - ignore_if_missing: True
 {% endif %}
 
 mgr_language_settings:

@@ -18,7 +18,7 @@
 
 %define fname locale
 Name:           %{fname}-formula
-Version:        0.4.0
+Version:        0.4.1
 Release:        0
 Summary:        Locale Salt Formula for SUSE Multi-Linux Manager and Uyuni
 License:        GPL-3.0-only
