@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Oct 20 14:19:19 UTC 2026 - Geetansh Goyal <goyalgeetansh@gmail.com>
+
+- Version 0.4.1
+  * Do not fail when /etc/sysconfig/language does not exist, as on
+    openSUSE Tumbleweed and Leap 16 (bsc#1274739)
+
+-------------------------------------------------------------------
 Thu Dec 19 12:17:27 UTC 2024 - Marina Latini <marina.latini@suse.com>
 
 - Update to version 0.4.0
