@@ -17,7 +17,7 @@ web_config:
     - group: prometheus
     - mode: 644
     - watch_in:
-      - service: node_exporter
+      - service: node_exporter_service
 {% endif %}
 
 {% if proxy_supported and proxy_enabled and grains['os_family'] == 'Debian' %}
@@ -69,8 +69,8 @@ exporter_exporter:
 {% endif %}
 
 {% set node_exporter_enabled = salt['pillar.get']('exporters:node_exporter:enabled', True) %}
-node_exporter:
 {% if node_exporter_enabled %}
+node_exporter:
   {% set node_exporter_args = salt['pillar.get']('exporters:node_exporter:args') %}
   {% set node_exporter_address = salt['pillar.get']('exporters:node_exporter:address') %}
   {% if node_exporter_args is none %}
@@ -105,7 +105,11 @@ node_exporter:
     - require:
       - pkg: node_exporter
     - watch_in:
-      - service: node_exporter
+      - service: node_exporter_service
+{% endif %}
+
+node_exporter_service:
+{% if node_exporter_enabled %}
   service.running:
     - name: {{ exporters.node_exporter_service }}
     - enable: True
